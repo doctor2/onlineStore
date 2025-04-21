@@ -7,6 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ShippingAddressRepository::class)]
 #[ORM\Table(name: '`shipping_addresses`')]
+#[ORM\HasLifecycleCallbacks]
 class ShippingAddress
 {
     #[ORM\Id]
@@ -19,31 +20,25 @@ class ShippingAddress
     private ?User $user = null;
 
     #[ORM\Column(length: 50)]
-    private ?string $first_name = null;
+    private ?string $firstName = null;
 
     #[ORM\Column(length: 50)]
-    private ?string $last_name = null;
+    private ?string $lastName = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $address_line = null;
+    private ?string $addressLine = null;
 
     #[ORM\Column(length: 255)]
     private ?string $city = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $state = null;
-
-    #[ORM\Column(length: 255)]
-    private ?string $postal_code = null;
-
-    #[ORM\Column(length: 255)]
-    private ?string $country = null;
+    private ?string $postalCode = null;
 
     #[ORM\Column]
-    private ?\DateTimeImmutable $created_at = null;
+    private ?\DateTimeImmutable $createdAt = null;
 
     #[ORM\Column]
-    private ?\DateTimeImmutable $updated_at = null;
+    private ?\DateTimeImmutable $updatedAt = null;
 
     public function getId(): ?int
     {
@@ -64,36 +59,36 @@ class ShippingAddress
 
     public function getFirstName(): ?string
     {
-        return $this->first_name;
+        return $this->firstName;
     }
 
-    public function setFirstName(string $first_name): static
+    public function setFirstName(string $firstName): static
     {
-        $this->first_name = $first_name;
+        $this->firstName = $firstName;
 
         return $this;
     }
 
     public function getLastName(): ?string
     {
-        return $this->last_name;
+        return $this->lastName;
     }
 
-    public function setLastName(string $last_name): static
+    public function setLastName(string $lastName): static
     {
-        $this->last_name = $last_name;
+        $this->lastName = $lastName;
 
         return $this;
     }
 
     public function getAddressLine(): ?string
     {
-        return $this->address_line;
+        return $this->addressLine;
     }
 
-    public function setAddressLine(string $address_line): static
+    public function setAddressLine(string $addressLine): static
     {
-        $this->address_line = $address_line;
+        $this->addressLine = $addressLine;
 
         return $this;
     }
@@ -110,63 +105,38 @@ class ShippingAddress
         return $this;
     }
 
-    public function getState(): ?string
-    {
-        return $this->state;
-    }
-
-    public function setState(string $state): static
-    {
-        $this->state = $state;
-
-        return $this;
-    }
-
     public function getPostalCode(): ?string
     {
-        return $this->postal_code;
+        return $this->postalCode;
     }
 
-    public function setPostalCode(string $postal_code): static
+    public function setPostalCode(string $postalCode): static
     {
-        $this->postal_code = $postal_code;
+        $this->postalCode = $postalCode;
 
         return $this;
     }
 
-    public function getCountry(): ?string
+    #[ORM\PrePersist]
+    public function onPrePersist(): void
     {
-        return $this->country;
+        $this->createdAt = new \DateTimeImmutable();
+        $this->updatedAt = new \DateTimeImmutable();
     }
 
-    public function setCountry(string $country): static
+    #[ORM\PreUpdate]
+    public function onPreUpdate(): void
     {
-        $this->country = $country;
-
-        return $this;
+        $this->updatedAt = new \DateTimeImmutable();
     }
 
     public function getCreatedAt(): ?\DateTimeImmutable
     {
-        return $this->created_at;
-    }
-
-    public function setCreatedAt(\DateTimeImmutable $created_at): static
-    {
-        $this->created_at = $created_at;
-
-        return $this;
+        return $this->createdAt;
     }
 
     public function getUpdatedAt(): ?\DateTimeImmutable
     {
-        return $this->updated_at;
-    }
-
-    public function setUpdatedAt(\DateTimeImmutable $updated_at): static
-    {
-        $this->updated_at = $updated_at;
-
-        return $this;
+        return $this->updatedAt;
     }
 }

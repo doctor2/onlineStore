@@ -17,15 +17,15 @@ class ShoppingCart
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(inversedBy: 'shoppingCarts')]
+    #[ORM\OneToOne(inversedBy: 'shoppingCart', cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
 
     #[ORM\Column]
-    private ?\DateTimeImmutable $created_at = null;
+    private ?\DateTimeImmutable $createdAt = null;
 
     #[ORM\Column]
-    private ?\DateTimeImmutable $updated_at = null;
+    private ?\DateTimeImmutable $updatedAt = null;
 
     /**
      * @var Collection<int, CartItem>
@@ -58,24 +58,24 @@ class ShoppingCart
     #[ORM\PrePersist]
     public function onPrePersist(): void
     {
-        $this->created_at = new \DateTimeImmutable();
-        $this->updated_at = new \DateTimeImmutable();
+        $this->createdAt = new \DateTimeImmutable();
+        $this->updatedAt = new \DateTimeImmutable();
     }
 
     #[ORM\PreUpdate]
     public function onPreUpdate(): void
     {
-        $this->updated_at = new \DateTimeImmutable();
+        $this->updatedAt = new \DateTimeImmutable();
     }
 
     public function getCreatedAt(): ?\DateTimeImmutable
     {
-        return $this->created_at;
+        return $this->createdAt;
     }
 
     public function getUpdatedAt(): ?\DateTimeImmutable
     {
-        return $this->updated_at;
+        return $this->updatedAt;
     }
 
     /**
@@ -106,5 +106,16 @@ class ShoppingCart
         }
 
         return $this;
+    }
+
+    public function getTotalAmount(): float
+    {
+        $total = 0;
+
+        foreach ($this->cartItems as $item) {
+            $total += $item->getPrice() * $item->getQuantity();
+        }
+
+        return $total;
     }
 }

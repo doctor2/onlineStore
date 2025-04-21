@@ -32,19 +32,19 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $email = null;
 
     #[ORM\Column(length: 50)]
-    private ?string $first_name = null;
+    private ?string $firstName = null;
 
     #[ORM\Column(length: 50)]
-    private ?string $last_name = null;
+    private ?string $lastName = null;
 
     #[ORM\Column]
     private array $roles = [];
 
     #[ORM\Column]
-    private ?\DateTimeImmutable $created_at = null;
+    private ?\DateTimeImmutable $createdAt = null;
 
     #[ORM\Column]
-    private ?\DateTimeImmutable $updated_at = null;
+    private ?\DateTimeImmutable $updatedAt = null;
 
     /**
      * @var Collection<int, Order>
@@ -52,11 +52,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: Order::class, mappedBy: 'user')]
     private Collection $orders;
 
-    /**
-     * @var Collection<int, ShoppingCart>
-     */
-    #[ORM\OneToMany(targetEntity: ShoppingCart::class, mappedBy: 'user')]
-    private Collection $shoppingCarts;
+    #[ORM\OneToOne(mappedBy: 'user', cascade: ['persist', 'remove'])]
+    private ?ShoppingCart $shoppingCart = null;
 
     /**
      * @var Collection<int, ShippingAddress>
@@ -67,7 +64,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function __construct()
     {
         $this->orders = new ArrayCollection();
-        $this->shoppingCarts = new ArrayCollection();
         $this->shippingAddresses = new ArrayCollection();
     }
 
@@ -114,24 +110,24 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function getFirstName(): ?string
     {
-        return $this->first_name;
+        return $this->firstName;
     }
 
-    public function setFirstName(string $first_name): static
+    public function setFirstName(string $firstName): static
     {
-        $this->first_name = $first_name;
+        $this->firstName = $firstName;
 
         return $this;
     }
 
     public function getLastName(): ?string
     {
-        return $this->last_name;
+        return $this->lastName;
     }
 
-    public function setLastName(string $last_name): static
+    public function setLastName(string $lastName): static
     {
-        $this->last_name = $last_name;
+        $this->lastName = $lastName;
 
         return $this;
     }
@@ -155,24 +151,24 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\PrePersist]
     public function onPrePersist(): void
     {
-        $this->created_at = new \DateTimeImmutable();
-        $this->updated_at = new \DateTimeImmutable();
+        $this->createdAt = new \DateTimeImmutable();
+        $this->updatedAt = new \DateTimeImmutable();
     }
 
     #[ORM\PreUpdate]
     public function onPreUpdate(): void
     {
-        $this->updated_at = new \DateTimeImmutable();
+        $this->updatedAt = new \DateTimeImmutable();
     }
 
     public function getCreatedAt(): ?\DateTimeImmutable
     {
-        return $this->created_at;
+        return $this->createdAt;
     }
 
     public function getUpdatedAt(): ?\DateTimeImmutable
     {
-        return $this->updated_at;
+        return $this->updatedAt;
     }
 
     /**
@@ -205,32 +201,19 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    /**
-     * @return Collection<int, ShoppingCart>
-     */
-    public function getShoppingCarts(): Collection
+    public function getShoppingCart(): ?ShoppingCart
     {
-        return $this->shoppingCarts;
+        return $this->shoppingCart;
     }
 
-    public function addShoppingCart(ShoppingCart $shoppingCart): static
+    public function setShoppingCart(ShoppingCart $shoppingCart): static
     {
-        if (!$this->shoppingCarts->contains($shoppingCart)) {
-            $this->shoppingCarts->add($shoppingCart);
+        // set the owning side of the relation if necessary
+        if ($shoppingCart->getUser() !== $this) {
             $shoppingCart->setUser($this);
         }
 
-        return $this;
-    }
-
-    public function removeShoppingCart(ShoppingCart $shoppingCart): static
-    {
-        if ($this->shoppingCarts->removeElement($shoppingCart)) {
-            // set the owning side to null (unless already changed)
-            if ($shoppingCart->getUser() === $this) {
-                $shoppingCart->setUser(null);
-            }
-        }
+        $this->shoppingCart = $shoppingCart;
 
         return $this;
     }

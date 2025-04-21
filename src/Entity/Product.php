@@ -26,13 +26,13 @@ class Product
     private ?string $price = null;
 
     #[ORM\Column]
-    private ?int $stock_quantity = null;
+    private ?int $stockQuantity = null;
 
     #[ORM\Column]
-    private ?\DateTimeImmutable $created_at = null;
+    private ?\DateTimeImmutable $createdAt = null;
 
     #[ORM\Column]
-    private ?\DateTimeImmutable $updated_at = null;
+    private ?\DateTimeImmutable $updatedAt = null;
 
     #[ORM\ManyToOne(inversedBy: 'products')]
     #[ORM\JoinColumn(nullable: false)]
@@ -81,12 +81,12 @@ class Product
 
     public function getStockQuantity(): ?int
     {
-        return $this->stock_quantity;
+        return $this->stockQuantity;
     }
 
-    public function setStockQuantity(int $stock_quantity): static
+    public function setStockQuantity(int $stockQuantity): static
     {
-        $this->stock_quantity = $stock_quantity;
+        $this->stockQuantity = $stockQuantity;
 
         return $this;
     }
@@ -94,24 +94,24 @@ class Product
     #[ORM\PrePersist]
     public function onPrePersist(): void
     {
-        $this->created_at = new \DateTimeImmutable();
-        $this->updated_at = new \DateTimeImmutable();
+        $this->createdAt = new \DateTimeImmutable();
+        $this->updatedAt = new \DateTimeImmutable();
     }
 
     #[ORM\PreUpdate]
     public function onPreUpdate(): void
     {
-        $this->updated_at = new \DateTimeImmutable();
+        $this->updatedAt = new \DateTimeImmutable();
     }
 
     public function getCreatedAt(): ?\DateTimeImmutable
     {
-        return $this->created_at;
+        return $this->createdAt;
     }
 
     public function getUpdatedAt(): ?\DateTimeImmutable
     {
-        return $this->updated_at;
+        return $this->updatedAt;
     }
 
     public function getCategory(): ?Category

@@ -23,19 +23,19 @@ class Order
     private ?User $user = null;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2)]
-    private ?string $total_amount = null;
+    private ?string $totalAmount = null;
 
     #[ORM\Column(enumType: OrderStatus::class)]
     private ?OrderStatus $status = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $payment_method = null;
+    private ?string $paymentMethod = null;
 
     #[ORM\Column]
-    private ?\DateTimeImmutable $created_at = null;
+    private ?\DateTimeImmutable $createdAt = null;
 
     #[ORM\Column]
-    private ?\DateTimeImmutable $updated_at = null;
+    private ?\DateTimeImmutable $updatedAt = null;
 
     /**
      * @var Collection<int, OrderItem>
@@ -48,6 +48,10 @@ class Order
      */
     #[ORM\OneToMany(targetEntity: Payment::class, mappedBy: 'order')]
     private Collection $payments;
+
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?ShippingAddress $shippingAddress = null;
 
     public function __construct()
     {
@@ -74,12 +78,12 @@ class Order
 
     public function getTotalAmount(): ?string
     {
-        return $this->total_amount;
+        return $this->totalAmount;
     }
 
-    public function setTotalAmount(string $total_amount): static
+    public function setTotalAmount(string $totalAmount): static
     {
-        $this->total_amount = $total_amount;
+        $this->totalAmount = $totalAmount;
 
         return $this;
     }
@@ -98,12 +102,12 @@ class Order
 
     public function getPaymentMethod(): ?string
     {
-        return $this->payment_method;
+        return $this->paymentMethod;
     }
 
-    public function setPaymentMethod(string $payment_method): static
+    public function setPaymentMethod(string $paymentMethod): static
     {
-        $this->payment_method = $payment_method;
+        $this->paymentMethod = $paymentMethod;
 
         return $this;
     }
@@ -111,24 +115,24 @@ class Order
     #[ORM\PrePersist]
     public function onPrePersist(): void
     {
-        $this->created_at = new \DateTimeImmutable();
-        $this->updated_at = new \DateTimeImmutable();
+        $this->createdAt = new \DateTimeImmutable();
+        $this->updatedAt = new \DateTimeImmutable();
     }
 
     #[ORM\PreUpdate]
     public function onPreUpdate(): void
     {
-        $this->updated_at = new \DateTimeImmutable();
+        $this->updatedAt = new \DateTimeImmutable();
     }
 
     public function getCreatedAt(): ?\DateTimeImmutable
     {
-        return $this->created_at;
+        return $this->createdAt;
     }
 
     public function getUpdatedAt(): ?\DateTimeImmutable
     {
-        return $this->updated_at;
+        return $this->updatedAt;
     }
 
     /**
@@ -187,6 +191,18 @@ class Order
                 $payment->setOrder(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getShippingAddress(): ?ShippingAddress
+    {
+        return $this->shippingAddress;
+    }
+
+    public function setShippingAddress(?ShippingAddress $shippingAddress): static
+    {
+        $this->shippingAddress = $shippingAddress;
 
         return $this;
     }

@@ -25,16 +25,16 @@ class Payment
     private ?string $amount = null;
 
     #[ORM\Column(enumType: PaymentStatus::class)]
-    private ?PaymentStatus $payment_status = null;
+    private ?PaymentStatus $paymentStatus = null;
 
     #[ORM\Column]
-    private ?\DateTimeImmutable $payment_date = null;
+    private ?\DateTimeImmutable $paymentDate = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $payment_method = null;
+    private ?string $paymentMethod = null;
 
     #[ORM\Column]
-    private ?\DateTimeImmutable $created_at = null;
+    private ?\DateTimeImmutable $createdAt = null;
 
     public function getId(): ?int
     {
@@ -67,48 +67,48 @@ class Payment
 
     public function getPaymentStatus(): ?PaymentStatus
     {
-        return $this->payment_status;
+        return $this->paymentStatus;
     }
 
-    public function setPaymentStatus(PaymentStatus $payment_status): static
+    public function setPaymentStatus(PaymentStatus $paymentStatus): static
     {
-        $this->payment_status = $payment_status;
+        $this->paymentStatus = $paymentStatus;
 
         return $this;
     }
 
     public function getPaymentDate(): ?\DateTimeImmutable
     {
-        return $this->payment_date;
+        return $this->paymentDate;
     }
 
-    public function setPaymentDate(\DateTimeImmutable $payment_date): static
+    public function setPaymentDate(\DateTimeImmutable $paymentDate): static
     {
-        $this->payment_date = $payment_date;
+        $this->paymentDate = $paymentDate;
 
         return $this;
     }
 
     public function getPaymentMethod(): ?string
     {
-        return $this->payment_method;
+        return $this->paymentMethod;
     }
 
-    public function setPaymentMethod(string $payment_method): static
+    public function setPaymentMethod(string $paymentMethod): static
     {
-        $this->payment_method = $payment_method;
+        $this->paymentMethod = $paymentMethod;
 
         return $this;
     }
 
     public function getCreatedAt(): ?\DateTimeImmutable
     {
-        return $this->created_at;
+        return $this->createdAt;
     }
 
     #[ORM\PrePersist]
     public function onPrePersist(): void
     {
-        $this->created_at = new \DateTimeImmutable();
+        $this->createdAt = new \DateTimeImmutable();
     }
 }
