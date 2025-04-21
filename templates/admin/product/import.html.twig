@@ -1,0 +1,18 @@
+{% extends '@EasyAdmin/page/content.html.twig' %}
+
+{% block content_title %}
+    Import Products
+{% endblock %}
+
+{% block main %}
+    {{ form_start(form) }}
+    {{ form_widget(form) }}
+    <button class="btn">Import</button>
+    {{ form_end(form) }}
+
+    <p class="mt-3">
+        Ensure your Excel file has the following headers:
+        <br>
+        Название товара | Описание | Цена | Остаток на складе | Категория
+    </p>
+{% endblock %}
