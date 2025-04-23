@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Список продуктов{% endblock %}
+
+{% block body %}
+    <h1>Список продуктов</h1>
+    <a href="{{ path('cart') }}">Корзина</a>
+    <table>
+        <thead>
+        <tr>
+            <th>Название</th>
+            <th>Цена</th>
+            <th>Действия</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for product in products %}
+            <tr>
+                <td>{{ product.name }}</td>
+                <td>{{ product.price }}</td>
+                <td>
+                    <form action="{{ path('add_to_cart', { id: product.id }) }}" method="post">
+                        <button type="submit">Добавить в корзину</button>
+                    </form>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success">
+            {{ message }}
+        </div>
+    {% endfor %}
+
+    {% for message in app.flashes('error') %}
+        <div class="alert alert-error">
+            {{ message }}
+        </div>
+    {% endfor %}
+
+{% endblock %}

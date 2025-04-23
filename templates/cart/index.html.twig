@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Корзина{% endblock %}
+
+{% block body %}
+    <h1>Корзина</h1>
+    <ul>
+        {% for item in cart.cartItems %}
+            <li>{{ item.product.name }} - {{ item.price }} ₽ ({{ item.quantity }})</li>
+        {% endfor %}
+    </ul>
+
+    {% if isPendingOrder %}
+        <a href="{{ path('order_edit_shipping_address') }}">Ожидает оплаты</a>
+    {% elseif totalAmount %}
+        <h2>Оформить заказ</h2>
+
+        <h2>Итого: {{ totalAmount }} ₽</h2>
+        <a href="{{ path('order_shipping_address') }}">Оформить заказ</a>
+    {% else %}
+        <h3>Пусто</h3>
+    {% endif %}
+{% endblock %}
+
