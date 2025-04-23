@@ -81,6 +81,11 @@ class Order
         return $this->totalAmount;
     }
 
+    public function getTotalAmountInPennies(): int
+    {
+        return $this->totalAmount * 100;
+    }
+
     public function setTotalAmount(string $totalAmount): static
     {
         $this->totalAmount = $totalAmount;

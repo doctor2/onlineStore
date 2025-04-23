@@ -11,7 +11,7 @@ use Doctrine\ORM\Events;
 use Doctrine\Persistence\ObjectManager;
 
 #[AsEntityListener(event: Events::postPersist, method: 'postPersist', entity: User::class)]
-class UserAddCart
+class UserRegisteredListener
 {
 
     public function __construct(private GetCartService $getCartService)

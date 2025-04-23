@@ -22,3 +22,10 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+    App\Domain\Order\Service\TinkoffPayment:
+        arguments:
+            - '%env(TINKOFF_API_URL)%'
+            - '%env(TINKOFF_TERMINAL_KEY)%'
+            - '%env(TINKOFF_MERCHANT_PASS)%'
+            - '%env(TINKOFF_MERCHANT_EMAIL)%'
+            - '%env(TINKOFF_MERCHANT_PHONE)%'

@@ -16,28 +16,9 @@ class ShippingAddressRepository extends ServiceEntityRepository
         parent::__construct($registry, ShippingAddress::class);
     }
 
-    //    /**
-    //     * @return ShippingAddress[] Returns an array of ShippingAddress objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('s')
-    //            ->andWhere('s.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('s.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
-
-    //    public function findOneBySomeField($value): ?ShippingAddress
-    //    {
-    //        return $this->createQueryBuilder('s')
-    //            ->andWhere('s.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
+    public function save(ShippingAddress $address): void
+    {
+        $this->getEntityManager()->persist($address);
+        $this->getEntityManager()->flush($address);
+    }
 }

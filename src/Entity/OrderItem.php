@@ -79,6 +79,11 @@ class OrderItem
         return $this->price;
     }
 
+    public function getPriceInPennies(): int
+    {
+        return $this->price * 100;
+    }
+
     public function setPrice(string $price): static
     {
         $this->price = $price;

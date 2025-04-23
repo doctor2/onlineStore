@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Order Payment{% endblock %}
+
+{% block body %}
+    <h1>Выберите оплату</h1>
+    {{ form_start(form) }}
+        {{ form_widget(form) }}
+    {{ form_end(form) }}
+
+    {% for message in app.flashes('error') %}
+        <div class="alert alert-error">
+            {{ message }}
+        </div>
+    {% endfor %}
+
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success">
+            {{ message }}
+        </div>
+    {% endfor %}
+{% endblock %}
