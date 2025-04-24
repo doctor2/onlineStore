@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Entity;
+namespace App\Domain\Order\Entity;
 
-use App\Repository\ShippingAddressRepository;
+use App\Entity\User;
+use App\Domain\Order\Repository\ShippingAddressRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ShippingAddressRepository::class)]

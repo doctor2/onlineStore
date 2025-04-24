@@ -4,7 +4,7 @@ namespace App\Controller;
 
 use App\Domain\Cart\Message\CreateCartItemMessage;
 use App\Domain\Cart\Service\GetCartService;
-use App\Repository\OrderRepository;
+use App\Domain\Order\Repository\OrderRepository;
 use App\Validator\MessageValidator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;

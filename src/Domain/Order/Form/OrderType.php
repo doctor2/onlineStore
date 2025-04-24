@@ -2,7 +2,7 @@
 
 namespace App\Domain\Order\Form;
 
-use App\Entity\Order;
+use App\Domain\Order\Entity\Order;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;

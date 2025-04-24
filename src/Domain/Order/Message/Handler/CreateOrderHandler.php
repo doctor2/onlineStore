@@ -2,9 +2,9 @@
 
 namespace App\Domain\Order\Message\Handler;
 
-use App\Entity\CartItem;
-use App\Entity\Order;
-use App\Entity\OrderItem;
+use App\Domain\Cart\Entity\CartItem;
+use App\Domain\Order\Entity\Order;
+use App\Domain\Order\Entity\OrderItem;
 use App\Domain\Order\Message\CreateOrderMessage;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;

@@ -2,8 +2,8 @@
 
 namespace App\Domain\Product\Service;
 
-use App\Entity\Product;
-use App\Repository\CategoryRepository;
+use App\Domain\Product\Entity\Product;
+use App\Domain\Product\Repository\CategoryRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;

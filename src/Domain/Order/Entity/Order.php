@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Entity;
+namespace App\Domain\Order\Entity;
 
-use App\Entity\Enum\OrderStatus;
-use App\Repository\OrderRepository;
+use App\Domain\Order\Entity\Enum\OrderStatus;
+use App\Entity\User;
+use App\Domain\Order\Repository\OrderRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;

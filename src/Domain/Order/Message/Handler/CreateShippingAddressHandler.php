@@ -3,10 +3,10 @@
 
 namespace App\Domain\Order\Message\Handler;
 
-use App\Entity\ShippingAddress;
+use App\Domain\Order\Entity\ShippingAddress;
 use App\Domain\Order\Message\CreateOrderMessage;
 use App\Domain\Order\Message\CreateShippingAddressMessage;
-use App\Repository\ShippingAddressRepository;
+use App\Domain\Order\Repository\ShippingAddressRepository;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\Messenger\MessageBusInterface;
 

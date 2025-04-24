@@ -11,7 +11,7 @@ class CreateCartItemMessage
 {
     private ?User $user;
 
-    #[AppAssert\EntityExists(message:"Товар не найден", entityClass:"\App\Entity\Product")]
+    #[AppAssert\EntityExists(message:"Товар не найден", entityClass:"\App\Domain\Product\Entity\Product")]
     public int $productId;
 
     public function __construct(?User $user, int $productId) {

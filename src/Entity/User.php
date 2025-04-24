@@ -2,6 +2,9 @@
 
 namespace App\Entity;
 
+use App\Domain\Cart\Entity\ShoppingCart;
+use App\Domain\Order\Entity\Order;
+use App\Domain\Order\Entity\ShippingAddress;
 use App\Entity\Enum\UserRole;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;

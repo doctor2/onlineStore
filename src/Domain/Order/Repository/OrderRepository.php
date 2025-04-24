@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Repository;
+namespace App\Domain\Order\Repository;
 
-use App\Entity\Enum\OrderStatus;
-use App\Entity\Order;
+use App\Domain\Order\Entity\Enum\OrderStatus;
+use App\Domain\Order\Entity\Order;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;

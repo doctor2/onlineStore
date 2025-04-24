@@ -3,7 +3,7 @@
 namespace App\EventListener;
 
 use App\Domain\Cart\Service\GetCartService;
-use App\Entity\Product;
+use App\Domain\Product\Entity\Product;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Attribute\AsEntityListener;
 use Doctrine\ORM\Event\PostPersistEventArgs;
@@ -16,12 +16,11 @@ class UserRegisteredListener
 
     public function __construct(private GetCartService $getCartService)
     {
-
     }
+
     public function postPersist(User $user, PostPersistEventArgs $args): void
     {
         $this->saveCartAndCartItems($user, $args->getObjectManager());
-
     }
 
     private function saveCartAndCartItems(User $user, ObjectManager $entityManager): void

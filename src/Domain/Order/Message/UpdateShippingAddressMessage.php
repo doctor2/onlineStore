@@ -2,7 +2,7 @@
 
 namespace App\Domain\Order\Message;
 
-use App\Entity\ShippingAddress;
+use App\Domain\Order\Entity\ShippingAddress;
 use Symfony\Component\Messenger\Attribute\Message;
 
 #[Message]

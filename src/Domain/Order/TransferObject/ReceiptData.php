@@ -24,7 +24,7 @@ class ReceiptData
         $this->taxation = $taxation;
     }
 
-    public function addItem($item)
+    public function addItem(PaidProductData $item)
     {
         $this->items[] = $item;
     }
@@ -35,13 +35,13 @@ class ReceiptData
             'Email' => $this->email,
             'Phone' => $this->phone,
             'Taxation' => $this->taxation,
-            'Items' => array_map(function($item) {
+            'Items' => array_map(static function(PaidProductData $item) {
                 return [
-                    'Name' => $item['Name'],
-                    'Price' => $item['Price'],
-                    'Quantity' => $item['Quantity'],
-                    'Amount' => $item['Amount'],
-                    'Tax' => $item['Tax'],
+                    'Name' => $item->getName(),
+                    'Price' => $item->getPrice(),
+                    'Quantity' => $item->getQuantity(),
+                    'Amount' => $item->getAmount(),
+                    'Tax' => $item->getTax(),
                 ];
             }, $this->items),
         ];

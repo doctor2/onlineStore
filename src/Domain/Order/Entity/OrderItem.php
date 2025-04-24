@@ -1,24 +1,25 @@
 <?php
 
-namespace App\Entity;
+namespace App\Domain\Order\Entity;
 
-use App\Repository\CartItemRepository;
+use App\Domain\Product\Entity\Product;
+use App\Domain\Order\Repository\OrderItemRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: CartItemRepository::class)]
-#[ORM\Table(name: '`cart_items`')]
+#[ORM\Entity(repositoryClass: OrderItemRepository::class)]
+#[ORM\Table(name: '`order_items`')]
 #[ORM\HasLifecycleCallbacks]
-class CartItem
+class OrderItem
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(inversedBy: 'cartItems')]
+    #[ORM\ManyToOne(inversedBy: 'orderItems')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?ShoppingCart $cart = null;
+    private ?Order $order = null;
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
@@ -27,25 +28,25 @@ class CartItem
     #[ORM\Column]
     private ?int $quantity = null;
 
-    #[ORM\Column]
-    private ?\DateTimeImmutable $createdAt = null;
-
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2)]
     private ?string $price = null;
+
+    #[ORM\Column]
+    private ?\DateTimeImmutable $createdAt = null;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getCart(): ?ShoppingCart
+    public function getOrder(): ?Order
     {
-        return $this->cart;
+        return $this->order;
     }
 
-    public function setCart(?ShoppingCart $cart): static
+    public function setOrder(?Order $order): static
     {
-        $this->cart = $cart;
+        $this->order = $order;
 
         return $this;
     }
@@ -74,6 +75,23 @@ class CartItem
         return $this;
     }
 
+    public function getPrice(): ?string
+    {
+        return $this->price;
+    }
+
+    public function getPriceInPennies(): int
+    {
+        return $this->price * 100;
+    }
+
+    public function setPrice(string $price): static
+    {
+        $this->price = $price;
+
+        return $this;
+    }
+
     #[ORM\PrePersist]
     public function onPrePersist(): void
     {
@@ -83,17 +101,5 @@ class CartItem
     public function getCreatedAt(): ?\DateTimeImmutable
     {
         return $this->createdAt;
-    }
-
-    public function getPrice(): ?string
-    {
-        return $this->price;
-    }
-
-    public function setPrice(string $price): static
-    {
-        $this->price = $price;
-
-        return $this;
     }
 }

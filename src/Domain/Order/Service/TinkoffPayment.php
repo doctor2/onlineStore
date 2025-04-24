@@ -2,10 +2,10 @@
 
 namespace App\Domain\Order\Service;
 
+use App\Domain\Order\TransferObject\PaidProductData;
 use App\Domain\Order\TransferObject\PaymentRequest;
 use App\Domain\Order\TransferObject\PaymentResponse;
-use App\Entity\Order;
-use App\Entity\OrderItem;
+use App\Domain\Order\Entity\Order;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 
@@ -30,23 +30,20 @@ class TinkoffPayment
 
         $paymentRequest->setCustomerData($order->getUser()->getEmail(), null);
 
-        $items = [];
-
-        /** @var OrderItem $item */
-        foreach ($order->getOrderItems() as $item) {
-            /** @todo рефакторить  */
-            $items[] = [
-                "Name" => $item->getProduct()->getName(),
-                "Price" => $item->getPriceInPennies(),
-                "Quantity" => $item->getQuantity(),
-                "Amount" => $item->getPriceInPennies() * $item->getQuantity(),
-                "Tax" => self::TAX,
-            ];
-        }
-
-        $paymentRequest->setReceiptData($this->merchantEmail, $this->merchantPhone, self::TAXATION, $items);
+        $paymentRequest->setReceiptData($this->merchantEmail, $this->merchantPhone, self::TAXATION, $this->getPaidProductsData($order));
 
         return $paymentRequest;
+    }
+
+    private function getPaidProductsData(Order $order): array
+    {
+        $items = [];
+
+        foreach ($order->getOrderItems() as $item) {
+            $items[] = new PaidProductData($item, self::TAX);
+        }
+
+        return $items;
     }
 
     private function sendPaymentRequest(PaymentRequest $paymentRequest): PaymentResponse

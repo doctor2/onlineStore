@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Entity;
+namespace App\Domain\Order\Entity;
 
-use App\Entity\Enum\PaymentStatus;
-use App\Repository\PaymentRepository;
+use App\Domain\Order\Entity\Enum\PaymentStatus;
+use App\Domain\Order\Repository\PaymentRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 

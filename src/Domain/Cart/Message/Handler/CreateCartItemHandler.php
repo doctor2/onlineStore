@@ -4,9 +4,9 @@ namespace App\Domain\Cart\Message\Handler;
 
 use App\Domain\Cart\Message\CreateCartItemMessage;
 use App\Domain\Cart\Service\GetCartService;
-use App\Entity\CartItem;
-use App\Entity\Product;
-use App\Entity\ShoppingCart;
+use App\Domain\Cart\Entity\CartItem;
+use App\Domain\Product\Entity\Product;
+use App\Domain\Cart\Entity\ShoppingCart;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;

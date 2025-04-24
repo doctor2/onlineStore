@@ -4,7 +4,7 @@
 namespace App\Domain\Order\Message\Handler;
 
 use App\Domain\Order\Message\UpdateShippingAddressMessage;
-use App\Repository\ShippingAddressRepository;
+use App\Domain\Order\Repository\ShippingAddressRepository;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]

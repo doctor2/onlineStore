@@ -2,7 +2,7 @@
 
 namespace App\Domain\Cart\Service;
 
-use App\Entity\ShoppingCart;
+use App\Domain\Cart\Entity\ShoppingCart;
 use App\Entity\User;
 use Symfony\Component\HttpFoundation\RequestStack;
 

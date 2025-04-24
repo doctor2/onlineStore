@@ -2,8 +2,8 @@
 
 namespace App\Domain\Order\Message;
 
-use App\Entity\Enum\OrderStatus;
-use App\Entity\ShippingAddress;
+use App\Domain\Order\Entity\Enum\OrderStatus;
+use App\Domain\Order\Entity\ShippingAddress;
 use App\Entity\User;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Messenger\Attribute\Message;
