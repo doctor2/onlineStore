@@ -10,15 +10,19 @@
         {% endfor %}
     </ul>
 
-    {% if isPendingOrder %}
-        <a href="{{ path('order_edit_shipping_address') }}">Ожидает оплаты</a>
-    {% elseif totalAmount %}
+    {% if totalAmount %}
         <h2>Оформить заказ</h2>
 
         <h2>Итого: {{ totalAmount }} ₽</h2>
         <a href="{{ path('order_shipping_address') }}">Оформить заказ</a>
     {% else %}
         <h3>Пусто</h3>
+    {% endif %}
+
+    {% if pendingOrders is not empty %}
+        {% for order in pendingOrders %}
+            <a href="{{ path('order_edit_shipping_address', {'id': order.id}) }}">Ожидает оплаты</a>
+        {% endfor %}
     {% endif %}
 {% endblock %}
 

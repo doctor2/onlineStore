@@ -18,7 +18,7 @@ class OrderRepository extends ServiceEntityRepository
         parent::__construct($registry, Order::class);
     }
 
-    public function findPendingOrderByUser(User $user): ?Order
+    public function findPendingOrdersByUser(User $user): array
     {
         return $this->createQueryBuilder('o')
             ->andWhere('o.user = :user')
@@ -26,7 +26,7 @@ class OrderRepository extends ServiceEntityRepository
             ->setParameter('user', $user)
             ->setParameter('status', OrderStatus::PENDING)
             ->getQuery()
-            ->getOneOrNullResult()
+            ->getResult()
             ;
     }
 

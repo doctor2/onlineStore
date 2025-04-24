@@ -19,13 +19,13 @@ class CartController extends AbstractController
         $cart = $getCartService->getCart($this->getUser());
 
         if ($this->getUser()) {
-            $pendingOrder = $orderRepository->findPendingOrderByUser($this->getUser());
+            $pendingOrders = $orderRepository->findPendingOrdersByUser($this->getUser());
         }
 
         return $this->render('cart/index.html.twig', [
             'cart' => $cart,
             'totalAmount' => $cart->getTotalAmount(),
-            'isPendingOrder' => (bool) ($pendingOrder ?? false),
+            'pendingOrders' => $pendingOrders ?? [],
         ]);
     }
 

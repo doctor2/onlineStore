@@ -3,6 +3,9 @@
 namespace App\Controller;
 
 
+use App\Domain\Cart\Service\GetCartService;
+use App\Domain\Order\Entity\Order;
+use App\Domain\Order\Message\CreateOrderMessage;
 use App\Domain\Order\Message\CreateShippingAddressMessage;
 use App\Domain\Order\Message\UpdateShippingAddressMessage;
 use App\Domain\Order\Service\TinkoffPayment;
@@ -13,22 +16,36 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Messenger\MessageBusInterface;
+use Symfony\Component\Messenger\Stamp\HandledStamp;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class OrderController extends AbstractController
 {
-    #[Route('/order/shipping-address', name: 'order_shipping_address')]
-    public function createShippingAddress(Request $request, MessageBusInterface $bus): Response
+    #[Route('/order/new/shipping-address', name: 'order_shipping_address')]
+    public function createShippingAddress(Request $request, MessageBusInterface $bus, GetCartService $getCartService, AuthorizationCheckerInterface $authChecker): Response
     {
+        if (!$authChecker->isGranted('NEW_ORDER')) {
+            return $this->redirectToRoute('cart');
+        }
+
         $createAddressMessage = new CreateShippingAddressMessage($this->getUser());
         $form = $this->createForm(ShippingAddressType::class, $createAddressMessage);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $bus->dispatch($createAddressMessage);
+            $envelope = $bus->dispatch($createAddressMessage);
 
-            return $this->redirectToRoute('order_payment');
+            $handledStamp = $envelope->last(HandledStamp::class);
+            $shippingAddress = $handledStamp->getResult();
+
+            $envelope = $bus->dispatch(new CreateOrderMessage($shippingAddress, $getCartService->getCart($this->getUser())));
+
+            $handledStamp = $envelope->last(HandledStamp::class);
+            $pendingOrder = $handledStamp->getResult();
+
+            return $this->redirectToRoute('order_payment', ['id' => $pendingOrder->getId()]);
         }
 
         return $this->render('order/shipping_address/create.html.twig', [
@@ -36,10 +53,12 @@ class OrderController extends AbstractController
         ]);
     }
 
-    #[Route('/order/shipping-address/edit', name: 'order_edit_shipping_address')]
-    public function editShippingAddress(Request $request, MessageBusInterface $bus, OrderRepository $orderRepository): Response
+    #[Route('/order/{id}/shipping-address/edit', name: 'order_edit_shipping_address')]
+    public function editShippingAddress(Order $pendingOrder, Request $request, MessageBusInterface $bus, AuthorizationCheckerInterface $authChecker): Response
     {
-        $pendingOrder = $orderRepository->findPendingOrderByUser($this->getUser());
+        if (!$authChecker->isGranted('EDIT_ORDER', $pendingOrder)) {
+            return $this->redirectToRoute('cart');
+        }
 
         $updateAddressMessage = new UpdateShippingAddressMessage($pendingOrder->getShippingAddress());
         $form = $this->createForm(ShippingAddressType::class, $updateAddressMessage);
@@ -49,7 +68,7 @@ class OrderController extends AbstractController
             $bus->dispatch($updateAddressMessage);
 
             $this->addFlash('success', 'Адрес доставки успешно сохранен.');
-            return $this->redirectToRoute('order_payment');
+            return $this->redirectToRoute('order_payment', ['id' => $pendingOrder->getId()]);
         }
 
         return $this->render('order/shipping_address/edit.html.twig', [
@@ -57,10 +76,13 @@ class OrderController extends AbstractController
         ]);
     }
 
-    #[Route('/order/payment', name: 'order_payment')]
-    public function payment(Request $request, TinkoffPayment $tinkoffPayment, OrderRepository $orderRepository): Response
+    #[Route('/order/{id}/payment', name: 'order_payment')]
+    public function payment(Order $pendingOrder, Request $request, TinkoffPayment $tinkoffPayment, OrderRepository $orderRepository, AuthorizationCheckerInterface $authChecker): Response
     {
-        $pendingOrder = $orderRepository->findPendingOrderByUser($this->getUser());
+        if (!$authChecker->isGranted('EDIT_ORDER', $pendingOrder)) {
+            return $this->redirectToRoute('cart');
+        }
+
         $form = $this->createForm(OrderType::class, $pendingOrder);
 
         $form->handleRequest($request);

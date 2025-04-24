@@ -16,7 +16,7 @@ class CreateOrderHandler
     {
     }
 
-    public function __invoke(CreateOrderMessage $message): void
+    public function __invoke(CreateOrderMessage $message): Order
     {
         $order = new Order();
         $order
@@ -30,6 +30,8 @@ class CreateOrderHandler
 
         $this->entityManager->persist($order);
         $this->entityManager->flush();
+
+        return $order;
     }
 
     private function persistOrderItems(CreateOrderMessage $message, Order $order): void

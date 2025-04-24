@@ -2,16 +2,15 @@
 
 namespace App\Domain\Order\Message;
 
+use App\Domain\Cart\Entity\ShoppingCart;
 use App\Domain\Order\Entity\Enum\OrderStatus;
 use App\Domain\Order\Entity\ShippingAddress;
 use App\Entity\User;
-use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Messenger\Attribute\Message;
 
 #[Message]
 class CreateOrderMessage
 {
-    #[Assert\NotBlank()]
     private float $totalAmount;
 
     private User $user;
@@ -22,9 +21,9 @@ class CreateOrderMessage
 
     private string $paymentMethod;
 
-    public function __construct(User $user, ShippingAddress $shippingAddress, float $totalAmount) {
-        $this->user = $user;
-        $this->totalAmount = $totalAmount;
+    public function __construct(ShippingAddress $shippingAddress, ShoppingCart $cart) {
+        $this->user = $shippingAddress->getUser();
+        $this->totalAmount = $cart->getTotalAmount();
         $this->status = OrderStatus::PENDING;
         $this->shippingAddress = $shippingAddress;
         $this->paymentMethod = '';

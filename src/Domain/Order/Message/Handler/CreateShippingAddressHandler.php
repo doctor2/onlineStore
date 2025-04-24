@@ -4,20 +4,18 @@
 namespace App\Domain\Order\Message\Handler;
 
 use App\Domain\Order\Entity\ShippingAddress;
-use App\Domain\Order\Message\CreateOrderMessage;
 use App\Domain\Order\Message\CreateShippingAddressMessage;
 use App\Domain\Order\Repository\ShippingAddressRepository;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
-use Symfony\Component\Messenger\MessageBusInterface;
 
 #[AsMessageHandler]
 class CreateShippingAddressHandler
 {
-    public function __construct(private ShippingAddressRepository $shippingAddressRepository, private MessageBusInterface $bus)
+    public function __construct(private ShippingAddressRepository $shippingAddressRepository)
     {
     }
 
-    public function __invoke(CreateShippingAddressMessage $message): void
+    public function __invoke(CreateShippingAddressMessage $message): ShippingAddress
     {
         $user = $message->getUser();
 
@@ -31,6 +29,6 @@ class CreateShippingAddressHandler
 
         $this->shippingAddressRepository->save($shippingAddress);
 
-        $this->bus->dispatch(new CreateOrderMessage($user, $shippingAddress, $user->getShoppingCart()->getTotalAmount()));
+        return $shippingAddress;
     }
 }
