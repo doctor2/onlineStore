@@ -16,11 +16,4 @@ class OrderType extends AbstractType
             ->add('paymentMethod')
             ->add('submit', SubmitType::class, ['label' => 'Оформить заказ']);
     }
-
-    public function configureOptions(OptionsResolver $resolver)
-    {
-        $resolver->setDefaults([
-            'data_class' => Order::class,
-        ]);
-    }
 }

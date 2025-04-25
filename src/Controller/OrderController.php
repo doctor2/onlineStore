@@ -6,19 +6,17 @@ namespace App\Controller;
 use App\Domain\Cart\Service\GetCartService;
 use App\Domain\Order\Entity\Order;
 use App\Domain\Order\Message\CreateOrderMessage;
+use App\Domain\Order\Message\CreatePaymentMessage;
 use App\Domain\Order\Message\CreateShippingAddressMessage;
 use App\Domain\Order\Message\UpdateShippingAddressMessage;
-use App\Domain\Order\Service\TinkoffPayment;
 use App\Domain\Order\Form\OrderType;
 use App\Domain\Order\Form\ShippingAddressType;
-use App\Domain\Order\Repository\OrderRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Messenger\Stamp\HandledStamp;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class OrderController extends AbstractController
@@ -77,23 +75,21 @@ class OrderController extends AbstractController
     }
 
     #[Route('/order/{id}/payment', name: 'order_payment')]
-    public function payment(?Order $pendingOrder, Request $request, TinkoffPayment $tinkoffPayment, OrderRepository $orderRepository, AuthorizationCheckerInterface $authChecker): Response
+    public function payment(?Order $pendingOrder, Request $request, MessageBusInterface $bus, AuthorizationCheckerInterface $authChecker): Response
     {
         if (!$authChecker->isGranted('EDIT_ORDER', $pendingOrder)) {
             return $this->redirectToRoute('cart');
         }
 
-        $form = $this->createForm(OrderType::class, $pendingOrder);
+        $createPaymentMessage = new CreatePaymentMessage($pendingOrder);
+        $form = $this->createForm(OrderType::class, $createPaymentMessage);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $orderRepository->save($pendingOrder);
+            $envelope = $bus->dispatch($createPaymentMessage);
 
-            $paymentResponse = $tinkoffPayment->pay(
-                $pendingOrder,
-                $this->generateUrl('order_success', [], UrlGeneratorInterface::ABSOLUTE_URL),
-                $this->generateUrl('order_failure', [], UrlGeneratorInterface::ABSOLUTE_URL),
-            );
+            $handledStamp = $envelope->last(HandledStamp::class);
+            $paymentResponse = $handledStamp->getResult();
 
             if ($paymentResponse->isSuccess()){
                 return $this->redirect($paymentResponse->getPaymentUrl());
