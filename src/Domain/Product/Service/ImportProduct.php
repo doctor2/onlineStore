@@ -28,6 +28,7 @@ class ImportProduct
 
         $columnNumbersByTitle = $this->getColumnNumbersByTitle($rows);
         $this->assertAllRequiredColumnsArePresent($columnNumbersByTitle);
+        $categoryError = 0;
 
         // Assuming the first row is the header
         foreach ($rows as $key => $row) {
@@ -38,6 +39,8 @@ class ImportProduct
             $category = $this->categoryRepository->findOneByName($row[$columnNumbersByTitle[self::COLUMN_TITLE_CATEGORY]]);
 
             if (is_null($category)) {
+                $categoryError++;
+
                 continue;
             }
 
@@ -52,6 +55,10 @@ class ImportProduct
         }
 
         $this->entityManager->flush();
+
+        if ($categoryError) {
+            throw new BadRequestHttpException(sprintf('Неправильно указана категория %s раз/раза!', $categoryError));
+        }
     }
 
     private function assertAllRequiredColumnsArePresent(array $columnNumbersByTitle): void
@@ -72,7 +79,7 @@ class ImportProduct
             $columns[$columnTitle] = $this->getColumnNumber($columnTitle, $rows);
         }
 
-        return array_filter($columns);
+        return array_filter($columns, [$this, 'isNotNull']);
     }
 
     private function getColumnNumber(string $columnTitle, array $rows): ?int
@@ -87,7 +94,12 @@ class ImportProduct
             }
         }
 
-        return $columnNumber ?: null;
+        return $columnNumber;
+    }
+
+    private function isNotNull ($var): bool
+    {
+        return !is_null($var);
     }
 
     private function getColumnTitles(): array
