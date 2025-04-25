@@ -2,8 +2,8 @@
 
 namespace App\Domain\Cart\Message;
 
+use App\Domain\Product\Entity\Product;
 use App\Entity\User;
-use App\Validator\Constraints\EntityExists as AppAssert;
 use Symfony\Component\Messenger\Attribute\Message;
 
 #[Message]
@@ -11,12 +11,11 @@ class CreateCartItemMessage
 {
     private ?User $user;
 
-    #[AppAssert\EntityExists(message:"Товар не найден", entityClass:"\App\Domain\Product\Entity\Product")]
-    public int $productId;
+    private Product $product;
 
-    public function __construct(?User $user, int $productId) {
+    public function __construct(?User $user, Product $product) {
         $this->user = $user;
-        $this->productId = $productId;
+        $this->product = $product;
     }
 
     public function getUser(): ?User
@@ -24,8 +23,8 @@ class CreateCartItemMessage
         return $this->user;
     }
 
-    public function getProductId(): int
+    public function getProduct(): Product
     {
-        return $this->productId;
+        return $this->product;
     }
 }

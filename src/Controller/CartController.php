@@ -5,7 +5,7 @@ namespace App\Controller;
 use App\Domain\Cart\Message\CreateCartItemMessage;
 use App\Domain\Cart\Service\GetCartService;
 use App\Domain\Order\Repository\OrderRepository;
-use App\Validator\MessageValidator;
+use App\Domain\Product\Entity\Product;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Messenger\MessageBusInterface;
@@ -30,17 +30,15 @@ class CartController extends AbstractController
     }
 
     #[Route('/cart/add-product/{id}', name: 'add_to_cart')]
-    public function addToCart(int $id, MessageBusInterface $bus, MessageValidator $messageValidator): Response
+    public function addToCart(?Product $product, MessageBusInterface $bus): Response
     {
-        $createCartItemMessage = new CreateCartItemMessage($this->getUser(), $id);
-
-        if ($error = $messageValidator->validate($createCartItemMessage)) {
-            $this->addFlash('error', (string) $error);
+        if (!$product) {
+            $this->addFlash('error', 'Товар не найден!');
 
             return $this->redirectToRoute('product_list');
         }
 
-        $bus->dispatch($createCartItemMessage);
+        $bus->dispatch(new CreateCartItemMessage($this->getUser(), $product));
 
         $this->addFlash('success', 'Товар добавлен в корзину!');
 

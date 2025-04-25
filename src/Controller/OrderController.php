@@ -54,7 +54,7 @@ class OrderController extends AbstractController
     }
 
     #[Route('/order/{id}/shipping-address/edit', name: 'order_edit_shipping_address')]
-    public function editShippingAddress(Order $pendingOrder, Request $request, MessageBusInterface $bus, AuthorizationCheckerInterface $authChecker): Response
+    public function editShippingAddress(?Order $pendingOrder, Request $request, MessageBusInterface $bus, AuthorizationCheckerInterface $authChecker): Response
     {
         if (!$authChecker->isGranted('EDIT_ORDER', $pendingOrder)) {
             return $this->redirectToRoute('cart');
@@ -77,7 +77,7 @@ class OrderController extends AbstractController
     }
 
     #[Route('/order/{id}/payment', name: 'order_payment')]
-    public function payment(Order $pendingOrder, Request $request, TinkoffPayment $tinkoffPayment, OrderRepository $orderRepository, AuthorizationCheckerInterface $authChecker): Response
+    public function payment(?Order $pendingOrder, Request $request, TinkoffPayment $tinkoffPayment, OrderRepository $orderRepository, AuthorizationCheckerInterface $authChecker): Response
     {
         if (!$authChecker->isGranted('EDIT_ORDER', $pendingOrder)) {
             return $this->redirectToRoute('cart');

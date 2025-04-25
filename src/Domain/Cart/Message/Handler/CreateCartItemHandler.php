@@ -7,6 +7,7 @@ use App\Domain\Cart\Service\GetCartService;
 use App\Domain\Cart\Entity\CartItem;
 use App\Domain\Product\Entity\Product;
 use App\Domain\Cart\Entity\ShoppingCart;
+use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
@@ -20,14 +21,12 @@ class CreateCartItemHandler
 
     public function __invoke(CreateCartItemMessage $message): void
     {
-        $product = $this->entityManager->getRepository(Product::class)->find($message->getProductId());
-
         $cart = $this->getCartService->getCart($message->getUser());
 
-        $this->saveCartItem($cart, $product, $message);
+        $this->saveCartItem($cart, $message->getProduct(), $message->getUser());
     }
 
-    private function saveCartItem(ShoppingCart $cart, Product $product, CreateCartItemMessage $message): void
+    private function saveCartItem(ShoppingCart $cart, Product $product, ?User $user): void
     {
         $cartItem = null;
         foreach ($cart->getCartItems() as $item) {
@@ -48,7 +47,7 @@ class CreateCartItemHandler
             $cart->addCartItem($cartItem);
         }
 
-        if ($message->getUser()) {
+        if ($user) {
             $this->entityManager->persist($cartItem);
             $this->entityManager->flush();
         } else {

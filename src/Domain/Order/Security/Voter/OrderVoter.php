@@ -43,8 +43,8 @@ class OrderVoter extends Voter
         return $cart->getTotalAmount() > 0;
     }
 
-    private function canEditOrder(User $user, Order $order): bool
+    private function canEditOrder(User $user, ?Order $order): bool
     {
-        return $order->getUser() === $user && $order->getStatus() === OrderStatus::PENDING;
+        return $order && $order->getUser() === $user && $order->getStatus() === OrderStatus::PENDING;
     }
 }
