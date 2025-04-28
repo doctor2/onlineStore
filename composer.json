@@ -7,16 +7,16 @@
         "php": ">=8.2",
         "ext-ctype": "*",
         "ext-iconv": "*",
-        "doctrine/dbal": "^3",
+        "doctrine/dbal": "^3.9.4",
         "doctrine/doctrine-bundle": "^2.14",
-        "doctrine/doctrine-migrations-bundle": "^3.4",
-        "doctrine/orm": "^3.3",
-        "easycorp/easyadmin-bundle": "^4.24",
-        "guzzlehttp/guzzle": "^7.9",
+        "doctrine/doctrine-migrations-bundle": "^3.4.1",
+        "doctrine/orm": "^3.3.2",
+        "easycorp/easyadmin-bundle": "^4.24.6",
+        "guzzlehttp/guzzle": "^7.9.3",
         "phpoffice/phpspreadsheet": "^4.2",
         "symfony/console": "7.2.*",
         "symfony/dotenv": "7.2.*",
-        "symfony/flex": "^2",
+        "symfony/flex": "^2.5",
         "symfony/framework-bundle": "7.2.*",
         "symfony/messenger": "7.2.*",
         "symfony/runtime": "7.2.*",
@@ -74,7 +74,11 @@
         }
     },
     "require-dev": {
-        "phpunit/phpunit": "^12.1",
-        "symfony/maker-bundle": "^1.62"
+        "codeception/codeception": ">=5.2.1",
+        "doctrine/doctrine-fixtures-bundle": "^4.1",
+        "phpunit/phpunit": "^12.1.3",
+        "symfony/maker-bundle": "^1.62.1",
+        "codeception/module-phpbrowser": ">=3.0.1",
+        "codeception/module-asserts": ">=3.1"
     }
 }

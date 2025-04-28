@@ -1,0 +1,19 @@
+<?php
+
+namespace App\Tests\DataFixtures\Helper;
+
+use App\Entity\User;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+
+class DefaultUserPasswordGenerator
+{
+    public const DEFAULT_USER_PASSWORD = '123456';
+
+    public function __construct(private UserPasswordHasherInterface $userPasswordHasher)
+    {}
+
+    public function generate(User$user): string
+    {
+        return $this->userPasswordHasher->hashPassword($user, self::DEFAULT_USER_PASSWORD);
+    }
+}
