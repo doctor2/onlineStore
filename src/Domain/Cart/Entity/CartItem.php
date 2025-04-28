@@ -3,7 +3,7 @@
 namespace App\Domain\Cart\Entity;
 
 use App\Domain\Product\Entity\Product;
-use App\Repository\CartItemRepository;
+use App\Domain\Cart\Repository\CartItemRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
