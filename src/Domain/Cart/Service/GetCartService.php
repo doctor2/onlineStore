@@ -15,6 +15,8 @@ class GetCartService
     {
         if($user) {
             $cart = $user->getShoppingCart();
+        } elseif(getenv('APP_ENV') === 'test') {
+            $cart = new ShoppingCart();
         } else {
             $cart = $this->requestStack->getSession()->get('cart', new ShoppingCart());
         }

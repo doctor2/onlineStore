@@ -1,0 +1,17 @@
+# This file is the entry point to configure your own services.
+# Files in the packages/ subdirectory configure your dependencies.
+
+# Put parameters here that don't need to change on each machine where the app is deployed
+# https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
+parameters:
+
+services:
+    App\Tests\DataFixtures\ORM\:
+        resource: '../tests/DataFixtures/ORM'
+        tags: [ 'doctrine.fixture.orm' ]
+        autowire: true
+        public: true
+    App\Tests\DataFixtures\Helper\:
+        resource: '../tests/DataFixtures/Helper'
+        autowire: true
+        public: true

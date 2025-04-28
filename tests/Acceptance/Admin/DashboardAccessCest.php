@@ -15,27 +15,17 @@ class DashboardAccessCest
 
     public function testAccessForAdmin(AcceptanceTester $I): void
     {
-        $I->amOnPage('/login');
-        $I->fillField('Email', 'email');
-        $I->fillField('Password', '123456');
-        $I->click('Sign in');
+        $I->authAs($I->findAdmin());
 
         $I->amOnPage('/admin');
         $I->see('Admin Dashboard');
     }
 
-//    public function denyAccess(Tester $I): void
-//    {
-//        $testClosure = function (Tester $I) {
-//            $I->dontSee('Административный раздел', 'h1');
-//            $I->see('страница не найдена');
-//        };
-//
-//        $accessCheckPages = new AccessCheckPages($I, $this->pages, AccessCheckPages::STRATEGY_NOT_FOUND);
-//        $accessCheckPages
-//            ->addTest($I->findNotBannedUser(), $testClosure, $accessCheckPages->getLoginClosure(), $accessCheckPages->getLogoutClosure())
-//            ->addTest($I->getAnonymousUser());
-//
-//        $accessCheckPages->assert();
-//    }
+    public function testDenyAccessForCustomer(AcceptanceTester $I): void
+    {
+        $I->authAs($I->findCustomer());
+
+        $I->amOnPage('/admin');
+        $I->seeInCurrentUrl('/login');
+    }
 }

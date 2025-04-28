@@ -12,7 +12,7 @@ class DefaultUserPasswordGenerator
     public function __construct(private UserPasswordHasherInterface $userPasswordHasher)
     {}
 
-    public function generate(User$user): string
+    public function generate(User $user): string
     {
         return $this->userPasswordHasher->hashPassword($user, self::DEFAULT_USER_PASSWORD);
     }
