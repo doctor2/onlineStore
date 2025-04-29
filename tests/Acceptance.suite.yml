@@ -11,6 +11,8 @@ modules:
         - PhpBrowser:
             url: http://localhost:8000
         - \App\Tests\Support\Repository\UserRepository
+        - \App\Tests\Support\Repository\ProductRepository
+        - \App\Tests\Support\Repository\CartRepository
         - Db:
               dsn: 'mysql:host=%DB_HOST%;dbname=%DB_NAME%;charset=utf8;port=%DB_PORT%;'
               user: '%DB_USERNAME%'
