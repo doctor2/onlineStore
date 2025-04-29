@@ -2,6 +2,7 @@
 
 namespace App\Tests\Support\Repository;
 
+use App\Entity\Enum\UserRole;
 use Codeception\Exception\ModuleException;
 use Codeception\Module;
 use PDO;
@@ -26,12 +27,17 @@ class UserRepository extends Module
 
     public function findAdmin(): User
     {
-        return $this->findUserByRole('ROLE_ADMIN');
+        return $this->findUserByRole(UserRole::ADMIN->toString());
     }
 
     public function findCustomer(): User
     {
-        return $this->findUserByRole('ROLE_CUSTOMER');
+        return $this->findUserByRole(UserRole::CUSTOMER->toString());
+    }
+
+    public function findUser(): User
+    {
+        return $this->findUserByRole(UserRole::USER->toString());
     }
 
     private function findUserByRole(string $role): User

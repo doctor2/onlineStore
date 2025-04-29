@@ -6,12 +6,14 @@
 parameters:
 
 services:
+    _defaults:
+        public: false
+        autowire: true
+        autoconfigure: true
     App\Tests\Support\Data\:
         resource: '../tests/Support/Data'
         tags: [ 'doctrine.fixture.orm' ]
-        autowire: true
-        public: true
     App\Tests\Support\Helper\:
         resource: '../tests/Support/Helper'
-        autowire: true
-        public: true
+    App\Tests\Factory\:
+        resource: '../tests/Factory'

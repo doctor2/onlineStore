@@ -80,6 +80,7 @@
         "codeception/module-phpbrowser": ">=3.0.1",
         "doctrine/doctrine-fixtures-bundle": "^4.1",
         "phpunit/phpunit": "^11.5",
-        "symfony/maker-bundle": "^1.62.1"
+        "symfony/maker-bundle": "^1.62.1",
+        "zenstruck/foundry": "*"
     }
 }

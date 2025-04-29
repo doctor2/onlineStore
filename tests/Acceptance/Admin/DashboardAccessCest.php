@@ -26,6 +26,7 @@ class DashboardAccessCest
         $I->authAs($I->findCustomer());
 
         $I->amOnPage('/admin');
-        $I->seeInCurrentUrl('/login');
+        $I->see('Access Denied.');
+        $I->seeResponseCodeIs(403);
     }
 }
