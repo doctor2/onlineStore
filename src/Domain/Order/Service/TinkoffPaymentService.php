@@ -9,7 +9,7 @@ use App\Domain\Order\Entity\Order;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 
-class TinkoffPayment
+class TinkoffPaymentService
 {
     public const TAX = 'vat10';
     public const TAXATION = 'osn';

@@ -8,7 +8,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
-class ImportProduct
+class ImportProductService
 {
     private const COLUMN_TITLE_NAME = 'Название товара';
     private const COLUMN_TITLE_DESCRIPTION = 'Описание';

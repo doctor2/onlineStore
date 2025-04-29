@@ -5,7 +5,7 @@ namespace App\Tests\Unit\Domain\Product\Service;
 
 use App\Domain\Product\Entity\Category;
 use App\Domain\Product\Repository\CategoryRepository;
-use App\Domain\Product\Service\ImportProduct;
+use App\Domain\Product\Service\ImportProductService;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\ORMException;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
@@ -13,17 +13,17 @@ use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
-class ImportProductTest extends TestCase
+class ImportProductServiceTest extends TestCase
 {
     private EntityManagerInterface $entityManager;
     private CategoryRepository $categoryRepository;
-    private ImportProduct $importProduct;
+    private ImportProductService $importProductService;
 
     protected function setUp(): void
     {
         $this->entityManager = $this->createMock(EntityManagerInterface::class);
         $this->categoryRepository = $this->createMock(CategoryRepository::class);
-        $this->importProduct = new ImportProduct($this->entityManager, $this->categoryRepository);
+        $this->importProductService = new ImportProductService($this->entityManager, $this->categoryRepository);
     }
 
     public function testImportSuccess(): void
@@ -40,7 +40,7 @@ class ImportProductTest extends TestCase
         $this->entityManager->expects($this->exactly(2))->method('persist');
         $this->entityManager->expects($this->once())->method('flush');
 
-        $this->importProduct->import($filePath);
+        $this->importProductService->import($filePath);
     }
 
     public function testImportMissingRequiredColumns(): void
@@ -52,7 +52,7 @@ class ImportProductTest extends TestCase
             ['Product 2', 'Description 2'],
         ]);
 
-        $this->importProduct->import($filePath);
+        $this->importProductService->import($filePath);
     }
 
     public function testImportWithNonexistentCategory(): void
@@ -68,7 +68,7 @@ class ImportProductTest extends TestCase
 
         $this->entityManager->expects($this->never())->method('persist');
 
-        $this->importProduct->import($filePath);
+        $this->importProductService->import($filePath);
     }
 
     private function createSpreadsheet(array $headers, array $data): string

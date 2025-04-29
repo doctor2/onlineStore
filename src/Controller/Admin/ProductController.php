@@ -3,7 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Domain\Product\Form\ProductImportType;
-use App\Domain\Product\Service\ImportProduct;
+use App\Domain\Product\Service\ImportProductService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -12,7 +12,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class ProductController extends AbstractController
 {
     #[Route('/admin/products/import', name:'product_import')]
-    public function import(Request $request, ImportProduct $importProduct): Response
+    public function import(Request $request, ImportProductService $importProductService): Response
     {
         $form = $this->createForm(ProductImportType::class);
         $form->handleRequest($request);
@@ -21,7 +21,7 @@ class ProductController extends AbstractController
             $file = $form->get('file')->getData();
 
             if ($file) {
-                $importProduct->import($file->getPathname());
+                $importProductService->import($file->getPathname());
 
                 $this->addFlash('success', 'Products imported successfully!');
                 return $this->redirectToRoute('admin_product_index');
