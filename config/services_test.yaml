@@ -6,12 +6,12 @@
 parameters:
 
 services:
-    App\Tests\DataFixtures\ORM\:
-        resource: '../tests/DataFixtures/ORM'
+    App\Tests\Support\Data\:
+        resource: '../tests/Support/Data'
         tags: [ 'doctrine.fixture.orm' ]
         autowire: true
         public: true
-    App\Tests\DataFixtures\Helper\:
-        resource: '../tests/DataFixtures/Helper'
+    App\Tests\Support\Helper\:
+        resource: '../tests/Support/Helper'
         autowire: true
         public: true

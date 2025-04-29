@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Support;
 
-use App\Tests\DataFixtures\Helper\DefaultUserPasswordGenerator;
+use App\Tests\Support\Helper\DefaultUserPasswordGenerator;
 use App\Tests\Support\TransferObject\User;
 
 /**

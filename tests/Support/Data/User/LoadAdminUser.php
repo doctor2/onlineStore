@@ -1,16 +1,16 @@
 <?php
 
-namespace App\Tests\DataFixtures\ORM\User;
+namespace App\Tests\Support\Data\User;
 
-use App\Entity\User;
 use App\Entity\Enum\UserRole;
+use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
-use App\Tests\DataFixtures\Helper\DefaultUserPasswordGenerator;
+use App\Tests\Support\Helper\DefaultUserPasswordGenerator;
 
-class LoadCustomerUser extends Fixture
+class LoadAdminUser extends Fixture
 {
-    public const USER_CUSTOMER = 'user-customer';
+    public const USER_ADMIN = 'user-admin';
 
     public function __construct(private DefaultUserPasswordGenerator $defaultUserPasswordGenerator)
     {}
@@ -19,15 +19,15 @@ class LoadCustomerUser extends Fixture
     {
         $admin = new User();
         $admin
-            ->setLastName('Customer')
-            ->setFirstName('Customer')
-            ->setEmail('customer@test.ru')
-            ->setUsername('customer')
+            ->setLastName('admin')
+            ->setFirstName('admin')
+            ->setEmail('admin@test.ru')
+            ->setUsername('admin')
             ->setPassword($this->defaultUserPasswordGenerator->generate($admin))
-            ->setRoles([UserRole::CUSTOMER])
+            ->setRoles([UserRole::ADMIN])
         ;
 
-        $this->addReference(self::USER_CUSTOMER, $admin);
+        $this->addReference(self::USER_ADMIN, $admin);
         $manager->persist($admin);
 
         $manager->flush();
