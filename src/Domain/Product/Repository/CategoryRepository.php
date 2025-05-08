@@ -3,17 +3,14 @@
 namespace App\Domain\Product\Repository;
 
 use App\Domain\Product\Entity\Category;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\ORM\EntityManagerInterface;
+use Gedmo\Tree\Entity\Repository\NestedTreeRepository;
 
-/**
- * @extends ServiceEntityRepository<Category>
- */
-class CategoryRepository extends ServiceEntityRepository
+class CategoryRepository extends NestedTreeRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(EntityManagerInterface $em)
     {
-        parent::__construct($registry, Category::class);
+        parent::__construct($em, $em->getClassMetadata(Category::class));
     }
 
     public function findOneByName($name): ?Category

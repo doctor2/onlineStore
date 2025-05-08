@@ -24,6 +24,11 @@ final class CategoryFactory extends PersistentProxyObjectFactory
         return Category::class;
     }
 
+    public function withParent(Category $parent): self
+    {
+        return $this->with(['parent' => $parent]);
+    }
+
     /**
      * @see https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#model-factories
      *
@@ -34,6 +39,7 @@ final class CategoryFactory extends PersistentProxyObjectFactory
         return [
             'description' => self::faker()->text(),
             'name' => self::faker()->text(50),
+            'slug' => self::faker()->slug()
         ];
     }
 
