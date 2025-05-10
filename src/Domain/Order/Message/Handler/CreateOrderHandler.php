@@ -23,8 +23,7 @@ class CreateOrderHandler
             ->setUser($message->getUser())
             ->setTotalAmount($message->getTotalAmount())
             ->setStatus($message->getStatus())
-            ->setShippingAddress($message->getShippingAddress())
-            ->setPaymentMethod($message->getPaymentMethod());
+            ->setShippingAddress($message->getShippingAddress());
 
         $this->persistOrderItems($message, $order);
 

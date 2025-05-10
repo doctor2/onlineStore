@@ -3,6 +3,7 @@
 namespace App\Domain\Order\Entity;
 
 use App\Domain\Order\Entity\Enum\OrderStatus;
+use App\Domain\Order\Entity\Enum\PaymentMethod;
 use App\Entity\User;
 use App\Domain\Order\Repository\OrderRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -29,8 +30,8 @@ class Order
     #[ORM\Column(enumType: OrderStatus::class)]
     private ?OrderStatus $status = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $paymentMethod = null;
+    #[ORM\Column(enumType: PaymentMethod::class, nullable: true)]
+    private ?PaymentMethod $paymentMethod = null;
 
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
@@ -106,12 +107,12 @@ class Order
         return $this;
     }
 
-    public function getPaymentMethod(): ?string
+    public function getPaymentMethod(): ?PaymentMethod
     {
         return $this->paymentMethod;
     }
 
-    public function setPaymentMethod(string $paymentMethod): static
+    public function setPaymentMethod(PaymentMethod $paymentMethod): static
     {
         $this->paymentMethod = $paymentMethod;
 

@@ -2,6 +2,7 @@
 
 namespace App\Domain\Order\Entity;
 
+use App\Domain\Order\Entity\Enum\PaymentMethod;
 use App\Domain\Order\Entity\Enum\PaymentStatus;
 use App\Domain\Order\Repository\PaymentRepository;
 use Doctrine\DBAL\Types\Types;
@@ -27,14 +28,22 @@ class Payment
     #[ORM\Column(enumType: PaymentStatus::class)]
     private ?PaymentStatus $paymentStatus = null;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $paymentDate = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $paymentMethod = null;
+    #[ORM\Column(enumType: PaymentMethod::class)]
+    private ?PaymentMethod $paymentMethod = null;
 
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
+
+    public function __construct(Order $order, PaymentMethod $paymentMethod)
+    {
+        $this->order = $order;
+        $this->amount = $order->getTotalAmount();
+        $this->paymentStatus = PaymentStatus::PENDING;
+        $this->paymentMethod = $paymentMethod;
+    }
 
     public function getId(): ?int
     {
@@ -46,23 +55,9 @@ class Payment
         return $this->order;
     }
 
-    public function setOrder(?Order $order): static
-    {
-        $this->order = $order;
-
-        return $this;
-    }
-
     public function getAmount(): ?string
     {
         return $this->amount;
-    }
-
-    public function setAmount(string $amount): static
-    {
-        $this->amount = $amount;
-
-        return $this;
     }
 
     public function getPaymentStatus(): ?PaymentStatus
@@ -89,12 +84,12 @@ class Payment
         return $this;
     }
 
-    public function getPaymentMethod(): ?string
+    public function getPaymentMethod(): ?PaymentMethod
     {
         return $this->paymentMethod;
     }
 
-    public function setPaymentMethod(string $paymentMethod): static
+    public function setPaymentMethod(PaymentMethod $paymentMethod): static
     {
         $this->paymentMethod = $paymentMethod;
 

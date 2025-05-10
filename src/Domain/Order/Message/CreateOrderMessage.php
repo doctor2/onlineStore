@@ -19,14 +19,11 @@ class CreateOrderMessage
 
     private OrderStatus $status;
 
-    private string $paymentMethod;
-
     public function __construct(ShippingAddress $shippingAddress, ShoppingCart $cart) {
         $this->user = $shippingAddress->getUser();
         $this->totalAmount = $cart->getTotalAmount();
         $this->status = OrderStatus::PENDING;
         $this->shippingAddress = $shippingAddress;
-        $this->paymentMethod = '';
     }
 
     public function getUser(): User
@@ -47,10 +44,5 @@ class CreateOrderMessage
     public function getStatus(): OrderStatus
     {
         return $this->status;
-    }
-
-    public function getPaymentMethod(): string
-    {
-        return $this->paymentMethod;
     }
 }

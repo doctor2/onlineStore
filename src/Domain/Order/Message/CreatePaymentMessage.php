@@ -2,6 +2,7 @@
 
 namespace App\Domain\Order\Message;
 
+use App\Domain\Order\Entity\Enum\PaymentMethod;
 use App\Domain\Order\Entity\Order;
 use Symfony\Component\Messenger\Attribute\Message;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -10,7 +11,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 class CreatePaymentMessage
 {
     #[Assert\NotBlank()]
-    public string $paymentMethod;
+    public ?PaymentMethod $paymentMethod;
 
     private Order $order;
 
@@ -18,7 +19,7 @@ class CreatePaymentMessage
         $this->order = $order;
     }
 
-    public function getPaymentMethod(): string
+    public function getPaymentMethod(): PaymentMethod
     {
         return $this->paymentMethod;
     }
