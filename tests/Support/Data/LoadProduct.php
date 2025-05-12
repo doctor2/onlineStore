@@ -14,7 +14,7 @@ class LoadProduct extends Fixture
         ProductFactory::createMany(40);
 
         ProductFactory::new([
-            'category' => CategoryFactory::new()->withParent(CategoryFactory::new(['name' => 'Some parent']))
+            'category' => CategoryFactory::new()->withParent(CategoryFactory::new(['name' => 'Some parent'])->create())
         ])->create();
     }
 }
