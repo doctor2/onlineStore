@@ -30,7 +30,7 @@ class Order
     #[ORM\Column(enumType: OrderStatus::class)]
     private ?OrderStatus $status = null;
 
-    #[ORM\Column(enumType: PaymentMethod::class, nullable: true)]
+    #[ORM\Column(enumType: PaymentMethod::class, length: 50, nullable: true)]
     private ?PaymentMethod $paymentMethod = null;
 
     #[ORM\Column]

@@ -5,6 +5,8 @@ namespace App\Domain\Order\Entity;
 use App\Domain\Order\Entity\Enum\PaymentMethod;
 use App\Domain\Order\Entity\Enum\PaymentStatus;
 use App\Domain\Order\Repository\PaymentRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -25,24 +27,35 @@ class Payment
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2)]
     private ?string $amount = null;
 
-    #[ORM\Column(enumType: PaymentStatus::class)]
-    private ?PaymentStatus $paymentStatus = null;
+    #[ORM\Column(enumType: PaymentStatus::class, length: 50)]
+    private ?PaymentStatus $status = null;
 
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $paymentDate = null;
 
-    #[ORM\Column(enumType: PaymentMethod::class)]
+    #[ORM\Column(enumType: PaymentMethod::class, length: 50)]
     private ?PaymentMethod $paymentMethod = null;
 
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
 
+    #[ORM\Column]
+    private ?\DateTimeImmutable $updatedAt = null;
+
+    /**
+     * @var Collection<int, Transaction>
+     */
+    #[ORM\OneToMany(targetEntity: Transaction::class, mappedBy: 'payment')]
+    private Collection $transactions;
+
     public function __construct(Order $order, PaymentMethod $paymentMethod)
     {
         $this->order = $order;
         $this->amount = $order->getTotalAmount();
-        $this->paymentStatus = PaymentStatus::PENDING;
+        $this->status = PaymentStatus::PENDING;
         $this->paymentMethod = $paymentMethod;
+
+        $this->transactions = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -60,14 +73,14 @@ class Payment
         return $this->amount;
     }
 
-    public function getPaymentStatus(): ?PaymentStatus
+    public function getStatus(): ?PaymentStatus
     {
-        return $this->paymentStatus;
+        return $this->status;
     }
 
-    public function setPaymentStatus(PaymentStatus $paymentStatus): static
+    public function setStatus(PaymentStatus $status): static
     {
-        $this->paymentStatus = $paymentStatus;
+        $this->status = $status;
 
         return $this;
     }
@@ -96,14 +109,56 @@ class Payment
         return $this;
     }
 
+    #[ORM\PrePersist]
+    public function onPrePersist(): void
+    {
+        $this->createdAt = new \DateTimeImmutable();
+        $this->updatedAt = new \DateTimeImmutable();
+    }
+
+    #[ORM\PreUpdate]
+    public function onPreUpdate(): void
+    {
+        $this->updatedAt = new \DateTimeImmutable();
+    }
+
     public function getCreatedAt(): ?\DateTimeImmutable
     {
         return $this->createdAt;
     }
 
-    #[ORM\PrePersist]
-    public function onPrePersist(): void
+    public function getUpdatedAt(): ?\DateTimeImmutable
     {
-        $this->createdAt = new \DateTimeImmutable();
+        return $this->updatedAt;
+    }
+
+    /**
+     * @return Collection<int, Transaction>
+     */
+    public function getTransactions(): Collection
+    {
+        return $this->transactions;
+    }
+
+    public function addTransaction(Transaction $transaction): static
+    {
+        if (!$this->transactions->contains($transaction)) {
+            $this->transactions->add($transaction);
+            $transaction->setOrder($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTransaction(Transaction $transaction): static
+    {
+        if ($this->transactions->removeElement($transaction)) {
+            // set the owning side to null (unless already changed)
+            if ($transaction->getOrder() === $this) {
+                $transaction->setOrder(null);
+            }
+        }
+
+        return $this;
     }
 }
