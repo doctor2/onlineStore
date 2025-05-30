@@ -8,6 +8,7 @@ use App\Domain\Order\TransferObject\PaymentResponse;
 use App\Domain\Order\Entity\Order;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
+use Symfony\Component\Serializer\SerializerInterface;
 
 class TinkoffPaymentService
 {
@@ -15,7 +16,7 @@ class TinkoffPaymentService
     public const TAXATION = 'osn';
 
     public function __construct(private string $apiUrl, private string $terminalKey, private string $merchantPass,
-                                private string $merchantEmail, private string $merchantPhone)
+                                private string $merchantEmail, private string $merchantPhone, private SerializerInterface $serializer)
     {
     }
 
@@ -55,15 +56,12 @@ class TinkoffPaymentService
                 'json' => $paymentRequest->toArray(),
             ]);
 
-            $responseData = json_decode($response->getBody(), true);
+            $paymentResponse = $this->serializer->deserialize($response->getBody(), PaymentResponse::class,'json');
 
-            $paymentResponse = new PaymentResponse(
-                $responseData['Success'],
-                'Ошибка с кодом ' . $responseData['ErrorCode'],
-                $responseData['PaymentURL']
-            );
         } catch (GuzzleException $e) {
-            $paymentResponse = new PaymentResponse(false, 'Ошибка при отправке запроса: ' . $e->getMessage());
+            $paymentResponse = new PaymentResponse();
+            $paymentResponse->Success = false;
+            $paymentResponse->errorMessage = 'Ошибка при отправке запроса: ' . $e->getMessage();
         }
 
         return $paymentResponse;

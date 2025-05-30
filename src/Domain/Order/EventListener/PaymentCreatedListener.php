@@ -23,7 +23,7 @@ class PaymentCreatedListener
         $order = $payment->getOrder();
         $order->setPaymentMethod($payment->getPaymentMethod());
 
-        if ($payment->getPaymentStatus() !== PaymentStatus::FAILED) {
+        if ($payment->getStatus() !== PaymentStatus::FAILED) {
             $order->setStatus(OrderStatus::PAID);
         }
 

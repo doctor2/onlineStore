@@ -35,7 +35,7 @@ class CreatePaymentHandler
         $payment = new Payment($message->getOrder(), $message->getPaymentMethod());
 
         if (!$paymentResponse->isSuccess()) {
-            $payment->setPaymentStatus(PaymentStatus::FAILED);
+            $payment->setStatus(PaymentStatus::FAILED);
         }
 
         $this->paymentRepository->save($payment);
