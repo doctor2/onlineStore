@@ -26,7 +26,7 @@ class TinkoffPaymentService
 
     private function getPaymentRequest(Order $order, string $successUrl, string $failureUrl): PaymentRequest
     {
-        $paymentRequest = new PaymentRequest($this->terminalKey, $this->merchantPass, $order->getTotalAmountInPennies(), $order->getId(), $successUrl, $failureUrl);
+        $paymentRequest = new PaymentRequest($this->terminalKey, $this->merchantPass, $order->getTotalAmount(), $order->getId(), $successUrl, $failureUrl);
 
         $paymentRequest->setCustomerData($order->getUser()->getEmail(), null);
 

@@ -22,8 +22,8 @@ class Product
     #[ORM\Column(type: Types::TEXT)]
     private ?string $description = null;
 
-    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2)]
-    private ?string $price = null;
+    #[ORM\Column(type: 'integer')]
+    private ?int $price = null;
 
     #[ORM\Column]
     private ?int $stockQuantity = null;
@@ -67,12 +67,12 @@ class Product
         return $this;
     }
 
-    public function getPrice(): ?string
+    public function getPrice(): ?int
     {
         return $this->price;
     }
 
-    public function setPrice(string $price): static
+    public function setPrice(int $price): static
     {
         $this->price = $price;
 

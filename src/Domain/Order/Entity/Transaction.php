@@ -22,8 +22,8 @@ class Transaction
     #[ORM\JoinColumn(nullable: false)]
     private ?Payment $payment = null;
 
-    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2)]
-    private ?string $amount = null;
+    #[ORM\Column(type: 'integer')]
+    private ?int $amount = null;
 
     #[ORM\Column(enumType: TransactionStatus::class, length: 50)]
     private ?string $status = null;
@@ -60,12 +60,12 @@ class Transaction
         return $this;
     }
 
-    public function getAmount(): ?string
+    public function getAmount(): ?int
     {
         return $this->amount;
     }
 
-    public function setAmount(string $amount): static
+    public function setAmount(int $amount): static
     {
         $this->amount = $amount;
 

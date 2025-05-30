@@ -33,7 +33,7 @@ final class PaymentFactory extends PersistentProxyObjectFactory
     protected function defaults(): array|callable
     {
         return [
-            'amount' => self::faker()->randomFloat(),
+            'amount' => self::faker()->randomNumber(6),
             'order' => OrderFactory::new(),
             'paymentDate' => \DateTimeImmutable::createFromMutable(self::faker()->dateTime()),
             'paymentMethod' => self::faker()->text(255),

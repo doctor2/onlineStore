@@ -28,8 +28,8 @@ class OrderItem
     #[ORM\Column]
     private ?int $quantity = null;
 
-    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2)]
-    private ?string $price = null;
+    #[ORM\Column(type: 'integer')]
+    private ?int $price = null;
 
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
@@ -75,17 +75,12 @@ class OrderItem
         return $this;
     }
 
-    public function getPrice(): ?string
+    public function getPrice(): ?int
     {
         return $this->price;
     }
 
-    public function getPriceInPennies(): int
-    {
-        return $this->price * 100;
-    }
-
-    public function setPrice(string $price): static
+    public function setPrice(int $price): static
     {
         $this->price = $price;
 

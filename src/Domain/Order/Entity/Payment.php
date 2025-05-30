@@ -24,8 +24,8 @@ class Payment
     #[ORM\JoinColumn(nullable: false)]
     private ?Order $order = null;
 
-    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2)]
-    private ?string $amount = null;
+    #[ORM\Column(type: 'integer')]
+    private ?int $amount = null;
 
     #[ORM\Column(enumType: PaymentStatus::class, length: 50)]
     private ?PaymentStatus $status = null;
@@ -68,7 +68,7 @@ class Payment
         return $this->order;
     }
 
-    public function getAmount(): ?string
+    public function getAmount(): ?int
     {
         return $this->amount;
     }

@@ -11,7 +11,7 @@ use Symfony\Component\Messenger\Attribute\Message;
 #[Message]
 class CreateOrderMessage
 {
-    private float $totalAmount;
+    private int $totalAmount;
 
     private User $user;
 
@@ -36,7 +36,7 @@ class CreateOrderMessage
         return $this->shippingAddress;
     }
 
-    public function getTotalAmount(): float
+    public function getTotalAmount(): int
     {
         return $this->totalAmount;
     }

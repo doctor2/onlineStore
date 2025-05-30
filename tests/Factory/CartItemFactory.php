@@ -33,7 +33,7 @@ final class CartItemFactory extends PersistentProxyObjectFactory
     {
         return [
             'cart' => ShoppingCartFactory::new(),
-            'price' => self::faker()->randomFloat(),
+            'price' => self::faker()->randomNumber(6),
             'product' => ProductFactory::new(),
             'quantity' => self::faker()->randomNumber(),
         ];

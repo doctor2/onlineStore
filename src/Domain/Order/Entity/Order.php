@@ -24,8 +24,8 @@ class Order
     #[ORM\ManyToOne(inversedBy: 'orders')]
     private ?User $user = null;
 
-    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2)]
-    private ?string $totalAmount = null;
+    #[ORM\Column(type: 'integer')]
+    private ?int $totalAmount = null;
 
     #[ORM\Column(enumType: OrderStatus::class)]
     private ?OrderStatus $status = null;
@@ -78,17 +78,12 @@ class Order
         return $this;
     }
 
-    public function getTotalAmount(): ?string
+    public function getTotalAmount(): ?int
     {
         return $this->totalAmount;
     }
 
-    public function getTotalAmountInPennies(): int
-    {
-        return $this->totalAmount * 100;
-    }
-
-    public function setTotalAmount(string $totalAmount): static
+    public function setTotalAmount(int $totalAmount): static
     {
         $this->totalAmount = $totalAmount;
 

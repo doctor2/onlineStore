@@ -36,7 +36,7 @@ final class OrderFactory extends PersistentProxyObjectFactory
             'paymentMethod' => self::faker()->text(255),
             'shippingAddress' => ShippingAddressFactory::new(),
             'status' => self::faker()->randomElement(OrderStatus::cases()),
-            'totalAmount' => self::faker()->randomFloat(),
+            'totalAmount' => self::faker()->randomNumber(6),
         ];
     }
 

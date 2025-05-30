@@ -13,9 +13,9 @@ class PaidProductData {
 
     public function __construct(OrderItem $item, string $tax) {
         $this->name = $item->getProduct()->getName();
-        $this->price = $item->getPriceInPennies();
+        $this->price = $item->getPrice();
         $this->quantity = $item->getQuantity();
-        $this->amount = $item->getPriceInPennies() * $item->getQuantity();
+        $this->amount = $item->getPrice() * $item->getQuantity();
         $this->tax = $tax;
     }
 

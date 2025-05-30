@@ -33,7 +33,7 @@ final class OrderItemFactory extends PersistentProxyObjectFactory
     {
         return [
             'order' => OrderFactory::new(),
-            'price' => self::faker()->randomFloat(),
+            'price' => self::faker()->randomNumber(6),
             'product' => ProductFactory::new(),
             'quantity' => self::faker()->randomNumber(),
         ];

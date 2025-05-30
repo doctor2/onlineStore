@@ -109,7 +109,7 @@ class ShoppingCart
         return $this;
     }
 
-    public function getTotalAmount(): float
+    public function getTotalAmount(): int
     {
         $total = 0;
 
