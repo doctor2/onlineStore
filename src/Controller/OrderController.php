@@ -103,15 +103,5 @@ class OrderController extends AbstractController
         ]);
     }
 
-    #[Route('/order/success', name: 'order_success')]
-    public function success(): Response
-    {
-        return new Response('Ваш заказ успешно оформлен!');
-    }
 
-    #[Route('/order/failure', name: 'order_failure')]
-    public function failure(): Response
-    {
-        return new Response('Ошибка при оформлении заказа!');
-    }
 }

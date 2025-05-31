@@ -4,20 +4,20 @@ namespace App\Domain\Order\TransferObject;
 
 class CustomerData
 {
-    private $email;
-    private $phone;
+    private ?string $email;
+    private ?string $phone;
 
-    public function setEmail($email)
+    public function setEmail(?string $email): void
     {
         $this->email = $email;
     }
 
-    public function setPhone($phone)
+    public function setPhone(?string $phone): void
     {
         $this->phone = $phone;
     }
 
-    public function toArray()
+    public function toArray(): array
     {
         return [
             'Email' => $this->email,

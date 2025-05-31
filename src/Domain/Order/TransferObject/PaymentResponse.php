@@ -16,7 +16,7 @@ class PaymentResponse {
     public function getErrorMessage(): ?string
     {
         if ($this->ErrorCode) {
-            return 'Ошибка с кодом ' . $this->errorCode;
+            return 'Tinkoff error: ' . $this->errorCode;
         }
 
         return $this->errorMessage;

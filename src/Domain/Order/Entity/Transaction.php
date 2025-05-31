@@ -5,7 +5,6 @@ namespace App\Domain\Order\Entity;
 use App\Domain\Order\Entity\Enum\PaymentMethod;
 use App\Domain\Order\Entity\Enum\TransactionStatus;
 use App\Domain\Order\Repository\TransactionRepository;
-use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: TransactionRepository::class)]
