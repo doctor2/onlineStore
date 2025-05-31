@@ -2,11 +2,11 @@
 
 namespace App\Domain\Order\Service;
 
-use App\Domain\Order\TransferObject\PaymentRequest;
-use App\Domain\Order\TransferObject\PaymentResponse;
+use App\Domain\Order\TransferObject\Tinkoff\PaymentRequest;
+use App\Domain\Order\TransferObject\Tinkoff\PaymentResponse;
 use App\Domain\Order\Entity\Order;
 use Symfony\Component\Serializer\SerializerInterface;
-use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\ExceptionInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class TinkoffClient
@@ -27,9 +27,9 @@ class TinkoffClient
                 'json' => $paymentRequest->toArray(),
             ]);
 
-            $paymentResponse = $this->serializer->deserialize($response->getBody(), PaymentResponse::class, 'json');
+            $paymentResponse = $this->serializer->deserialize($response->getContent(), PaymentResponse::class, 'json');
 
-        } catch (TransportExceptionInterface $e) {
+        } catch (ExceptionInterface $e) {
             $paymentResponse = new PaymentResponse();
             $paymentResponse->Success = false;
             $paymentResponse->errorMessage = 'Ошибка при отправке запроса: ' . $e->getMessage();

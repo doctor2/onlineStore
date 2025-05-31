@@ -2,7 +2,6 @@
 
 namespace App\Domain\Order\Entity;
 
-use App\Domain\Order\Entity\Enum\PaymentMethod;
 use App\Domain\Order\Entity\Enum\TransactionStatus;
 use App\Domain\Order\Repository\TransactionRepository;
 use Doctrine\ORM\Mapping as ORM;
@@ -27,11 +26,8 @@ class Transaction
     #[ORM\Column(enumType: TransactionStatus::class, length: 50)]
     private ?string $status = null;
 
-    #[ORM\Column(enumType: PaymentMethod::class, length: 50)]
-    private ?string $paymentMethod = null;
-
     #[ORM\Column(length: 50)]
-    private ?string $transactionId = null;
+    private ?string $externalId = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $description = null;
@@ -41,6 +37,14 @@ class Transaction
 
     #[ORM\Column]
     private ?\DateTimeImmutable $updatedAt = null;
+
+    public function __construct(Payment $payment, string $externalId)
+    {
+        $this->payment = $payment;
+        $this->amount = $payment->getAmount();
+        $this->status = TransactionStatus::PENDING;
+        $this->externalId = $externalId;
+    }
 
     public function getId(): ?int
     {
@@ -83,28 +87,9 @@ class Transaction
         return $this;
     }
 
-    public function getPaymentMethod(): ?string
+    public function getExternalId(): ?string
     {
-        return $this->paymentMethod;
-    }
-
-    public function setPaymentMethod(string $paymentMethod): static
-    {
-        $this->paymentMethod = $paymentMethod;
-
-        return $this;
-    }
-
-    public function getTransactionId(): ?string
-    {
-        return $this->transactionId;
-    }
-
-    public function setTransactionId(string $transactionId): static
-    {
-        $this->transactionId = $transactionId;
-
-        return $this;
+        return $this->externalId;
     }
 
     public function getDescription(): ?string

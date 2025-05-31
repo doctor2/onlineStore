@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Domain\Order\TransferObject;
+namespace App\Domain\Order\TransferObject\Tinkoff;
 
 use App\Domain\Order\Entity\OrderItem;
 
 class PaidProductData {
-    private $name;
-    private $price;
-    private $quantity;
-    private $amount;
-    private $tax;
+    private ?string $name;
+    private ?int $price;
+    private ?int $quantity;
+    private int $amount;
+    private string $tax;
 
     public function __construct(OrderItem $item, string $tax) {
         $this->name = $item->getProduct()->getName();
@@ -19,23 +19,28 @@ class PaidProductData {
         $this->tax = $tax;
     }
 
-    public function getName() {
+    public function getName(): ?string
+    {
         return $this->name;
     }
 
-    public function getPrice() {
+    public function getPrice(): ?int
+    {
         return $this->price;
     }
 
-    public function getQuantity() {
+    public function getQuantity(): ?int
+    {
         return $this->quantity;
     }
 
-    public function getAmount() {
+    public function getAmount(): int
+    {
         return $this->amount;
     }
 
-    public function getTax() {
+    public function getTax(): string
+    {
         return $this->tax;
     }
 }

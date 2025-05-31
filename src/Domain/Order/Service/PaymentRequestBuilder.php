@@ -3,8 +3,8 @@
 namespace App\Domain\Order\Service;
 
 use App\Domain\Order\Entity\Order;
-use App\Domain\Order\TransferObject\PaidProductData;
-use App\Domain\Order\TransferObject\PaymentRequest;
+use App\Domain\Order\TransferObject\Tinkoff\PaidProductData;
+use App\Domain\Order\TransferObject\Tinkoff\PaymentRequest;
 
 class PaymentRequestBuilder
 {

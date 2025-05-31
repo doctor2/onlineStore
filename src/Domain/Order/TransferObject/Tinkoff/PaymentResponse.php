@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Domain\Order\TransferObject;
+namespace App\Domain\Order\TransferObject\Tinkoff;
 
 class PaymentResponse {
     public ?bool $Success = null;
     public ?int $ErrorCode = null;
+    public ?string $PaymentId = null;
     public ?string $errorMessage = null;
     public ?string $PaymentURL = null;
 
@@ -25,5 +26,10 @@ class PaymentResponse {
     public function getPaymentUrl(): ?string
     {
         return $this->PaymentURL;
+    }
+
+    public function getPaymentId(): ?string
+    {
+        return $this->PaymentId;
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Domain\Order\TransferObject;
+namespace App\Domain\Order\TransferObject\Tinkoff;
 
 class PaymentRequest
 {

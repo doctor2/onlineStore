@@ -1,30 +1,30 @@
 <?php
 
-namespace App\Domain\Order\TransferObject;
+namespace App\Domain\Order\TransferObject\Tinkoff;
 
 class ReceiptData
 {
-    private $email;
-    private $phone;
-    private $taxation;
-    private $items = [];
+    private string $email;
+    private string $phone;
+    private string $taxation;
+    private array $items = [];
 
-    public function setEmail($email)
+    public function setEmail(string $email): void
     {
         $this->email = $email;
     }
 
-    public function setPhone($phone)
+    public function setPhone(string $phone): void
     {
         $this->phone = $phone;
     }
 
-    public function setTaxation($taxation)
+    public function setTaxation(string $taxation): void
     {
         $this->taxation = $taxation;
     }
 
-    public function addItem(PaidProductData $item)
+    public function addItem(PaidProductData $item): void
     {
         $this->items[] = $item;
     }
