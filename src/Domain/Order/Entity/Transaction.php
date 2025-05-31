@@ -27,11 +27,8 @@ class Transaction
     #[ORM\Column(enumType: TransactionStatus::class, length: 50)]
     private ?string $status = null;
 
-    #[ORM\Column(enumType: PaymentMethod::class, length: 50)]
-    private ?string $paymentMethod = null;
-
     #[ORM\Column(length: 50)]
-    private ?string $transactionId = null;
+    private ?string $externalId = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $description = null;
@@ -39,8 +36,14 @@ class Transaction
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
 
-    #[ORM\Column]
-    private ?\DateTimeImmutable $updatedAt = null;
+    public function __construct(Payment $payment, string $externalId)
+    {
+        $this->payment = $payment;
+        $this->amount = $payment->getAmount();
+        $this->status = TransactionStatus::PENDING;
+        $this->externalId = $externalId;
+        $this->createdAt = new \DateTimeImmutable();
+    }
 
     public function getId(): ?int
     {
@@ -83,28 +86,9 @@ class Transaction
         return $this;
     }
 
-    public function getPaymentMethod(): ?string
+    public function getExternalId(): ?string
     {
-        return $this->paymentMethod;
-    }
-
-    public function setPaymentMethod(string $paymentMethod): static
-    {
-        $this->paymentMethod = $paymentMethod;
-
-        return $this;
-    }
-
-    public function getTransactionId(): ?string
-    {
-        return $this->transactionId;
-    }
-
-    public function setTransactionId(string $transactionId): static
-    {
-        $this->transactionId = $transactionId;
-
-        return $this;
+        return $this->externalId;
     }
 
     public function getDescription(): ?string
@@ -119,26 +103,8 @@ class Transaction
         return $this;
     }
 
-    #[ORM\PrePersist]
-    public function onPrePersist(): void
-    {
-        $this->createdAt = new \DateTimeImmutable();
-        $this->updatedAt = new \DateTimeImmutable();
-    }
-
-    #[ORM\PreUpdate]
-    public function onPreUpdate(): void
-    {
-        $this->updatedAt = new \DateTimeImmutable();
-    }
-
     public function getCreatedAt(): ?\DateTimeImmutable
     {
         return $this->createdAt;
-    }
-
-    public function getUpdatedAt(): ?\DateTimeImmutable
-    {
-        return $this->updatedAt;
     }
 }
