@@ -23,10 +23,6 @@ class PaymentCreatedListener
         $order = $payment->getOrder();
         $order->setPaymentMethod($payment->getPaymentMethod());
 
-        if ($payment->getStatus() !== PaymentStatus::FAILED) {
-            $order->setStatus(OrderStatus::PAID);
-        }
-
         $entityManager->persist($order);
         $entityManager->flush();
     }
