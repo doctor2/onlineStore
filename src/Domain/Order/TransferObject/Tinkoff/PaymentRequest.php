@@ -15,12 +15,12 @@ class PaymentRequest
     private ReceiptData $receipt;
     private string $token;
 
-    public function __construct(string $terminalKey, string $merchantPass, int $amount, int $orderId, string $successURL, string $failURL)
+    public function __construct(string $terminalKey, string $merchantPass, int $amount, int $orderId, string $description, string $successURL, string $failURL)
     {
         $this->terminalKey = $terminalKey;
         $this->amount = $amount;
         $this->orderId = $orderId;
-        $this->description = 'Оплата заказа #' . $orderId;
+        $this->description = $description;
         $this->data = new CustomerData(); // Инициализируем класс данных о клиенте
         $this->paymentMethod = 'CreditCard'; // Устанавливаем метод оплаты по умолчанию
         $this->successURL = $successURL;

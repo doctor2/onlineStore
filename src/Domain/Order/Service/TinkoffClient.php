@@ -15,9 +15,9 @@ class TinkoffClient
                                 private SerializerInterface $serializer, private HttpClientInterface $client)
     {}
 
-    public function initPayment(Order $order, string $successUrl, string $failureUrl): PaymentResponse
+    public function initPayment(Order $order, string $description): PaymentResponse
     {
-        return $this->sendPaymentRequest($this->paymentRequestBuilder->build($order, $successUrl, $failureUrl));
+        return $this->sendPaymentRequest($this->paymentRequestBuilder->build($order, $description));
     }
 
     private function sendPaymentRequest(PaymentRequest $paymentRequest): PaymentResponse

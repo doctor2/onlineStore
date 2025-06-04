@@ -5,6 +5,7 @@ namespace App\Domain\Order\Service;
 use App\Domain\Order\Entity\Order;
 use App\Domain\Order\TransferObject\Tinkoff\PaidProductData;
 use App\Domain\Order\TransferObject\Tinkoff\PaymentRequest;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class PaymentRequestBuilder
 {
@@ -12,12 +13,17 @@ class PaymentRequestBuilder
     public const TAXATION = 'osn';
 
     public function __construct(private string $terminalKey, private string $merchantPass, private string $merchantEmail,
-                                private string $merchantPhone)
+                                private string $merchantPhone, private UrlGeneratorInterface $urlGenerator)
     {}
 
-    public function build(Order $order, string $successUrl, string $failureUrl): PaymentRequest
+    public function build(Order $order, string $description): PaymentRequest
     {
-        $paymentRequest = new PaymentRequest($this->terminalKey, $this->merchantPass, $order->getTotalAmount(), $order->getId(), $successUrl, $failureUrl);
+        $successUrl = $this->urlGenerator->generate('order_success', [], UrlGeneratorInterface::ABSOLUTE_URL);
+        $failureUrl = $this->urlGenerator->generate('order_failure', [], UrlGeneratorInterface::ABSOLUTE_URL);
+
+        $paymentRequest = new PaymentRequest($this->terminalKey, $this->merchantPass,
+            $order->getTotalAmount(), $order->getId(), $description, $successUrl, $failureUrl
+        );
 
         $paymentRequest->setCustomerData($order->getUser()->getEmail(), null);
 

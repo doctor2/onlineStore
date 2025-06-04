@@ -5,9 +5,11 @@ namespace App\Controller;
 
 use App\Domain\Cart\Service\GetCartService;
 use App\Domain\Order\Entity\Order;
+use App\Domain\Order\Entity\Payment;
 use App\Domain\Order\Message\CreateOrderMessage;
 use App\Domain\Order\Message\CreatePaymentMessage;
 use App\Domain\Order\Message\CreateShippingAddressMessage;
+use App\Domain\Order\Message\RetryPaymentMessage;
 use App\Domain\Order\Message\UpdateShippingAddressMessage;
 use App\Domain\Order\Form\OrderType;
 use App\Domain\Order\Form\ShippingAddressType;
@@ -103,5 +105,23 @@ class OrderController extends AbstractController
         ]);
     }
 
+    #[Route('/payment/{paymentId}/retry', name: 'order_payment')]
+    public function retryPayment(Payment $payment, MessageBusInterface $bus): Response
+    {
+        $retryPaymentMessage = new RetryPaymentMessage($payment);
 
+        $envelope = $bus->dispatch($retryPaymentMessage);
+
+        $handledStamp = $envelope->last(HandledStamp::class);
+        $paymentResponse = $handledStamp->getResult();
+
+        if ($paymentResponse->isSuccess()){
+            return $this->redirect($paymentResponse->getPaymentUrl());
+        }
+
+        $this->addFlash('error', $paymentResponse->getErrorMessage());
+
+        return $this->redirectToRoute('cart');
+
+    }
 }
