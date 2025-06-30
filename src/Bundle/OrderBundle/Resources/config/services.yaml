@@ -1,0 +1,30 @@
+# This file is the entry point to configure your own services.
+# Files in the packages/ subdirectory configure your dependencies.
+
+# Put parameters here that don't need to change on each machine where the app is deployed
+# https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
+parameters:
+
+services:
+    # default configuration for services in *this* file
+    _defaults:
+        autowire: true      # Automatically injects dependencies in your services.
+        autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+
+    App\Bundle\OrderBundle\:
+        resource: '../../'
+        exclude:
+            - '../../DependencyInjection/'
+            - '../../Entity/'
+            - '../../OrderBundle.php'
+
+    App\Bundle\OrderBundle\Service\TinkoffClient:
+        arguments:
+            - '%env(TINKOFF_API_URL)%'
+
+    App\Bundle\OrderBundle\Service\PaymentRequestBuilder:
+        arguments:
+            - '%env(TINKOFF_TERMINAL_KEY)%'
+            - '%env(TINKOFF_MERCHANT_PASS)%'
+            - '%env(TINKOFF_MERCHANT_EMAIL)%'
+            - '%env(TINKOFF_MERCHANT_PHONE)%'

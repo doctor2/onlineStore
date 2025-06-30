@@ -2,7 +2,7 @@
 
 namespace App\Tests\Factory;
 
-use App\Domain\Order\Entity\ShippingAddress;
+use App\Bundle\OrderBundle\Entity\ShippingAddress;
 use Zenstruck\Foundry\Persistence\PersistentProxyObjectFactory;
 
 /**

@@ -1,6 +1,6 @@
 framework:
     workflows:
-        !php/const App\Domain\Order\Entity\Enum\OrderStatusTransitions::GRAPH:
+        !php/const App\Bundle\OrderBundle\Entity\Enum\OrderStatusTransitions::GRAPH:
             type: 'state_machine'
             audit_trail:
                 enabled: true
@@ -8,7 +8,7 @@ framework:
                 type: 'method'
                 property: 'status' # свойство, где хранится статус
             supports:
-                - App\Domain\Order\Entity\Order
+                - App\Bundle\OrderBundle\Entity\Order
             initial_marking:
                 - pending
             places:
@@ -18,19 +18,19 @@ framework:
                 - delivered
                 - canceled
             transitions:
-                !php/const App\Domain\Order\Entity\Enum\OrderStatusTransitions::TRANSITION_PAY:
+                !php/const App\Bundle\OrderBundle\Entity\Enum\OrderStatusTransitions::TRANSITION_PAY:
                     from: pending
                     to: paid
-                !php/const App\Domain\Order\Entity\Enum\OrderStatusTransitions::TRANSITION_SHIP:
+                !php/const App\Bundle\OrderBundle\Entity\Enum\OrderStatusTransitions::TRANSITION_SHIP:
                     from: paid
                     to: shipped
-                !php/const App\Domain\Order\Entity\Enum\OrderStatusTransitions::TRANSITION_DELIVER:
+                !php/const App\Bundle\OrderBundle\Entity\Enum\OrderStatusTransitions::TRANSITION_DELIVER:
                     from: shipped
                     to: delivered
-                !php/const App\Domain\Order\Entity\Enum\OrderStatusTransitions::TRANSITION_CANCEL:
+                !php/const App\Bundle\OrderBundle\Entity\Enum\OrderStatusTransitions::TRANSITION_CANCEL:
                     from: [ pending, paid ]
                     to: canceled
-        !php/const App\Domain\Order\Entity\Enum\PaymentStatusTransitions::GRAPH:
+        !php/const App\Bundle\OrderBundle\Entity\Enum\PaymentStatusTransitions::GRAPH:
             type: 'state_machine'
             audit_trail:
                 enabled: true
@@ -38,7 +38,7 @@ framework:
                 type: 'method'
                 property: 'status' # свойство, где хранится статус
             supports:
-                - App\Domain\Order\Entity\Payment
+                - App\Bundle\OrderBundle\Entity\Payment
             initial_marking:
                 - pending
             places:
@@ -47,12 +47,12 @@ framework:
                 - completed
                 - failed
             transitions:
-                !php/const App\Domain\Order\Entity\Enum\PaymentStatusTransitions::TRANSITION_PROCESS:
+                !php/const App\Bundle\OrderBundle\Entity\Enum\PaymentStatusTransitions::TRANSITION_PROCESS:
                     from: pending
                     to: processing
-                !php/const App\Domain\Order\Entity\Enum\PaymentStatusTransitions::TRANSITION_COMPLETE:
+                !php/const App\Bundle\OrderBundle\Entity\Enum\PaymentStatusTransitions::TRANSITION_COMPLETE:
                     from: processing
                     to: completed
-                !php/const App\Domain\Order\Entity\Enum\PaymentStatusTransitions::TRANSITION_FAIL:
+                !php/const App\Bundle\OrderBundle\Entity\Enum\PaymentStatusTransitions::TRANSITION_FAIL:
                     from: [ pending, processing ]
                     to: failed

@@ -21,26 +21,26 @@ doctrine:
             App:
                 type: attribute
                 is_bundle: false
-                dir: '%kernel.project_dir%/src/Entity'
-                prefix: 'App\Entity'
-                alias: App
+                dir: '%kernel.project_dir%/src/Bundle/CoreBundle/Entity'
+                prefix: 'App\Bundle\CoreBundle\Entity'
+                alias: Core
             Cart:
                 type: attribute
-                dir: '%kernel.project_dir%/src/Domain/Cart/Entity'
+                dir: '%kernel.project_dir%/src/Bundle/CartBundle/Entity'
                 alias: Cart
-                prefix: 'App\Domain\Cart\Entity'
+                prefix: 'App\Bundle\CartBundle\Entity'
                 is_bundle: false
             Order:
                 type: attribute
-                dir: '%kernel.project_dir%/src/Domain/Order/Entity'
+                dir: '%kernel.project_dir%/src/Bundle/OrderBundle/Entity'
                 alias: Order
-                prefix: 'App\Domain\Order\Entity'
+                prefix: 'App\Bundle\OrderBundle\Entity'
                 is_bundle: false
             Product:
                 type: attribute
-                dir: '%kernel.project_dir%/src/Domain/Product/Entity'
+                dir: '%kernel.project_dir%/src/Bundle/ProductBundle/Entity'
                 alias: Product
-                prefix: 'App\Domain\Product\Entity'
+                prefix: 'App\Bundle\ProductBundle\Entity'
                 is_bundle: false
         controller_resolver:
             auto_mapping: false

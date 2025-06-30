@@ -13,28 +13,9 @@ services:
 
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
-    App\:
-        resource: '../src/'
-        exclude:
-            - '../src/DependencyInjection/'
-            - '../src/Entity/'
-            - '../src/Kernel.php'
-            - '../src/Domain/Cart/Entity/'
-            - '../src/Domain/Order/Entity/'
-            - '../src/Domain/Product/Entity/'
 
-    # add more service definitions when explicit configuration is needed
-    # please note that last definitions always *replace* previous ones
-    App\Domain\Order\Service\TinkoffClient:
-        arguments:
-            - '%env(TINKOFF_API_URL)%'
+    App\Abstraction\:
+        resource: '../src/Abstraction/'
 
-    App\Domain\Order\Service\PaymentRequestBuilder:
-        arguments:
-            - '%env(TINKOFF_TERMINAL_KEY)%'
-            - '%env(TINKOFF_MERCHANT_PASS)%'
-            - '%env(TINKOFF_MERCHANT_EMAIL)%'
-            - '%env(TINKOFF_MERCHANT_PHONE)%'
-
-    App\StateMachine\StateMachineInterface:
-        alias: App\StateMachine\SymfonyWorkflowAdapter
+    App\Abstraction\StateMachine\StateMachineInterface:
+        alias: App\Abstraction\StateMachine\SymfonyWorkflowAdapter

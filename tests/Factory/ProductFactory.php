@@ -2,7 +2,7 @@
 
 namespace App\Tests\Factory;
 
-use App\Domain\Product\Entity\Product;
+use App\Bundle\ProductBundle\Entity\Product;
 use Zenstruck\Foundry\Persistence\PersistentProxyObjectFactory;
 
 /**

@@ -2,7 +2,7 @@
 
 namespace App\Tests\Factory;
 
-use App\Domain\Cart\Entity\ShoppingCart;
+use App\Bundle\CartBundle\Entity\ShoppingCart;
 use Zenstruck\Foundry\Persistence\PersistentProxyObjectFactory;
 
 /**

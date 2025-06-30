@@ -2,8 +2,8 @@
 
 namespace App\Tests\Factory;
 
-use App\Domain\Order\Entity\Enum\OrderStatus;
-use App\Domain\Order\Entity\Order;
+use App\Bundle\OrderBundle\Entity\Enum\OrderStatus;
+use App\Bundle\OrderBundle\Entity\Order;
 use Zenstruck\Foundry\Persistence\PersistentProxyObjectFactory;
 
 /**

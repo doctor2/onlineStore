@@ -2,8 +2,8 @@
 
 namespace App\Tests\Factory;
 
-use App\Domain\Order\Entity\Enum\PaymentStatus;
-use App\Domain\Order\Entity\Payment;
+use App\Bundle\OrderBundle\Entity\Enum\PaymentStatus;
+use App\Bundle\OrderBundle\Entity\Payment;
 use Zenstruck\Foundry\Persistence\PersistentProxyObjectFactory;
 
 /**

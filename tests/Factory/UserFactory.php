@@ -2,8 +2,8 @@
 
 namespace App\Tests\Factory;
 
-use App\Entity\Enum\UserRole;
-use App\Entity\User;
+use App\Bundle\CoreBundle\Entity\Enum\UserRole;
+use App\Bundle\CoreBundle\Entity\User;
 use App\Tests\Support\Helper\DefaultUserPasswordGenerator;
 use Zenstruck\Foundry\Persistence\PersistentProxyObjectFactory;
 
