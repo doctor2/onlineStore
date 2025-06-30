@@ -1,0 +1,58 @@
+framework:
+    workflows:
+        !php/const App\Domain\Order\Entity\Enum\OrderStatusTransitions::GRAPH:
+            type: 'state_machine'
+            audit_trail:
+                enabled: true
+            marking_store:
+                type: 'method'
+                property: 'status' # свойство, где хранится статус
+            supports:
+                - App\Domain\Order\Entity\Order
+            initial_marking:
+                - pending
+            places:
+                - pending
+                - paid
+                - shipped
+                - delivered
+                - canceled
+            transitions:
+                !php/const App\Domain\Order\Entity\Enum\OrderStatusTransitions::TRANSITION_PAY:
+                    from: pending
+                    to: paid
+                !php/const App\Domain\Order\Entity\Enum\OrderStatusTransitions::TRANSITION_SHIP:
+                    from: paid
+                    to: shipped
+                !php/const App\Domain\Order\Entity\Enum\OrderStatusTransitions::TRANSITION_DELIVER:
+                    from: shipped
+                    to: delivered
+                !php/const App\Domain\Order\Entity\Enum\OrderStatusTransitions::TRANSITION_CANCEL:
+                    from: [ pending, paid ]
+                    to: canceled
+        !php/const App\Domain\Order\Entity\Enum\PaymentStatusTransitions::GRAPH:
+            type: 'state_machine'
+            audit_trail:
+                enabled: true
+            marking_store:
+                type: 'method'
+                property: 'status' # свойство, где хранится статус
+            supports:
+                - App\Domain\Order\Entity\Payment
+            initial_marking:
+                - pending
+            places:
+                - pending
+                - processing
+                - completed
+                - failed
+            transitions:
+                !php/const App\Domain\Order\Entity\Enum\PaymentStatusTransitions::TRANSITION_PROCESS:
+                    from: pending
+                    to: processing
+                !php/const App\Domain\Order\Entity\Enum\PaymentStatusTransitions::TRANSITION_COMPLETE:
+                    from: processing
+                    to: completed
+                !php/const App\Domain\Order\Entity\Enum\PaymentStatusTransitions::TRANSITION_FAIL:
+                    from: [ pending, processing ]
+                    to: failed

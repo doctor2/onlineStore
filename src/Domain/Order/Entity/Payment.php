@@ -73,14 +73,14 @@ class Payment
         return $this->amount;
     }
 
-    public function getStatus(): ?PaymentStatus
+    public function getStatus(): string
     {
-        return $this->status;
+        return $this->status->value;
     }
 
-    public function setStatus(PaymentStatus $status): static
+    public function setStatus(string $status): static
     {
-        $this->status = $status;
+        $this->status = PaymentStatus::from($status);
 
         return $this;
     }

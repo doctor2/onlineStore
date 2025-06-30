@@ -35,3 +35,6 @@ services:
             - '%env(TINKOFF_MERCHANT_PASS)%'
             - '%env(TINKOFF_MERCHANT_EMAIL)%'
             - '%env(TINKOFF_MERCHANT_PHONE)%'
+
+    App\StateMachine\StateMachineInterface:
+        alias: App\StateMachine\SymfonyWorkflowAdapter

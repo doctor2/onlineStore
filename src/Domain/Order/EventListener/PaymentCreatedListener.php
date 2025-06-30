@@ -2,8 +2,6 @@
 
 namespace App\Domain\Order\EventListener;
 
-use App\Domain\Order\Entity\Enum\OrderStatus;
-use App\Domain\Order\Entity\Enum\PaymentStatus;
 use App\Domain\Order\Entity\Payment;
 use Doctrine\Bundle\DoctrineBundle\Attribute\AsEntityListener;
 use Doctrine\ORM\Event\PostPersistEventArgs;

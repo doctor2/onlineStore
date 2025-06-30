@@ -3,16 +3,17 @@
 namespace App\Domain\Order\Security\Voter;
 
 use App\Domain\Cart\Service\GetCartService;
-use App\Domain\Order\Entity\Enum\OrderStatus;
+use App\Domain\Order\Entity\Enum\OrderStatusTransitions;
 use App\Domain\Order\Entity\Order;
 use App\Entity\User;
+use App\StateMachine\StateMachineInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 class OrderVoter extends Voter
 {
-    public function __construct(private GetCartService $getCartService)
+    public function __construct(private GetCartService $getCartService, private StateMachineInterface $stateMachine)
     {}
 
     protected function supports(string $attribute, mixed $subject): bool
@@ -45,6 +46,7 @@ class OrderVoter extends Voter
 
     private function canEditOrder(User $user, ?Order $order): bool
     {
-        return $order && $order->getUser() === $user && $order->getStatus() === OrderStatus::PENDING;
+        return $order && $order->getUser() === $user
+            && $this->stateMachine->can($order, OrderStatusTransitions::GRAPH, OrderStatusTransitions::TRANSITION_PAY);
     }
 }

@@ -90,14 +90,14 @@ class Order
         return $this;
     }
 
-    public function getStatus(): ?OrderStatus
+    public function getStatus(): string
     {
-        return $this->status;
+        return $this->status->value;
     }
 
-    public function setStatus(OrderStatus $status): static
+    public function setStatus(string $status): static
     {
-        $this->status = $status;
+        $this->status = OrderStatus::from($status);
 
         return $this;
     }
