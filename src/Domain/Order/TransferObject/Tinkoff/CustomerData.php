@@ -2,7 +2,7 @@
 
 namespace App\Domain\Order\TransferObject\Tinkoff;
 
-class CustomerData
+readonly class CustomerData
 {
     private ?string $email;
     private ?string $phone;

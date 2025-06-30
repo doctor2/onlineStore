@@ -2,7 +2,7 @@
 
 namespace App\Domain\Order\TransferObject\Tinkoff;
 
-class WebhookRequest
+readonly class WebhookRequest
 {
     public string $PaymentId;
 

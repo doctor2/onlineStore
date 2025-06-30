@@ -105,7 +105,7 @@ class OrderController extends AbstractController
         ]);
     }
 
-    #[Route('/payment/{paymentId}/retry', name: 'order_payment')]
+    #[Route('/payment/{paymentId}/retry', name: 'payment_retry')]
     public function retryPayment(Payment $payment, MessageBusInterface $bus): Response
     {
         $retryPaymentMessage = new RetryPaymentMessage($payment);

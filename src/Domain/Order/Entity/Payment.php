@@ -161,4 +161,9 @@ class Payment
 
         return $this;
     }
+
+    public function __toString(): string
+    {
+        return sprintf('%s %s', $this->id, $this->status->value);
+    }
 }

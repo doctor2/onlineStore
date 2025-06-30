@@ -19,11 +19,11 @@ class OrderItem
 
     #[ORM\ManyToOne(inversedBy: 'orderItems')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Order $order = null;
+    private Order $order;
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Product $product = null;
+    private Product $product;
 
     #[ORM\Column]
     private ?int $quantity = null;
@@ -96,5 +96,10 @@ class OrderItem
     public function getCreatedAt(): ?\DateTimeImmutable
     {
         return $this->createdAt;
+    }
+
+    public function __toString(): string
+    {
+        return sprintf('%s %s', $this->product->getName(), $this->product->getPrice());
     }
 }

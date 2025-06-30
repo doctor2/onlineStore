@@ -3,6 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Domain\Order\Entity\Enum\OrderStatus;
+use App\Domain\Order\Entity\Enum\PaymentMethod;
 use App\Domain\Order\Entity\Order;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
@@ -10,7 +11,6 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 
 class OrderCrudController extends AbstractCrudController
 {
@@ -25,8 +25,8 @@ class OrderCrudController extends AbstractCrudController
             IdField::new('id')->hideOnForm(),
             AssociationField::new('user'),
             IntegerField::new('total_amount'),
-            ChoiceField::new('status')->setChoices(OrderStatus::cases()),
-            TextField::new('payment_method'),
+            ChoiceField::new('status')->setChoices(OrderStatus::cases())->setDisabled(),
+            ChoiceField::new('payment_method')->setChoices(PaymentMethod::cases())->hideOnForm(),
             AssociationField::new('orderItems'),
             AssociationField::new('payments'),
             DateTimeField::new('created_at')->onlyOnDetail(),

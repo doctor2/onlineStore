@@ -4,7 +4,7 @@ namespace App\Domain\Order\TransferObject\Tinkoff;
 
 use App\Domain\Order\Entity\OrderItem;
 
-class PaidProductData {
+readonly class PaidProductData {
     private ?string $name;
     private ?int $price;
     private ?int $quantity;
