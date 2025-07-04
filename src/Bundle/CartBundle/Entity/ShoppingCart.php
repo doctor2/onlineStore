@@ -87,7 +87,32 @@ class ShoppingCart
         return $this->cartItems;
     }
 
-    public function addCartItem(CartItem $cartItem): static
+    public function addProduct(Product $product): CartItem
+    {
+        $cartItem = null;
+
+        foreach ($this->getCartItems() as $item) {
+            if ($item->getProduct()->getId() === $product->getId()) {
+                $cartItem = $item;
+                break;
+            }
+        }
+
+        if ($cartItem) {
+            $cartItem->setQuantity($cartItem->getQuantity() + 1);
+        } else {
+            $cartItem = new CartItem();
+            $cartItem->setProduct($product);
+            $cartItem->setPrice($product->getPrice());
+            $cartItem->setCart($this);
+            $cartItem->setQuantity(1);
+            $this->addCartItem($cartItem);
+        }
+
+        return $cartItem;
+    }
+
+    private function addCartItem(CartItem $cartItem): static
     {
         if (!$this->cartItems->contains($cartItem)) {
             $this->cartItems->add($cartItem);

@@ -4,7 +4,6 @@ namespace App\Bundle\CartBundle\Message\Handler;
 
 use App\Bundle\CartBundle\Message\CreateCartItemMessage;
 use App\Bundle\CartBundle\Service\GetCartService;
-use App\Bundle\CartBundle\Entity\CartItem;
 use App\Bundle\ProductBundle\Entity\Product;
 use App\Bundle\CartBundle\Entity\ShoppingCart;
 use App\Bundle\CoreBundle\Entity\User;
@@ -28,24 +27,7 @@ class CreateCartItemHandler
 
     private function saveCartItem(ShoppingCart $cart, Product $product, ?User $user): void
     {
-        $cartItem = null;
-        foreach ($cart->getCartItems() as $item) {
-            if ($item->getProduct()->getId() === $product->getId()) {
-                $cartItem = $item;
-                break;
-            }
-        }
-
-        if ($cartItem) {
-            $cartItem->setQuantity($cartItem->getQuantity() + 1);
-        } else {
-            $cartItem = new CartItem();
-            $cartItem->setProduct($product);
-            $cartItem->setPrice($product->getPrice());
-            $cartItem->setCart($cart);
-            $cartItem->setQuantity(1);
-            $cart->addCartItem($cartItem);
-        }
+        $cartItem = $cart->addProduct($product);
 
         if ($user) {
             $this->entityManager->persist($cartItem);
