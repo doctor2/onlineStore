@@ -60,7 +60,7 @@ class Order
     {
         $this->user = $message->getUser();
         $this->totalAmount = $message->getTotalAmount();
-        $this->status = $message->getStatus();
+        $this->status = OrderStatus::PENDING;
         $this->shippingAddress = $message->getShippingAddress();
 
         $this->orderItems = new ArrayCollection();

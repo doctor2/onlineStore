@@ -3,7 +3,6 @@
 namespace App\Bundle\OrderBundle\Message;
 
 use App\Bundle\CartBundle\Entity\ShoppingCart;
-use App\Bundle\OrderBundle\Entity\Enum\OrderStatus;
 use App\Bundle\OrderBundle\Entity\ShippingAddress;
 use App\Bundle\CoreBundle\Entity\User;
 use Symfony\Component\Messenger\Attribute\Message;
@@ -17,12 +16,9 @@ class CreateOrderMessage
 
     private ShippingAddress $shippingAddress;
 
-    private OrderStatus $status;
-
     public function __construct(ShippingAddress $shippingAddress, ShoppingCart $cart) {
         $this->user = $shippingAddress->getUser();
         $this->totalAmount = $cart->getTotalAmount();
-        $this->status = OrderStatus::PENDING;
         $this->shippingAddress = $shippingAddress;
     }
 
@@ -39,10 +35,5 @@ class CreateOrderMessage
     public function getTotalAmount(): int
     {
         return $this->totalAmount;
-    }
-
-    public function getStatus(): OrderStatus
-    {
-        return $this->status;
     }
 }
