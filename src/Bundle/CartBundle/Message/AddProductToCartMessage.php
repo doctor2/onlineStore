@@ -7,7 +7,7 @@ use App\Bundle\CoreBundle\Entity\User;
 use Symfony\Component\Messenger\Attribute\Message;
 
 #[Message]
-class CreateCartItemMessage
+class AddProductToCartMessage
 {
     private ?User $user;
 

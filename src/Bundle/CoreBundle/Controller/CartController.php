@@ -2,7 +2,7 @@
 
 namespace App\Bundle\CoreBundle\Controller;
 
-use App\Bundle\CartBundle\Message\CreateCartItemMessage;
+use App\Bundle\CartBundle\Message\AddProductToCartMessage;
 use App\Bundle\CartBundle\Service\GetCartService;
 use App\Bundle\OrderBundle\Repository\OrderRepository;
 use App\Bundle\ProductBundle\Entity\Product;
@@ -38,7 +38,7 @@ class CartController extends AbstractController
             return $this->redirectToRoute('product_list');
         }
 
-        $bus->dispatch(new CreateCartItemMessage($this->getUser(), $product));
+        $bus->dispatch(new AddProductToCartMessage($this->getUser(), $product));
 
         $this->addFlash('success', 'Товар добавлен в корзину!');
 
