@@ -11,13 +11,13 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class TinkoffClient
 {
-    public function __construct(private string $apiUrl, private PaymentRequestBuilder $paymentRequestBuilder,
+    public function __construct(private string $apiUrl, private PaymentRequestFactory $paymentRequestFactory,
                                 private SerializerInterface $serializer, private HttpClientInterface $client)
     {}
 
     public function initPayment(Order $order, string $description): PaymentResponse
     {
-        return $this->sendPaymentRequest($this->paymentRequestBuilder->build($order, $description));
+        return $this->sendPaymentRequest($this->paymentRequestFactory->createPaymentRequest($order, $description));
     }
 
     private function sendPaymentRequest(PaymentRequest $paymentRequest): PaymentResponse

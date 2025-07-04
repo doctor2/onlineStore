@@ -7,7 +7,7 @@ use App\Bundle\OrderBundle\TransferObject\Tinkoff\PaidProductData;
 use App\Bundle\OrderBundle\TransferObject\Tinkoff\PaymentRequest;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
-class PaymentRequestBuilder
+class PaymentRequestFactory
 {
     public const TAX = 'vat10';
     public const TAXATION = 'osn';
@@ -16,7 +16,7 @@ class PaymentRequestBuilder
                                 private string $merchantPhone, private UrlGeneratorInterface $urlGenerator)
     {}
 
-    public function build(Order $order, string $description): PaymentRequest
+    public function createPaymentRequest(Order $order, string $description): PaymentRequest
     {
         $successUrl = $this->urlGenerator->generate('order_success', [], UrlGeneratorInterface::ABSOLUTE_URL);
         $failureUrl = $this->urlGenerator->generate('order_failure', [], UrlGeneratorInterface::ABSOLUTE_URL);

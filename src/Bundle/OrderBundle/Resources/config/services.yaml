@@ -22,7 +22,7 @@ services:
         arguments:
             - '%env(TINKOFF_API_URL)%'
 
-    App\Bundle\OrderBundle\Service\PaymentRequestBuilder:
+    App\Bundle\OrderBundle\Service\PaymentRequestFactory:
         arguments:
             - '%env(TINKOFF_TERMINAL_KEY)%'
             - '%env(TINKOFF_MERCHANT_PASS)%'
