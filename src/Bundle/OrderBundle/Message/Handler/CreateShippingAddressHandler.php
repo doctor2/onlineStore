@@ -17,15 +17,7 @@ class CreateShippingAddressHandler
 
     public function __invoke(CreateShippingAddressMessage $message): ShippingAddress
     {
-        $user = $message->getUser();
-
-        $shippingAddress = new ShippingAddress();
-        $shippingAddress->setUser($user);
-        $shippingAddress->setFirstName($message->getFirstName());
-        $shippingAddress->setLastName($message->getLastName());
-        $shippingAddress->setAddressLine($message->getAddressLine());
-        $shippingAddress->setCity($message->getCity());
-        $shippingAddress->setPostalCode($message->getPostalCode());
+        $shippingAddress = new ShippingAddress($message);
 
         $this->shippingAddressRepository->save($shippingAddress);
 

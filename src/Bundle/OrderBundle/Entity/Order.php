@@ -5,6 +5,7 @@ namespace App\Bundle\OrderBundle\Entity;
 use App\Bundle\OrderBundle\Entity\Enum\OrderStatus;
 use App\Bundle\OrderBundle\Entity\Enum\PaymentMethod;
 use App\Bundle\CoreBundle\Entity\User;
+use App\Bundle\OrderBundle\Message\CreateOrderMessage;
 use App\Bundle\OrderBundle\Repository\OrderRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -55,8 +56,13 @@ class Order
     #[ORM\JoinColumn(nullable: false)]
     private ?ShippingAddress $shippingAddress = null;
 
-    public function __construct()
+    public function __construct(CreateOrderMessage $message)
     {
+        $this->user = $message->getUser();
+        $this->totalAmount = $message->getTotalAmount();
+        $this->status = $message->getStatus();
+        $this->shippingAddress = $message->getShippingAddress();
+
         $this->orderItems = new ArrayCollection();
         $this->payments = new ArrayCollection();
     }

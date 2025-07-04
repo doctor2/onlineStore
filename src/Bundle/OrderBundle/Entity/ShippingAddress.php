@@ -3,6 +3,8 @@
 namespace App\Bundle\OrderBundle\Entity;
 
 use App\Bundle\CoreBundle\Entity\User;
+use App\Bundle\OrderBundle\Message\CreateShippingAddressMessage;
+use App\Bundle\OrderBundle\Message\UpdateShippingAddressMessage;
 use App\Bundle\OrderBundle\Repository\ShippingAddressRepository;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -40,6 +42,16 @@ class ShippingAddress
 
     #[ORM\Column]
     private ?\DateTimeImmutable $updatedAt = null;
+
+    public function __construct(CreateShippingAddressMessage $message)
+    {
+        $this->user = $message->getUser();
+        $this->firstName = $message->getFirstName();
+        $this->lastName = $message->getLastName();
+        $this->addressLine = $message->getAddressLine();
+        $this->city = $message->getCity();
+        $this->postalCode = $message->getPostalCode();
+    }
 
     public function getId(): ?int
     {
@@ -139,5 +151,14 @@ class ShippingAddress
     public function getUpdatedAt(): ?\DateTimeImmutable
     {
         return $this->updatedAt;
+    }
+
+    public function updateFromMessage(UpdateShippingAddressMessage $message): void
+    {
+        $this->setFirstName($message->getFirstName());
+        $this->setLastName($message->getLastName());
+        $this->setAddressLine($message->getAddressLine());
+        $this->setCity($message->getCity());
+        $this->setPostalCode($message->getPostalCode());
     }
 }

@@ -2,6 +2,8 @@
 
 namespace App\Bundle\OrderBundle\Entity;
 
+use App\Bundle\CartBundle\Entity\CartItem;
+use App\Bundle\OrderBundle\Message\CreateOrderMessage;
 use App\Bundle\ProductBundle\Entity\Product;
 use App\Bundle\OrderBundle\Repository\OrderItemRepository;
 use Doctrine\DBAL\Types\Types;
@@ -33,6 +35,14 @@ class OrderItem
 
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
+
+    public function __construct(Order $order, CartItem $item)
+    {
+        $this->order = $order;
+        $this->price = $item->getPrice();
+        $this->quantity = $item->getQuantity();
+        $this->product = $item->getProduct();
+    }
 
     public function getId(): ?int
     {

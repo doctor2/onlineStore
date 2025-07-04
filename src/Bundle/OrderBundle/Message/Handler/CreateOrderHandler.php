@@ -18,12 +18,8 @@ class CreateOrderHandler
 
     public function __invoke(CreateOrderMessage $message): Order
     {
-        $order = new Order();
-        $order
-            ->setUser($message->getUser())
-            ->setTotalAmount($message->getTotalAmount())
-            ->setStatus($message->getStatus())
-            ->setShippingAddress($message->getShippingAddress());
+
+        $order = new Order($message);
 
         $this->persistOrderItems($message, $order);
 
@@ -39,14 +35,7 @@ class CreateOrderHandler
 
         /** @var CartItem $item */
         foreach ($cartItems as $item) {
-            $orderItem = new OrderItem();
-            $orderItem
-                ->setOrder($order)
-                ->setPrice($item->getPrice())
-                ->setQuantity($item->getQuantity())
-                ->setProduct($item->getProduct());
-
-            $this->entityManager->persist($orderItem);
+            $this->entityManager->persist(new OrderItem($order, $item));
         }
     }
 }

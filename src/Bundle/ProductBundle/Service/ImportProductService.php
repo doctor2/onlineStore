@@ -44,12 +44,13 @@ class ImportProductService
                 continue;
             }
 
-            $product = new Product();
-            $product->setName($row[$columnNumbersByTitle[self::COLUMN_TITLE_NAME]]);
-            $product->setDescription($row[$columnNumbersByTitle[self::COLUMN_TITLE_DESCRIPTION]]);
-            $product->setPrice($row[$columnNumbersByTitle[self::COLUMN_TITLE_PRICE]]);
-            $product->setStockQuantity($row[$columnNumbersByTitle[self::COLUMN_TITLE_STOCK_QUANTITY]]);
-            $product->setCategory($category);
+            $product = Product::create(
+                $row[$columnNumbersByTitle[self::COLUMN_TITLE_NAME]],
+                $row[$columnNumbersByTitle[self::COLUMN_TITLE_DESCRIPTION]],
+                $row[$columnNumbersByTitle[self::COLUMN_TITLE_PRICE]],
+                $row[$columnNumbersByTitle[self::COLUMN_TITLE_STOCK_QUANTITY]],
+                $category
+            );
 
             $this->entityManager->persist($product);
         }

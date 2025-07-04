@@ -125,4 +125,17 @@ class Product
 
         return $this;
     }
+
+    public static function create(string $name, string $description, int $price, int $stockQuantity, Category $category): self
+    {
+        $instance = new self();
+
+        $instance->name = $name;
+        $instance->description = $description;
+        $instance->price = $price;
+        $instance->stockQuantity = $stockQuantity;
+        $instance->category = $category;
+
+        return $instance;
+    }
 }
