@@ -17,4 +17,5 @@ return [
     App\Bundle\CoreBundle\CoreBundle::class => ['all' => true],
     App\Bundle\OrderBundle\OrderBundle::class => ['all' => true],
     App\Bundle\ProductBundle\ProductBundle::class => ['all' => true],
+    Knp\Bundle\PaginatorBundle\KnpPaginatorBundle::class => ['all' => true],
 ];

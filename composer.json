@@ -13,6 +13,7 @@
         "doctrine/orm": "^3.3.2",
         "easycorp/easyadmin-bundle": "^4.24.6",
         "gedmo/doctrine-extensions": "^3.20",
+        "knplabs/knp-paginator-bundle": "^6.8",
         "phpoffice/phpspreadsheet": "^4.2",
         "stof/doctrine-extensions-bundle": "^1.14",
         "symfony/console": "7.2.*",
