@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\Factory;
+namespace App\Factory;
 
 use App\Bundle\CartBundle\Entity\CartItem;
 use Zenstruck\Foundry\Persistence\PersistentProxyObjectFactory;

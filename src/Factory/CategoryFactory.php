@@ -1,15 +1,14 @@
 <?php
 
-namespace App\Tests\Factory;
+namespace App\Factory;
 
-use App\Bundle\OrderBundle\Entity\Enum\OrderStatus;
-use App\Bundle\OrderBundle\Entity\Order;
+use App\Bundle\ProductBundle\Entity\Category;
 use Zenstruck\Foundry\Persistence\PersistentProxyObjectFactory;
 
 /**
- * @extends PersistentProxyObjectFactory<Order>
+ * @extends PersistentProxyObjectFactory<Category>
  */
-final class OrderFactory extends PersistentProxyObjectFactory
+final class CategoryFactory extends PersistentProxyObjectFactory
 {
     /**
      * @see https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#factories-as-services
@@ -22,7 +21,12 @@ final class OrderFactory extends PersistentProxyObjectFactory
 
     public static function class(): string
     {
-        return Order::class;
+        return Category::class;
+    }
+
+    public function withParent(Category $parent): self
+    {
+        return $this->with(['parent' => $parent]);
     }
 
     /**
@@ -33,10 +37,9 @@ final class OrderFactory extends PersistentProxyObjectFactory
     protected function defaults(): array|callable
     {
         return [
-            'paymentMethod' => self::faker()->text(255),
-            'shippingAddress' => ShippingAddressFactory::new(),
-            'status' => self::faker()->randomElement(OrderStatus::cases()),
-            'totalAmount' => self::faker()->randomNumber(6),
+            'description' => self::faker()->text(),
+            'name' => self::faker()->text(50),
+            'slug' => self::faker()->slug()
         ];
     }
 
@@ -46,7 +49,7 @@ final class OrderFactory extends PersistentProxyObjectFactory
     protected function initialize(): static
     {
         return $this
-            // ->afterInstantiate(function(Order $order): void {})
+            // ->afterInstantiate(function(Category $category): void {})
         ;
     }
 }

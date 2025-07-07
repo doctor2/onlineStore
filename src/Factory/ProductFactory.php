@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Tests\Factory;
+namespace App\Factory;
 
-use App\Bundle\OrderBundle\Entity\ShippingAddress;
+use App\Bundle\ProductBundle\Entity\Product;
 use Zenstruck\Foundry\Persistence\PersistentProxyObjectFactory;
 
 /**
- * @extends PersistentProxyObjectFactory<ShippingAddress>
+ * @extends PersistentProxyObjectFactory<Product>
  */
-final class ShippingAddressFactory extends PersistentProxyObjectFactory
+final class ProductFactory extends PersistentProxyObjectFactory
 {
     /**
      * @see https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#factories-as-services
@@ -21,7 +21,7 @@ final class ShippingAddressFactory extends PersistentProxyObjectFactory
 
     public static function class(): string
     {
-        return ShippingAddress::class;
+        return Product::class;
     }
 
     /**
@@ -32,12 +32,11 @@ final class ShippingAddressFactory extends PersistentProxyObjectFactory
     protected function defaults(): array|callable
     {
         return [
-            'addressLine' => self::faker()->text(255),
-            'city' => self::faker()->text(255),
-            'firstName' => self::faker()->text(50),
-            'lastName' => self::faker()->text(50),
-            'postalCode' => self::faker()->text(255),
-            'user' => UserFactory::new(),
+            'category' => CategoryFactory::new(),
+            'description' => self::faker()->text(),
+            'name' => self::faker()->text(20),
+            'price' => self::faker()->randomNumber(6),
+            'stockQuantity' => self::faker()->randomNumber(),
         ];
     }
 
@@ -47,7 +46,7 @@ final class ShippingAddressFactory extends PersistentProxyObjectFactory
     protected function initialize(): static
     {
         return $this
-            // ->afterInstantiate(function(ShippingAddress $shippingAddress): void {})
+            // ->afterInstantiate(function(Product $product): void {})
         ;
     }
 }

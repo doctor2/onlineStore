@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Tests\Factory;
+namespace App\Factory;
 
 use App\Bundle\CoreBundle\Entity\Enum\UserRole;
 use App\Bundle\CoreBundle\Entity\User;
-use App\Tests\Support\Helper\DefaultUserPasswordGenerator;
+use App\Factory\Helper\DefaultUserPasswordGenerator;
 use Zenstruck\Foundry\Persistence\PersistentProxyObjectFactory;
 
 /**

@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Tests\Factory;
+namespace App\Factory;
 
-use App\Bundle\ProductBundle\Entity\Product;
+use App\Bundle\CartBundle\Entity\ShoppingCart;
 use Zenstruck\Foundry\Persistence\PersistentProxyObjectFactory;
 
 /**
- * @extends PersistentProxyObjectFactory<Product>
+ * @extends PersistentProxyObjectFactory<ShoppingCart>
  */
-final class ProductFactory extends PersistentProxyObjectFactory
+final class ShoppingCartFactory extends PersistentProxyObjectFactory
 {
     /**
      * @see https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#factories-as-services
@@ -21,7 +21,7 @@ final class ProductFactory extends PersistentProxyObjectFactory
 
     public static function class(): string
     {
-        return Product::class;
+        return ShoppingCart::class;
     }
 
     /**
@@ -32,11 +32,7 @@ final class ProductFactory extends PersistentProxyObjectFactory
     protected function defaults(): array|callable
     {
         return [
-            'category' => CategoryFactory::new(),
-            'description' => self::faker()->text(),
-            'name' => self::faker()->text(20),
-            'price' => self::faker()->randomNumber(6),
-            'stockQuantity' => self::faker()->randomNumber(),
+            'user' => UserFactory::new(),
         ];
     }
 
@@ -46,7 +42,7 @@ final class ProductFactory extends PersistentProxyObjectFactory
     protected function initialize(): static
     {
         return $this
-            // ->afterInstantiate(function(Product $product): void {})
+            // ->afterInstantiate(function(ShoppingCart $shoppingCart): void {})
         ;
     }
 }

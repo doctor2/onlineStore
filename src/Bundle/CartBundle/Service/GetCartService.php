@@ -13,12 +13,14 @@ class GetCartService
 
     public function getCart(?User $user): ShoppingCart
     {
+        $request =  $this->requestStack->getCurrentRequest();
+
         if($user) {
             $cart = $user->getShoppingCart();
-        } elseif(getenv('APP_ENV') === 'test') {
-            $cart = new ShoppingCart();
-        } else {
+        } elseif($request !== null && $request->hasSession()) {
             $cart = $this->requestStack->getSession()->get('cart', new ShoppingCart());
+        } else {
+            $cart = new ShoppingCart();
         }
 
         return $cart;

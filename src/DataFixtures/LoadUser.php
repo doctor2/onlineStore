@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Tests\Support\Data;
+namespace App\DataFixtures;
 
-use App\Tests\Factory\UserFactory;
+use App\Factory\UserFactory;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
-use App\Tests\Support\Helper\DefaultUserPasswordGenerator;
+use App\Factory\Helper\DefaultUserPasswordGenerator;
 
 class LoadUser extends Fixture
 {

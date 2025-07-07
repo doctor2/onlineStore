@@ -1,15 +1,14 @@
 <?php
 
-namespace App\Tests\Factory;
+namespace App\Factory;
 
-use App\Bundle\OrderBundle\Entity\Enum\PaymentStatus;
-use App\Bundle\OrderBundle\Entity\Payment;
+use App\Bundle\OrderBundle\Entity\OrderItem;
 use Zenstruck\Foundry\Persistence\PersistentProxyObjectFactory;
 
 /**
- * @extends PersistentProxyObjectFactory<Payment>
+ * @extends PersistentProxyObjectFactory<OrderItem>
  */
-final class PaymentFactory extends PersistentProxyObjectFactory
+final class OrderItemFactory extends PersistentProxyObjectFactory
 {
     /**
      * @see https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#factories-as-services
@@ -22,7 +21,7 @@ final class PaymentFactory extends PersistentProxyObjectFactory
 
     public static function class(): string
     {
-        return Payment::class;
+        return OrderItem::class;
     }
 
     /**
@@ -33,11 +32,10 @@ final class PaymentFactory extends PersistentProxyObjectFactory
     protected function defaults(): array|callable
     {
         return [
-            'amount' => self::faker()->randomNumber(6),
             'order' => OrderFactory::new(),
-            'paymentDate' => \DateTimeImmutable::createFromMutable(self::faker()->dateTime()),
-            'paymentMethod' => self::faker()->text(255),
-            'paymentStatus' => self::faker()->randomElement(PaymentStatus::cases()),
+            'price' => self::faker()->randomNumber(6),
+            'product' => ProductFactory::new(),
+            'quantity' => self::faker()->randomNumber(),
         ];
     }
 
@@ -47,7 +45,7 @@ final class PaymentFactory extends PersistentProxyObjectFactory
     protected function initialize(): static
     {
         return $this
-            // ->afterInstantiate(function(Payment $payment): void {})
+            // ->afterInstantiate(function(OrderItem $orderItem): void {})
         ;
     }
 }

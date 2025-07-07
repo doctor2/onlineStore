@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\Support\Helper;
+namespace App\Factory\Helper;
 
 use App\Bundle\CoreBundle\Entity\User;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;

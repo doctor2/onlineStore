@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Tests\Support\Data;
+namespace App\DataFixtures;
 
-use App\Tests\Factory\CategoryFactory;
-use App\Tests\Factory\ProductFactory;
+use App\Factory\CategoryFactory;
+use App\Factory\ProductFactory;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 
