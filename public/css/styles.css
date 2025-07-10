@@ -121,16 +121,20 @@ a:hover {
 }
 
 /* Контейнер для верхнего правого блока */
-.header-top-right {
-    position: fixed; /* Или absolute, если нужен относительно другого блока */
-    top: 10px;
-    right: 20px;
+.header-top {
     display: flex;
+    justify-content: space-between;
     align-items: center;
-    gap: 15px; /* Расстояние между элементами */
     background: transparent; /* Можно убрать фон, если не нужен */
-    z-index: 1000; /* Чтобы было поверх других элементов */
     font-family: Arial, sans-serif;
+}
+
+/* Дополнительно, чтобы элементы внутри блоков располагались красиво */
+
+.header-top-left, .header-top-right {
+    display: flex; /* Чтобы внутри блоков можно было размещать элементы в линию */
+    gap: 15px; /* Расстояние между элементами внутри блоков */
+    align-items: center;
 }
 
 /* Для ссылок и текста внутри блока, чтобы было красиво */

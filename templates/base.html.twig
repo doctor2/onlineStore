@@ -13,16 +13,21 @@
         {% endblock %}
     </head>
     <body>
-        <div class="header-top-right">
-            <a href="{{ path('cart') }}" title="Корзина" class="button-link"> 🛒</a>
+        <div class="header-top">
+            <div class="header-top-left">
+                <a href="{{ path('product_list') }}"  class="button-link">Главная</a>
+            </div>
+            <div class="header-top-right">
+                <a href="{{ path('cart') }}" title="Корзина" class="button-link"> 🛒</a>
 
-            {% if app.user %}
-                <span>Здравствуйте, {{ app.user.username }}</span>
-                <a href="{{ path('app_logout') }}"  class="button-link">выйти</a>
-            {% else %}
-                <a href="{{ path('app_login') }}"  class="button-link">войти</a>
-                <a href="{{ path('app_register') }}"  class="button-link">регистрация</a>
-            {% endif %}
+                {% if app.user %}
+                    <span>Здравствуйте, {{ app.user.username }}</span>
+                    <a href="{{ path('app_logout') }}"  class="button-link">выйти</a>
+                {% else %}
+                    <a href="{{ path('app_login') }}"  class="button-link">войти</a>
+                    <a href="{{ path('app_register') }}"  class="button-link">регистрация</a>
+                {% endif %}
+            </div>
         </div>
         <div class="page-container">
             {% block body %}{% endblock %}
