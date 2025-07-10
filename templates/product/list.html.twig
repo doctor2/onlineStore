@@ -4,7 +4,13 @@
 
 {% block body %}
     <h1>Список продуктов</h1>
-    <a href="{{ path('cart') }}">Корзина</a>
+    <div>
+        <a href="{{ path('cart') }}">Корзина</a>
+
+        {% if app.user %}
+            <span>Здравствуйте, {{ app.user.username }}</span>
+        {% endif %}
+    </div>
     <table>
         <thead>
         <tr>

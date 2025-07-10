@@ -25,6 +25,9 @@
         <testsuite name="Functional Tests">
             <directory>./tests/Functional</directory>
         </testsuite>
+        <testsuite name="Acceptance Tests">
+            <directory>./tests/Acceptance</directory>
+        </testsuite>
     </testsuites>
 
     <source ignoreSuppressionOfDeprecations="true" restrictNotices="true" restrictWarnings="true">
