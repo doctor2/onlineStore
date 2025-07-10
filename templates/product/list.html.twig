@@ -4,16 +4,6 @@
 
 {% block body %}
     <h1>Список продуктов</h1>
-    <div>
-        <a href="{{ path('cart') }}">Корзина</a>
-
-        {% if app.user %}
-            <span>Здравствуйте, {{ app.user.username }}</span>
-            <a href="{{ path('app_logout') }}">выйти</a>
-        {% else %}
-            <a href="{{ path('app_login') }}">войти</a>
-        {% endif %}
-    </div>
     <table>
         <thead>
         <tr>
@@ -36,9 +26,6 @@
         {% endfor %}
         </tbody>
     </table>
-    <div class="navigation">
-        {{ knp_pagination_render(pagination) }}
-    </div>
 
     {% for message in app.flashes('success') %}
         <div class="alert alert-success">
@@ -51,5 +38,9 @@
             {{ message }}
         </div>
     {% endfor %}
+
+    <div class="navigation">
+        {{ knp_pagination_render(pagination) }}
+    </div>
 
 {% endblock %}

@@ -4,25 +4,42 @@
 
 {% block body %}
     <h1>Корзина</h1>
-    <ul>
+    <ul class="cart-items">
         {% for item in cart.cartItems %}
-            <li>{{ item.product.name }} - {{ item.price }} ₽ ({{ item.quantity }})</li>
+            <li>
+                <div class="item-details">
+                    <span class="item-name">{{ item.product.name }}</span>
+                    <div class="item-controls">
+                        <div class="item-price">{{ item.price }} ₽</div>
+
+                        <div class="qty-controls">
+                            <button class="qty-btn decrease" data-product-id="1">−</button>
+                            <span class="quantity" id="quantity-1">{{ item.quantity }}</span>
+                            <button class="qty-btn increase" data-product-id="1">+</button>
+                        </div>
+                    </div>
+                </div>
+            </li>
         {% endfor %}
     </ul>
 
-    {% if totalAmount %}
-        <h2>Оформить заказ</h2>
+    <div class="order-section">
+        {% if totalAmount %}
+            <h2>Оформить заказ</h2>
+        {% else %}
+            <h2>Пусто</h2>
+        {% endif %}
 
-        <h2>Итого: {{ totalAmount }} ₽</h2>
-        <a href="{{ path('order_shipping_address') }}">Оформить заказ</a>
-    {% else %}
-        <h3>Пусто</h3>
-    {% endif %}
-
-    {% if pendingOrders is not empty %}
-        {% for order in pendingOrders %}
-            <a href="{{ path('order_edit_shipping_address', {'id': order.id}) }}">Ожидает оплаты</a>
-        {% endfor %}
-    {% endif %}
+        <div class="order-summary">
+            <h2>Итого: 8 043 594 ₽</h2>
+            <a href="/order/new/shipping-address" class="order-btn">Оформить заказ</a>
+            <br>
+            {% if pendingOrders is not empty %}
+                {% for order in pendingOrders %}
+                    <a href="{{ path('order_edit_shipping_address', {'id': order.id}) }}" class="order-btn">Ожидает оплаты</a>
+                {% endfor %}
+            {% endif %}
+        </div>
+    </div>
 {% endblock %}
 
