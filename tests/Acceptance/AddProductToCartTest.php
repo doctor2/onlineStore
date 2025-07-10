@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\Acceptance;
 
-use App\Bundle\CoreBundle\Entity\User;
 use App\Factory\ProductFactory;
 use App\Factory\UserFactory;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
@@ -29,7 +28,10 @@ final class AddProductToCartTest extends KernelTestCase
             ->click(sprintf('form[action="/cart/add-product/%s"] [type="submit"]', $product->getId()))
             ->assertSee('Товар добавлен в корзину!')
             ->visit('/cart')
-            ->assertSee(sprintf('%s - %s ₽ (2)', $product->getName(), $product->getPrice()))
+            ->assertElementCount('.item-details', 1)
+            ->assertSeeIn('.item-name', $product->getName())
+            ->assertSeeIn('.item-price', $product->getPrice() . ' ₽')
+            ->assertSeeIn('#quantity-' . $product->getId(), '2')
             ->assertSee(sprintf('Итого: %s ₽', $product->getPrice() * 2 ));
     }
 
@@ -47,8 +49,13 @@ final class AddProductToCartTest extends KernelTestCase
             ->click(sprintf('form[action="/cart/add-product/%s"] [type="submit"]', $product1->getId()))
             ->assertSee('Товар добавлен в корзину!')
             ->visit('/cart')
-            ->assertSee(sprintf('%s - %s ₽ (1)', $product->getName(), $product->getPrice()))
-            ->assertSee(sprintf('%s - %s ₽ (1)', $product1->getName(), $product1->getPrice()))
+            ->assertElementCount('.item-details', 2)
+            ->assertSeeIn('.item-name', $product->getName())
+            ->assertSeeIn('.item-price', $product->getPrice() . ' ₽')
+            ->assertSeeIn('#quantity-' . $product->getId(), '1')
+            ->assertSeeIn('.cart-items li:nth-child(2) .item-name', $product1->getName())
+            ->assertSeeIn('.cart-items li:nth-child(2) .item-price', $product1->getPrice() . ' ₽')
+            ->assertSeeIn('#quantity-' . $product1->getId(), '1')
             ->assertSee(sprintf('Итого: %s ₽', $product->getPrice() + $product1->getPrice() ));
     }
 

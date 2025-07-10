@@ -19,13 +19,13 @@
     </php>
 
     <testsuites>
-        <testsuite name="Unit Tests">
+        <testsuite name="unit">
             <directory>./tests/Unit</directory>
         </testsuite>
-        <testsuite name="Functional Tests">
+        <testsuite name="functional">
             <directory>./tests/Functional</directory>
         </testsuite>
-        <testsuite name="Acceptance Tests">
+        <testsuite name="acceptance">
             <directory>./tests/Acceptance</directory>
         </testsuite>
     </testsuites>
@@ -37,5 +37,6 @@
     </source>
 
     <extensions>
+        <bootstrap class="Zenstruck\Browser\Test\BrowserExtension" />
     </extensions>
 </phpunit>
