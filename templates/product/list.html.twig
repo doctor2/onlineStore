@@ -9,6 +9,9 @@
 
         {% if app.user %}
             <span>Здравствуйте, {{ app.user.username }}</span>
+            <a href="{{ path('app_logout') }}">выйти</a>
+        {% else %}
+            <a href="{{ path('app_login') }}">войти</a>
         {% endif %}
     </div>
     <table>
