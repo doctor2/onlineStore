@@ -251,6 +251,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    public function isAdmin(): bool
+    {
+        return in_array(UserRole::ADMIN->value, $this->roles, true);
+    }
+
     public function eraseCredentials(): void
     {
         // If you store temporary, sensitive data on the user, clear it here

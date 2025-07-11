@@ -35,12 +35,12 @@
                 <h2>Итого: {{ totalAmount }} ₽</h2>
                 <a href="{{ path('order_shipping_address') }}" class="order-btn">Оформить заказ</a>
             {% endif %}
-            {% if pendingOrders is not empty %}
-                {% for order in pendingOrders %}
-                    <a href="{{ path('order_edit_shipping_address', {'id': order.id}) }}" class="order-btn">Ожидает оплаты</a>
-                {% endfor %}
-            {% endif %}
         </div>
+        {% if pendingOrders is not empty %}
+            {% for order in pendingOrders %}
+                <a href="{{ path('order_edit_shipping_address', {'id': order.id}) }}" class="order-btn">Ожидает оплаты</a>
+            {% endfor %}
+        {% endif %}
     </div>
 {% endblock %}
 

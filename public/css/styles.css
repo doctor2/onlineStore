@@ -300,6 +300,13 @@ button.order-btn:hover, a.order-btn:hover {
     margin-bottom: 20px;
 }
 
+.order-summary{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+}
+
 /* Кнопка оформления заказа */
 .order-btn {
     display: inline-block;
