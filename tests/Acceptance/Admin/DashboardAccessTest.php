@@ -6,7 +6,6 @@ namespace Tests\Acceptance;
 
 use App\Factory\UserFactory;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
-use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Zenstruck\Browser\Test\HasBrowser;
 use Zenstruck\Foundry\Test\Factories;
 use Zenstruck\Foundry\Test\ResetDatabase;
@@ -40,9 +39,9 @@ final class DashboardAccessTest extends KernelTestCase
 
         $this->browser()
             ->actingAs($customer)
-            ->expectException(AccessDeniedHttpException::class)
+            ->assertAuthenticated()
             ->visit('/admin')
-            ->assertSee('Access Denied.')
+            ->assertSee('Произошла ошибка 403')
             ->assertStatus(403)
         ;
     }
