@@ -4,24 +4,8 @@
 
 {% block body %}
     <h1>Корзина</h1>
-    <ul class="cart-items">
-        {% for item in cart.cartItems %}
-            <li>
-                <div class="item-details">
-                    <span class="item-name">{{ item.product.name }}</span>
-                    <div class="item-controls">
-                        <div class="item-price">{{ item.price }} ₽</div>
-
-                        <div class="qty-controls">
-                            <button class="qty-btn decrease" data-product-id="1">−</button>
-                            <span class="quantity" id="quantity-{{ item.product.id }}">{{ item.quantity }}</span>
-                            <button class="qty-btn increase" data-product-id="1">+</button>
-                        </div>
-                    </div>
-                </div>
-            </li>
-        {% endfor %}
-    </ul>
+    <div id="app-cart">
+    </div>
 
     <div class="order-section">
         {% if totalAmount %}

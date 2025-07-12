@@ -4,8 +4,8 @@ namespace App\Bundle\CartBundle\Entity;
 
 use App\Bundle\ProductBundle\Entity\Product;
 use App\Bundle\CartBundle\Repository\CartItemRepository;
-use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity(repositoryClass: CartItemRepository::class)]
 #[ORM\Table(name: '`cart_items`')]
@@ -23,15 +23,18 @@ class CartItem
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['cart'])]
     private ?Product $product = null;
 
     #[ORM\Column]
+    #[Groups(['cart'])]
     private ?int $quantity = null;
 
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
 
     #[ORM\Column(type: 'integer')]
+    #[Groups(['cart'])]
     private ?int $price = null;
 
     public function getId(): ?int

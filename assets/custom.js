@@ -22,9 +22,9 @@ function addToCart() {
         button.addEventListener('click', (e) => {
             e.preventDefault();
 
-            const url = button.getAttribute('data-url');
+            const productId = button.getAttribute('data-product-id');
 
-            fetch(url, {
+            fetch(`/api/v1/cart/products/${productId}/increase`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

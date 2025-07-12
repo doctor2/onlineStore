@@ -18,7 +18,7 @@
                 <td>{{ product.name }}</td>
                 <td>{{ product.price }}</td>
                 <td>
-                    <button type="submit" class="add-to-cart-btn" data-url="{{ path('api_add_to_cart', { id: product.id }) }}">Добавить в корзину</button>
+                    <button class="add-to-cart-btn" data-product-id="{{ product.id }}">Добавить в корзину</button>
                 </td>
             </tr>
         {% endfor %}

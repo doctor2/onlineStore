@@ -88,7 +88,7 @@ class ShoppingCart
         return $this->cartItems;
     }
 
-    public function addProduct(Product $product): CartItem
+    public function increaseNumberOfProducts(Product $product): CartItem
     {
         $cartItem = null;
 
@@ -113,23 +113,35 @@ class ShoppingCart
         return $cartItem;
     }
 
+    public function decreaseNumberOfProducts(Product $product): ?CartItem
+    {
+        $cartItem = null;
+
+        foreach ($this->getCartItems() as $item) {
+            if ($item->getProduct()->getId() === $product->getId()) {
+                $cartItem = $item;
+                break;
+            }
+        }
+
+        if (!$cartItem) {
+            throw new \RuntimeException('Товар не в корзине');
+        }
+
+        if ($cartItem->getQuantity() === 1) {
+            return $cartItem;
+        } else {
+            $cartItem->setQuantity($cartItem->getQuantity() - 1);
+        }
+
+        return null;
+    }
+
     private function addCartItem(CartItem $cartItem): static
     {
         if (!$this->cartItems->contains($cartItem)) {
             $this->cartItems->add($cartItem);
             $cartItem->setCart($this);
-        }
-
-        return $this;
-    }
-
-    public function removeCartItem(CartItem $cartItem): static
-    {
-        if ($this->cartItems->removeElement($cartItem)) {
-            // set the owning side to null (unless already changed)
-            if ($cartItem->getCart() === $this) {
-                $cartItem->setCart(null);
-            }
         }
 
         return $this;

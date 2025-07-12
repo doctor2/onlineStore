@@ -18,4 +18,5 @@ return [
     App\Bundle\OrderBundle\OrderBundle::class => ['all' => true],
     App\Bundle\ProductBundle\ProductBundle::class => ['all' => true],
     Knp\Bundle\PaginatorBundle\KnpPaginatorBundle::class => ['all' => true],
+    Symfony\WebpackEncoreBundle\WebpackEncoreBundle::class => ['all' => true],
 ];
