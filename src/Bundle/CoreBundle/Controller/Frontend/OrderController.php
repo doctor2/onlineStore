@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Bundle\CoreBundle\Controller;
+namespace App\Bundle\CoreBundle\Controller\Frontend;
 
 
 use App\Bundle\CartBundle\Service\GetCartService;

@@ -1,14 +1,11 @@
 <?php
 
-namespace App\Bundle\CoreBundle\Controller;
+namespace App\Bundle\CoreBundle\Controller\Frontend;
 
-use App\Bundle\CartBundle\Message\AddProductToCartMessage;
 use App\Bundle\CartBundle\Service\GetCartService;
 use App\Bundle\OrderBundle\Repository\OrderRepository;
-use App\Bundle\ProductBundle\Entity\Product;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 class CartController extends AbstractController
@@ -27,21 +24,5 @@ class CartController extends AbstractController
             'totalAmount' => $cart->getTotalAmount(),
             'pendingOrders' => $pendingOrders ?? [],
         ]);
-    }
-
-    #[Route('/cart/add-product/{id}', name: 'add_to_cart')]
-    public function addToCart(?Product $product, MessageBusInterface $bus): Response
-    {
-        if (!$product) {
-            $this->addFlash('error', 'Товар не найден!');
-
-            return $this->redirectToRoute('product_list');
-        }
-
-        $bus->dispatch(new AddProductToCartMessage($this->getUser(), $product));
-
-        $this->addFlash('success', 'Товар добавлен в корзину!');
-
-        return $this->redirectToRoute('product_list');
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Bundle\CoreBundle\Controller;
+namespace App\Bundle\CoreBundle\Controller\Frontend;
 
 use App\Bundle\CoreBundle\Entity\Enum\UserRole;
 use App\Bundle\CoreBundle\Entity\User;

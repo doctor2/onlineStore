@@ -18,8 +18,8 @@ class PaymentRequestFactory
 
     public function createPaymentRequest(Order $order, string $description): PaymentRequest
     {
-        $successUrl = $this->urlGenerator->generate('order_success', [], UrlGeneratorInterface::ABSOLUTE_URL);
-        $failureUrl = $this->urlGenerator->generate('order_failure', [], UrlGeneratorInterface::ABSOLUTE_URL);
+        $successUrl = $this->urlGenerator->generate('api_order_success', [], UrlGeneratorInterface::ABSOLUTE_URL);
+        $failureUrl = $this->urlGenerator->generate('api_order_failure', [], UrlGeneratorInterface::ABSOLUTE_URL);
 
         $paymentRequest = new PaymentRequest($this->terminalKey, $this->merchantPass,
             $order->getTotalAmount(), $order->getId(), $description, $successUrl, $failureUrl

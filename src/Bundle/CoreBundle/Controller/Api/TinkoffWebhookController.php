@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Bundle\CoreBundle\Controller;
+namespace App\Bundle\CoreBundle\Controller\Api;
 
 use App\Bundle\OrderBundle\Service\TinkoffWebhookService;
 use App\Bundle\OrderBundle\TransferObject\Tinkoff\WebhookRequest;
