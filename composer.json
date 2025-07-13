@@ -85,6 +85,7 @@
         "symfony/browser-kit": "7.2.*",
         "symfony/css-selector": "7.2.*",
         "symfony/maker-bundle": "^1.62.1",
+        "symfony/panther": "^2.2",
         "zenstruck/browser": "^1.9",
         "zenstruck/foundry": "*"
     }
