@@ -165,8 +165,23 @@ a:hover {
     overflow: hidden;
 }
 
+.alert.alert-error {
+    padding: 15px 20px;
+    margin: 20px 0;
+    border-radius: 4px;
+    background-color: #f8d7da; /* светло-красный фон */
+    color: #721c24; /* темно-красный текст */
+    border: 1px solid #f5c6cb; /* рамка */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    position: relative;
+    transition: opacity 0.5s ease, max-height 0.5s ease, padding 0.5s ease;
+    overflow: hidden;
+}
+
 /* Для плавного исчезновения */
-.alert.alert-success.fade-out {
+.alert.alert-success.fade-out, .alert.alert-error.fade-out {
     opacity: 0;
     max-height: 0;
     padding: 0;

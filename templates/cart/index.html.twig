@@ -7,24 +7,12 @@
     <div id="app-cart">
     </div>
 
-    <div class="order-section">
-        {% if totalAmount %}
-            <h2>Оформить заказ</h2>
-        {% else %}
-            <h2>Пусто</h2>
-        {% endif %}
-
-        <div class="order-summary">
-            {% if totalAmount %}
-                <h2>Итого: {{ totalAmount }} ₽</h2>
-                <a href="{{ path('order_shipping_address') }}" class="order-btn">Оформить заказ</a>
-            {% endif %}
-        </div>
-        {% if pendingOrders is not empty %}
+    {% if pendingOrders is not empty %}
+        <div class="order-section">
             {% for order in pendingOrders %}
                 <a href="{{ path('order_edit_shipping_address', {'id': order.id}) }}" class="order-btn">Ожидает оплаты</a>
             {% endfor %}
-        {% endif %}
-    </div>
+        </div>
+    {% endif %}
 {% endblock %}
 

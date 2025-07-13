@@ -10,15 +10,20 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\SerializerInterface;
 
 class CartController extends AbstractController
 {
     #[Route('/cart/products/', name: 'cart_products')]
-    public function getCartProducts(GetCartService $getCartService): Response
+    public function getCartProducts(GetCartService $getCartService, SerializerInterface $serializer): Response
     {
         $cart = $getCartService->getCart($this->getUser());
+        $cartItems = $serializer->serialize($cart->getCartItems(), 'json', ['groups' => ['cart']]);
 
-        return $this->json($cart->getCartItems(), 200, [], ['groups' => ['cart']]);
+        return $this->json([
+            'cartItems' => json_decode($cartItems),
+            'totalAmount' => $cart->getTotalAmount(),
+        ]);
     }
 
     #[Route('/cart/products/{id}/increase', name: 'increase_number_of_cart_products', methods: ['POST'])]

@@ -12,6 +12,7 @@
 - MySQL
 - PHPUnit + Foundry (для генерации фикстур и тестирования)
 - Docker
+- Vue
 
 ---
 
@@ -46,6 +47,10 @@
    php bin/console doctrine:migrations:migrate
    
    php bin/console doctrine:fixtures:load
+   
+   npm install
+   
+   npm run dev
    ```
 
 ## 🧪 Tests

@@ -1,41 +1,58 @@
 <template>
-    <ul class="cart-items">
-        <li v-for="item in cartItems" :key="item.product.id">
-            <div class="item-details">
-                <span class="item-name">{{ item.product.name }}</span>
-                <div class="item-controls">
-                    <div class="item-price">{{ formatPrice(item.price) }}</div>
-                    <div class="qty-controls">
-                        <button
-                            class="qty-btn decrease"
-                            @click="decreaseQuantity(item.product.id)"
-                        >−</button>
-                        <span class="quantity" :id="'quantity-' + item.product.id">{{ item.quantity }}</span>
-                        <button
-                            class="qty-btn increase"
-                            @click="increaseQuantity(item.product.id)"
-                        >+</button>
+    <div>
+        <ul class="cart-items">
+            <li v-for="item in cartItems" :key="item.product.id">
+                <div class="item-details">
+                    <span class="item-name">{{ item.product.name }}</span>
+                    <div class="item-controls">
+                        <div class="item-price">{{ formatPrice(item.price) }}</div>
+                        <div class="qty-controls">
+                            <button
+                                class="qty-btn decrease"
+                                @click="decreaseQuantity(item.product.id)"
+                                :disabled="item.quantity === 0"
+                            >−</button>
+                            <span class="quantity" :id="'quantity-' + item.product.id">{{ item.quantity }}</span>
+                            <button
+                                class="qty-btn increase"
+                                @click="increaseQuantity(item.product.id)"
+                            >+</button>
+                        </div>
                     </div>
                 </div>
+            </li>
+        </ul>
+        <div class="order-section">
+            <h2 v-if="totalAmount">Оформить заказ</h2>
+            <h2 v-else>Пусто</h2>
+
+            <div v-if="totalAmount" class="order-summary">
+                <h2>Итого: {{ formatPrice(totalAmount) }}</h2>
+                <a href="/order/new/shipping-address" class="order-btn">Оформить заказ</a>
             </div>
-        </li>
-    </ul>
+        </div>
+        <AlertMessage ref="alert" />
+    </div>
 </template>
 
 <script>
+import AlertMessage from './AlertMessage.vue';
+
 export default {
     data() {
         return {
-            cartItems: [], // список товаров в корзине
+            cartItems: [],
+            totalAmount: 0,
         };
     },
+    components: { AlertMessage },
     methods: {
         fetchProducts() {
             fetch('/api/v1/cart/products/')
                 .then(res => res.json())
                 .then(data => {
-                    // предполагается, что API возвращает массив товаров с id, name, price, quantity
-                    this.cartItems = data;
+                    this.cartItems = data.cartItems;
+                    this.totalAmount = data.totalAmount;
                 })
                 .catch(err => console.error('Ошибка загрузки корзины:', err));
         },
@@ -49,6 +66,7 @@ export default {
             })
                 .then(res => res.json())
                 .then(res => {
+                    this.showMessage(res);
                     this.fetchProducts();
                 })
                 .catch(err => console.error('Ошибка при увеличении:', err));
@@ -59,10 +77,18 @@ export default {
             })
                 .then(res => res.json())
                 .then(res => {
+                    this.showMessage(res);
                     this.fetchProducts();
                 })
                 .catch(err => console.error('Ошибка при уменьшении:', err));
         },
+        showMessage(res) {
+            if (res.success){
+                this.$refs.alert.showMessage(res.success, 'success');
+            } else {
+                this.$refs.alert.showMessage(res.error, 'error');
+            }
+        }
     },
     mounted() {
         this.fetchProducts();
