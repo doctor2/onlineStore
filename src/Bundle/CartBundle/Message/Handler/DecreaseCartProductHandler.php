@@ -30,7 +30,7 @@ class DecreaseCartProductHandler
         $cartItem = $cart->decreaseNumberOfProducts($product);
 
         if ($user) {
-            if ($cartItem) {
+            if ($cartItem->getQuantity() === 0) {
                 $this->entityManager->remove($cartItem);
             }
             $this->entityManager->flush();

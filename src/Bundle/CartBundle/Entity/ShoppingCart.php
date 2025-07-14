@@ -113,7 +113,7 @@ class ShoppingCart
         return $cartItem;
     }
 
-    public function decreaseNumberOfProducts(Product $product): ?CartItem
+    public function decreaseNumberOfProducts(Product $product): CartItem
     {
         $cartItem = null;
 
@@ -128,13 +128,13 @@ class ShoppingCart
             throw new \RuntimeException('Товар не в корзине');
         }
 
-        if ($cartItem->getQuantity() === 1) {
-            return $cartItem;
-        } else {
-            $cartItem->setQuantity($cartItem->getQuantity() - 1);
+        $cartItem->setQuantity($cartItem->getQuantity() - 1);
+
+        if ($cartItem->getQuantity() === 0) {
+            $this->removeCartItem($cartItem);
         }
 
-        return null;
+        return $cartItem;
     }
 
     private function addCartItem(CartItem $cartItem): static
@@ -142,6 +142,18 @@ class ShoppingCart
         if (!$this->cartItems->contains($cartItem)) {
             $this->cartItems->add($cartItem);
             $cartItem->setCart($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCartItem(CartItem $cartItem): static
+    {
+        if ($this->cartItems->removeElement($cartItem)) {
+            // set the owning side to null (unless already changed)
+            if ($cartItem->getCart() === $this) {
+                $cartItem->setCart(null);
+            }
         }
 
         return $this;
