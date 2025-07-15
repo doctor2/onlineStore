@@ -40,7 +40,8 @@
     },
     "autoload": {
         "psr-4": {
-            "App\\": "src/"
+            "App\\": "src/",
+            "App\\Abstraction\\StateMachine\\": "src/Abstraction/StateMachine/src"
         }
     },
     "autoload-dev": {

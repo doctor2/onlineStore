@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Bundle\OrderBundle\DependencyInjection;
+namespace App\Bundle\ProductBundle\DependencyInjection;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\Config\FileLocator;
 
-class OrderBundleExtension extends Extension
+class ProductExtension extends Extension
 {
     public function load(array $configs, ContainerBuilder $container)
     {
