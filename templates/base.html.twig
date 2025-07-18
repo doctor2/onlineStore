@@ -16,7 +16,7 @@
         <div class="header-top">
             <div class="header-top-left">
                 <a href="{{ path('product_list') }}"  class="button-link">Главная</a>
-                {% if app.user and app.user.isAdmin %}
+                {% if is_granted('ROLE_ADMIN') %}
                     <a href="{{ path('admin') }}"  class="button-link">admin</a>
                 {% endif %}
             </div>
