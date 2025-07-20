@@ -12,7 +12,7 @@ use Symfony\Component\Routing\Attribute\Route;
 
 final class ProductController extends AbstractController
 {
-    #[Route('/', name: 'product_list')]
+    #[Route('/', name: 'home')]
     public function list(EntityManagerInterface $entityManager, Request $request, PaginatorInterface $paginator): Response
     {
         $queryBuilder = $entityManager->getRepository(Product::class)->createQueryBuilder('product');

@@ -15,6 +15,10 @@ security:
         main:
             lazy: true
             provider: app_user_provider
+            entry_point: form_login
+            custom_authenticators:
+                - App\Bundle\CoreBundle\Security\GoogleAuthenticator
+                - App\Bundle\CoreBundle\Security\VKAuthenticator
             form_login:
                 login_path: app_login
                 check_path: app_login
@@ -44,6 +48,7 @@ security:
          - { path: ^/admin, roles: ROLE_ADMIN }
          - { path: ^/profile, roles: ROLE_USER }
          - { path: ^/order, roles: ROLE_USER }
+         - { path: ^/connect, roles: PUBLIC_ACCESS }
 
 when@test:
     security:

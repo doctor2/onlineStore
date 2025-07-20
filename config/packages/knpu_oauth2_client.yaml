@@ -1,0 +1,20 @@
+knpu_oauth2_client:
+    clients:
+        # configure your clients as described here: https://github.com/knpuniversity/oauth2-client-bundle#configuration
+        google:
+            type: google
+            client_id: '%env(GOOGLE_CLIENT_ID)%'
+            client_secret: '%env(GOOGLE_CLIENT_SECRET)%'
+            redirect_route: connect_google_check
+
+        vkontakte:
+            type: generic
+            client_id: '%env(VK_CLIENT_ID)%'
+            client_secret: '%env(VK_CLIENT_SECRET)%'
+            redirect_route: connect_vk_check
+            provider_class: League\OAuth2\Client\Provider\GenericProvider
+            provider_options:
+                urlAuthorize: 'https://oauth.vk.com/authorize'
+                urlAccessToken: 'https://oauth.vk.com/access_token'
+                urlResourceOwnerDetails: 'https://api.vk.com/method/users.get?fields=photo_200&v=5.131'
+                scopes: [ 'email' ]

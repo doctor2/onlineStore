@@ -25,20 +25,23 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255, unique: true)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $username = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $password = null;
 
-    #[ORM\Column(length: 255, unique: true)]
+    #[ORM\Column(length: 255, unique: true, nullable: true)]
     private ?string $email = null;
 
-    #[ORM\Column(length: 50)]
+    #[ORM\Column(length: 50, nullable: true)]
     private ?string $firstName = null;
 
-    #[ORM\Column(length: 50)]
+    #[ORM\Column(length: 50, nullable: true)]
     private ?string $lastName = null;
+
+    #[ORM\Column(length: 255, unique: true, nullable: true)]
+    private ?string $vkId = null;
 
     #[ORM\Column]
     private array $roles = [];
@@ -269,5 +272,21 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function __toString(): string
     {
         return $this->username;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getVkId(): ?string
+    {
+        return $this->vkId;
+    }
+
+    /**
+     * @param string|null $vkId
+     */
+    public function setVkId(?string $vkId): void
+    {
+        $this->vkId = $vkId;
     }
 }

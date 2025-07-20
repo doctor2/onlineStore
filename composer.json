@@ -14,6 +14,8 @@
         "easycorp/easyadmin-bundle": "^4.24.6",
         "gedmo/doctrine-extensions": "^3.20",
         "knplabs/knp-paginator-bundle": "^6.8",
+        "knpuniversity/oauth2-client-bundle": "^2.18",
+        "league/oauth2-google": "^4.0",
         "phpoffice/phpspreadsheet": "^4.2",
         "stof/doctrine-extensions-bundle": "^1.14",
         "symfony/console": "7.2.*",

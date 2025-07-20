@@ -1,0 +1,13 @@
+connect_google_start:
+    path: /connect/google
+    controller: App\Bundle\CoreBundle\Controller\Frontend\OAuthController::connectGoogle
+
+connect_google_check:
+    path: /connect/google/check
+
+connect_vk_start:
+    path: /connect/vk
+    controller: App\Bundle\CoreBundle\Controller\Frontend\OAuthController::connectVK
+
+connect_vk_check:
+    path: /connect/vk/check

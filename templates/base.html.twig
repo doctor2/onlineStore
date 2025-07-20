@@ -15,7 +15,7 @@
     <body>
         <div class="header-top">
             <div class="header-top-left">
-                <a href="{{ path('product_list') }}"  class="button-link">Главная</a>
+                <a href="{{ path('home') }}"  class="button-link">Главная</a>
                 {% if is_granted('ROLE_ADMIN') %}
                     <a href="{{ path('admin') }}"  class="button-link">admin</a>
                 {% endif %}
@@ -29,6 +29,8 @@
                 {% else %}
                     <a href="{{ path('app_login') }}"  class="button-link">войти</a>
                     <a href="{{ path('app_register') }}"  class="button-link">регистрация</a>
+                    {% include 'component/google.html.twig' %}
+                    {% include 'component/vk.html.twig' %}
                 {% endif %}
             </div>
         </div>
