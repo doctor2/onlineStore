@@ -138,8 +138,8 @@ a:hover {
 }
 
 /* Для ссылок и текста внутри блока, чтобы было красиво */
-.header-top-right span,
-.header-top-right a {
+.header-top span,
+.header-top a {
     font-size: 14px;
     text-decoration: none;
     color: #2c3e50;
@@ -365,4 +365,88 @@ button.order-btn:hover, a.order-btn:hover {
 .gsi-material-button:not(:disabled):hover .gsi-material-button-state {
     background-color: #303030;
     opacity: 8%;
+}
+
+/* Общий контейнер формы */
+.form-container {
+    max-width: 400px;
+    margin: 50px auto;
+    padding: 30px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    font-family: Arial, sans-serif;
+}
+
+/* Заголовок формы */
+.form-title {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 1.75rem;
+    color: #343a40;
+}
+
+/* Метки */
+.form-label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #495057;
+}
+
+/* Поля ввода */
+.form-input {
+    width: 100%;
+    padding: 10px 15px;
+    margin-bottom: 15px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    font-size: 1rem;
+    transition: border-color 0.2s;
+    box-sizing: border-box;
+}
+
+.form-input:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+/* Кнопка входа */
+.form-button {
+    width: 100%;
+    padding: 12px;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #fff;
+    background-color: rgba(0, 105, 217, 0.83);
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.form-button:hover {
+    background-color: #0069d9;
+}
+
+/* Адаптив */
+@media (max-width: 500px) {
+    .form-container {
+        padding: 20px;
+        margin: 20px;
+    }
+}
+
+.form-sign-in {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    justify-content: center;
+    margin-top: 25px;
+}
+
+.form-sign-in a {
+    font-size: 14px;
+    text-decoration: none;
+    color: #2c3e50;
 }
