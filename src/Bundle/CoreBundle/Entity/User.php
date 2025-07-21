@@ -67,6 +67,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: ShippingAddress::class, mappedBy: 'user')]
     private Collection $shippingAddresses;
 
+    #[ORM\Column]
+    private bool $isVerified = false;
+
     public function __construct()
     {
         $this->orders = new ArrayCollection();
@@ -288,5 +291,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setVkId(?string $vkId): void
     {
         $this->vkId = $vkId;
+    }
+
+    public function isVerified(): bool
+    {
+        return $this->isVerified;
+    }
+
+    public function setIsVerified(bool $isVerified): static
+    {
+        $this->isVerified = $isVerified;
+
+        return $this;
     }
 }

@@ -3,18 +3,27 @@
 {% block title %}Register{% endblock %}
 
 {% block body %}
-    <h1>Register</h1>
+    <div class="form-container">
 
-    {{ form_errors(registrationForm) }}
+        {% for flash_error in app.flashes('verify_email_error') %}
+            <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
+        {% endfor %}
 
-    {{ form_start(registrationForm) }}
-        {{ form_row(registrationForm.username) }}
-        {{ form_row(registrationForm.email) }}
-        {{ form_row(registrationForm.plainPassword, {
-            label: 'Password'
-        }) }}
-        {{ form_row(registrationForm.agreeTerms) }}
+        <h1 class="form-title">Register</h1>
 
-        <button type="submit" class="btn">Register</button>
-    {{ form_end(registrationForm) }}
+        {{ form_errors(registrationForm) }}
+
+        {{ form_start(registrationForm) }}
+            {{ form_label(registrationForm.username, null, {'attr': {'class': 'form-label'}}) }}
+            {{ form_widget(registrationForm.username, {'attr': {'class': 'form-input'}}) }}
+            {{ form_label(registrationForm.email, null, {'attr': {'class': 'form-label'}}) }}
+            {{ form_widget(registrationForm.email, {'attr': {'class': 'form-input'}}) }}
+            {{ form_label(registrationForm.plainPassword, 'Password', {'attr': {'class': 'form-label'}}) }}
+            {{ form_widget(registrationForm.plainPassword, {'attr': {'class': 'form-input'}}) }}
+            {{ form_label(registrationForm.agreeTerms, null, {'attr': {'class': 'form-label'}}) }}
+            {{ form_widget(registrationForm.agreeTerms) }}
+
+            <button type="submit" class="btn form-button">Register</button>
+        {{ form_end(registrationForm) }}
+    </div>
 {% endblock %}

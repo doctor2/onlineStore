@@ -16,10 +16,10 @@
             {% endif %}
 
             <h1 class="h3 mb-3 font-weight-normal form-title">Please sign in</h1>
-            <label for="username" class="form-label">Email</label>
-            <input type="email" value="{{ last_username }}" name="_username" id="username" class="form-input" autocomplete="email" required autofocus>
+            <label for="email" class="form-label">Email</label>
+            <input type="email" name="email" id="email" class="form-input" autocomplete="email" required autofocus>
             <label for="password" class="form-label">Password</label>
-            <input type="password" name="_password" id="password" class="form-input" autocomplete="current-password" required>
+            <input type="password" name="password" id="password" class="form-input" autocomplete="current-password" required>
 
             <input type="hidden" name="_csrf_token"
                    value="{{ csrf_token('authenticate') }}"
