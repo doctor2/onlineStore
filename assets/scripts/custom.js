@@ -70,8 +70,7 @@ function addToCart() {
     });
 }
 
-// Автоматически скрывать через 3 секунды после появления
-window.addEventListener('DOMContentLoaded', () => {
-    addHidingAlert();
-    addToCart();
-});
+export const custom = {
+    addHidingAlert,
+    addToCart,
+};
