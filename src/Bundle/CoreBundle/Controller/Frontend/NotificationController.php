@@ -11,15 +11,19 @@ use Symfony\Component\Mercure\Update;
 class NotificationController extends AbstractController
 {
     #[Route(path: '/notify', name: 'notify')]
-    public function login(HubInterface $hub): Response
+    public function notify(HubInterface $hub): Response
     {
+        $userId = $this->getUser()?->getId();
+        $topic = "http://localhost/user/$userId";
+
         $update = new Update(
-            'http://localhost/notify/1',
-            json_encode(['message' => 'Новое уведомление!'])
+            $topic,//'http://localhost/notify/1',
+            json_encode(['message' => sprintf('✅ Новое уведомление для пользователя %s!', $userId)]),
+            true
         );
 
         $hub->publish($update);
 
-        return new Response('Update published!');
+        return new Response('✅ Уведомление отправлено!');
     }
 }

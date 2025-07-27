@@ -10,6 +10,12 @@
 
         {% block javascripts %}
             {{ encore_entry_script_tags('app') }}
+            <script type="application/json" id="mercure-url">
+                {% if app.user %}
+                    {{ mercure('http://localhost/user/' ~ app.user.id, { subscribe: 'http://localhost/user/' ~ app.user.id })|raw }}
+{#                    {{ 'http://localhost/user/' ~ app.user.id }}#}
+                {% endif %}
+            </script>
         {% endblock %}
     </head>
     <body>

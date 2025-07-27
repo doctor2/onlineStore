@@ -17,3 +17,7 @@ services:
             - '../../DependencyInjection/'
             - '../../Entity/'
             - '../../CoreBundle.php'
+
+    App\Bundle\CoreBundle\Service\JwtTokenProvider:
+        arguments:
+            - '%env(MERCURE_JWT_SECRET)%'
