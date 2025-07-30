@@ -12,14 +12,33 @@ services:
     depends_on:
       - database
       - mercure
+      - redis   # добавлено
     environment:
       DATABASE_URL: "mysql://root:password@database:3306/main"
+      MESSENGER_TRANSPORT_DSN: "redis://redis:6379/messages"  # добавлено
     ports:
       - "8000:8000"
     command: php -S 0.0.0.0:8000 -t public
     networks:
       - symfony
 
+  ### 🏃 Воркеры Symfony Messenger ###
+  messenger_worker:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: messenger_worker
+    volumes:
+      - .:/var/www/symfony:cached
+    working_dir: /var/www/symfony
+    depends_on:
+      - php
+      - redis
+    command: php bin/console messenger:consume async --no-interaction --limit=0 --memory-limit=128M --sleep=1000000 -vv
+    networks:
+      - symfony
+
+  ### 🗄️ База данных ###
   database:
     image: mysql:8.0
     environment:
@@ -58,7 +77,15 @@ services:
       - mercure_config:/config
     networks:
       - symfony
-###< symfony/mercure-bundle ###
+
+  ### 🚀 Redis для очередей ###
+  redis:
+    image: redis:7
+    container_name: redis
+    ports:
+      - "6379:6379"
+    networks:
+      - symfony
 
 volumes:
   db_data:
