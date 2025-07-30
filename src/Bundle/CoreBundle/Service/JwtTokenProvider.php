@@ -27,9 +27,11 @@ class JwtTokenProvider
             ->issuedBy('shop-issuer')
             ->permittedFor('shop-audience')
             ->issuedAt($now)
-            ->expiresAt($now->modify('+50 hour'))
-            ->withClaim('subscribe', [
-                "http://localhost/user/$userId"
+            ->expiresAt($now->modify('+1 hour'))
+            ->withClaim('mercure', [
+                'subscribe' => [
+                    "http://localhost/user/$userId"
+                ],
             ])
             ->getToken($this->config->signer(), $this->config->signingKey());
 
