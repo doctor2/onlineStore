@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Bundle\OrderBundle\Message\Handler;
+namespace App\Bundle\OrderBundle\Message\Order\Handler;
 
 use App\Bundle\CartBundle\Entity\CartItem;
 use App\Bundle\OrderBundle\Entity\Order;
 use App\Bundle\OrderBundle\Entity\OrderItem;
-use App\Bundle\OrderBundle\Message\CreateOrderMessage;
+use App\Bundle\OrderBundle\Message\Order\CreateOrderMessage;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 

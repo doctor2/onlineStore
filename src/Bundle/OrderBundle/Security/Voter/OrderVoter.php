@@ -2,7 +2,7 @@
 
 namespace App\Bundle\OrderBundle\Security\Voter;
 
-use App\Bundle\CartBundle\Service\GetCartService;
+use App\Bundle\OrderBundle\Service\GetOrderCartService;
 use App\Bundle\OrderBundle\Entity\Enum\OrderStatusTransitions;
 use App\Bundle\OrderBundle\Entity\Order;
 use App\Bundle\CoreBundle\Entity\User;
@@ -13,7 +13,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 class OrderVoter extends Voter
 {
-    public function __construct(private GetCartService $getCartService, private StateMachineInterface $stateMachine)
+    public function __construct(private GetOrderCartService $getOrderCartService, private StateMachineInterface $stateMachine)
     {}
 
     protected function supports(string $attribute, mixed $subject): bool
@@ -39,9 +39,9 @@ class OrderVoter extends Voter
 
     private function canCreateOrder(User $user): bool
     {
-        $cart = $this->getCartService->getCart($user);
+        $cart = $this->getOrderCartService->getOrderCart($user);
 
-        return $cart->getTotalAmount() > 0;
+        return $cart->calculateTotalAmount() > 0;
     }
 
     private function canEditOrder(User $user, ?Order $order): bool

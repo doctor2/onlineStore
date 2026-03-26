@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Bundle\OrderBundle\Message\Handler;
+namespace App\Bundle\OrderBundle\Message\Payment\Handler;
 
 use App\Bundle\OrderBundle\Entity\Enum\PaymentStatusTransitions;
 use App\Bundle\OrderBundle\Entity\Payment;
-use App\Bundle\OrderBundle\Message\CreatePaymentMessage;
+use App\Bundle\OrderBundle\Message\Payment\CreatePaymentMessage;
 use App\Bundle\OrderBundle\Service\TinkoffClient;
 use App\Bundle\OrderBundle\Service\TransactionService;
 use App\Bundle\OrderBundle\TransferObject\Tinkoff\PaymentResponse;
@@ -30,6 +30,8 @@ class CreatePaymentHandler
         } else {
             $this->stateMachine->apply($payment, PaymentStatusTransitions::GRAPH, PaymentStatusTransitions::TRANSITION_FAIL);
         }
+
+        $message->getOrder()->setStatusPending();
 
         $this->entityManager->flush();
 

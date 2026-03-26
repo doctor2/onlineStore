@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Bundle\CartBundle\Message;
+namespace App\Bundle\OrderBundle\Message\Cart;
 
 use App\Bundle\ProductBundle\Entity\Product;
 use App\Bundle\CoreBundle\Entity\User;
 use Symfony\Component\Messenger\Attribute\Message;
 
 #[Message]
-class DecreaseCartProductMessage
+class IncreaseCartProductMessage
 {
     private ?User $user;
 

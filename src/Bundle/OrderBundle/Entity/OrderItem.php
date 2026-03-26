@@ -2,11 +2,8 @@
 
 namespace App\Bundle\OrderBundle\Entity;
 
-use App\Bundle\CartBundle\Entity\CartItem;
-use App\Bundle\OrderBundle\Message\CreateOrderMessage;
 use App\Bundle\ProductBundle\Entity\Product;
 use App\Bundle\OrderBundle\Repository\OrderItemRepository;
-use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: OrderItemRepository::class)]
@@ -25,23 +22,26 @@ class OrderItem
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['cart'])]
     private Product $product;
 
     #[ORM\Column]
+    #[Groups(['cart'])]
     private ?int $quantity = null;
 
     #[ORM\Column(type: 'integer')]
+    #[Groups(['cart'])]
     private ?int $price = null;
 
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
 
-    public function __construct(Order $order, CartItem $item)
+    public function __construct(Order $order, Product $product)
     {
         $this->order = $order;
-        $this->price = $item->getPrice();
-        $this->quantity = $item->getQuantity();
-        $this->product = $item->getProduct();
+        $this->product = $product;
+        $this->price = $product->getPrice();
+        $this->quantity = 1;
     }
 
     public function getId(): ?int

@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Bundle\OrderBundle\Message\Handler;
+namespace App\Bundle\OrderBundle\Message\Payment\Handler;
 
-use App\Bundle\OrderBundle\Message\RetryPaymentMessage;
+use App\Bundle\OrderBundle\Message\Payment\RetryPaymentMessage;
 use App\Bundle\OrderBundle\Service\TinkoffClient;
 use App\Bundle\OrderBundle\Service\TransactionService;
 use App\Bundle\OrderBundle\TransferObject\Tinkoff\PaymentResponse;

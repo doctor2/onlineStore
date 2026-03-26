@@ -2,9 +2,9 @@
 
 namespace App\Bundle\CoreBundle\Controller\Api;
 
-use App\Bundle\CartBundle\Message\DecreaseCartProductMessage;
-use App\Bundle\CartBundle\Message\IncreaseCartProductMessage;
-use App\Bundle\CartBundle\Service\GetCartService;
+use App\Bundle\OrderBundle\Message\Cart\DecreaseCartProductMessage;
+use App\Bundle\OrderBundle\Message\Cart\IncreaseCartProductMessage;
+use App\Bundle\OrderBundle\Service\GetOrderCartService;
 use App\Bundle\ProductBundle\Entity\Product;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,14 +15,14 @@ use Symfony\Component\Serializer\SerializerInterface;
 class CartController extends AbstractController
 {
     #[Route('/cart/products/', name: 'cart_products')]
-    public function getCartProducts(GetCartService $getCartService, SerializerInterface $serializer): Response
+    public function getCartProducts(GetOrderCartService $getOrderCartService, SerializerInterface $serializer): Response
     {
-        $cart = $getCartService->getCart($this->getUser());
-        $cartItems = $serializer->serialize($cart->getCartItems(), 'json', ['groups' => ['cart']]);
+        $orderCart = $getOrderCartService->getOrderCart($this->getUser());
+        $orderCartItems = $serializer->serialize($orderCart->getOrderItems(), 'json', ['groups' => ['cart']]);
 
         return $this->json([
-            'cartItems' => json_decode($cartItems),
-            'totalAmount' => $cart->getTotalAmount(),
+            'cartItems' => json_decode($orderCartItems),
+            'totalAmount' => $orderCart->calculateTotalAmount(),
         ]);
     }
 
@@ -41,6 +41,7 @@ class CartController extends AbstractController
     #[Route('/cart/products/{id}/decrease', name: 'decrease_number_of_cart_products', methods: ['POST'])]
     public function decreaseNumberOfCartProducts(?Product $product, MessageBusInterface $bus): Response
     {
+        // @todo можно перенести в сообщения а в security отлавливать ошибку чтобы отправлять правильный формат
         if (!$product) {
             return $this->json(['error' => 'Товар не найден!']);
         }

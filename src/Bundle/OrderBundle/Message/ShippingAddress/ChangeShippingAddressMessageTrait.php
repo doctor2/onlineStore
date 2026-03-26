@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Bundle\OrderBundle\Message;
+namespace App\Bundle\OrderBundle\Message\ShippingAddress;
 
 use Symfony\Component\Validator\Constraints as Assert;
 

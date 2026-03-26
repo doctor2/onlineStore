@@ -1,9 +1,9 @@
 <?php
 
 
-namespace App\Bundle\OrderBundle\Message\Handler;
+namespace App\Bundle\OrderBundle\Message\ShippingAddress\Handler;
 
-use App\Bundle\OrderBundle\Message\UpdateShippingAddressMessage;
+use App\Bundle\OrderBundle\Message\ShippingAddress\UpdateShippingAddressMessage;
 use App\Bundle\OrderBundle\Repository\ShippingAddressRepository;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 

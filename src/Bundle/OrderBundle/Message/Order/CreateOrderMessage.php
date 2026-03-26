@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Bundle\OrderBundle\Message;
+namespace App\Bundle\OrderBundle\Message\Order;
 
 use App\Bundle\CartBundle\Entity\ShoppingCart;
 use App\Bundle\OrderBundle\Entity\ShippingAddress;

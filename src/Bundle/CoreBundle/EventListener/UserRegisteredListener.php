@@ -2,7 +2,7 @@
 
 namespace App\Bundle\CoreBundle\EventListener;
 
-use App\Bundle\CartBundle\Service\GetCartService;
+use App\Bundle\OrderBundle\Service\GetOrderCartService;
 use App\Bundle\ProductBundle\Entity\Product;
 use App\Bundle\CoreBundle\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Attribute\AsEntityListener;
@@ -14,7 +14,7 @@ use Doctrine\Persistence\ObjectManager;
 class UserRegisteredListener
 {
 
-    public function __construct(private GetCartService $getCartService)
+    public function __construct(private GetOrderCartService $getOrderCartService)
     {
     }
 
@@ -25,18 +25,18 @@ class UserRegisteredListener
 
     private function saveCartAndCartItems(User $user, ObjectManager $entityManager): void
     {
-        $cart = $this->getCartService->getCart(null);
-        $cart->setUser($user);
+        $orderCart = $this->getOrderCartService->getOrderCart(null);
+        $orderCart->setUser($user);
 
         $productRepository = $entityManager->getRepository(Product::class);
 
-        foreach ($cart->getCartItems() as $item) {
+        foreach ($orderCart->getOrderItems() as $item) {
             $item->setProduct($productRepository->find($item->getProduct()));
 
             $entityManager->persist($item);
         }
 
-        $entityManager->persist($cart);
+        $entityManager->persist($orderCart);
         $entityManager->flush();
     }
 }

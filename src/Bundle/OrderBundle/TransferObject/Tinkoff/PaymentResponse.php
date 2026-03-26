@@ -2,7 +2,8 @@
 
 namespace App\Bundle\OrderBundle\TransferObject\Tinkoff;
 
-class PaymentResponse {
+class PaymentResponse
+{
     public ?bool $Success = null;
     public ?int $ErrorCode = null;
     public ?string $PaymentId = null;

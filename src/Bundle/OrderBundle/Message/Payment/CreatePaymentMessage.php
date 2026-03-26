@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Bundle\OrderBundle\Message;
+namespace App\Bundle\OrderBundle\Message\Payment;
 
 use App\Bundle\OrderBundle\Entity\Enum\PaymentMethod;
 use App\Bundle\OrderBundle\Entity\Order;

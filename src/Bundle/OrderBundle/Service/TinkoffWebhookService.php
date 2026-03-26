@@ -2,7 +2,7 @@
 
 namespace App\Bundle\OrderBundle\Service;
 
-use App\Bundle\OrderBundle\Entity\Enum\OrderStatusTransition;
+use App\Bundle\OrderBundle\Entity\Enum\OrderStatusTransitions;
 use App\Bundle\OrderBundle\Entity\Enum\PaymentStatusTransitions;
 use App\Bundle\OrderBundle\Entity\Enum\TransactionStatus;
 use App\Bundle\OrderBundle\Repository\TransactionRepository;
@@ -29,7 +29,7 @@ class TinkoffWebhookService
 
         $payment = $transaction->getPayment();
         $this->stateMachine->apply($payment, PaymentStatusTransitions::GRAPH, PaymentStatusTransitions::TRANSITION_COMPLETE);
-        $this->stateMachine->apply($payment->getOrder(), OrderStatusTransition::GRAPH, OrderStatusTransition::TRANSITION_PAY);
+        $this->stateMachine->apply($payment->getOrder(), OrderStatusTransitions::GRAPH, OrderStatusTransitions::TRANSITION_PAY);
 
         $this->entityManager->flush();
     }

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Bundle\OrderBundle\Message;
+namespace App\Bundle\OrderBundle\Message\Payment;
 
 use App\Bundle\OrderBundle\Entity\Payment;
 use Symfony\Component\Messenger\Attribute\Message;

@@ -3,8 +3,8 @@
 namespace App\Bundle\OrderBundle\Entity;
 
 use App\Bundle\CoreBundle\Entity\User;
-use App\Bundle\OrderBundle\Message\CreateShippingAddressMessage;
-use App\Bundle\OrderBundle\Message\UpdateShippingAddressMessage;
+use App\Bundle\OrderBundle\Message\ShippingAddress\CreateShippingAddressMessage;
+use App\Bundle\OrderBundle\Message\ShippingAddress\UpdateShippingAddressMessage;
 use App\Bundle\OrderBundle\Repository\ShippingAddressRepository;
 use Doctrine\ORM\Mapping as ORM;
 

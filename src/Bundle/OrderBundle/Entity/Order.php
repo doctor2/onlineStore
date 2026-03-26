@@ -5,11 +5,9 @@ namespace App\Bundle\OrderBundle\Entity;
 use App\Bundle\OrderBundle\Entity\Enum\OrderStatus;
 use App\Bundle\OrderBundle\Entity\Enum\PaymentMethod;
 use App\Bundle\CoreBundle\Entity\User;
-use App\Bundle\OrderBundle\Message\CreateOrderMessage;
 use App\Bundle\OrderBundle\Repository\OrderRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: OrderRepository::class)]
@@ -56,13 +54,9 @@ class Order
     #[ORM\JoinColumn(nullable: false)]
     private ?ShippingAddress $shippingAddress = null;
 
-    public function __construct(CreateOrderMessage $message)
+    public function __construct()
     {
-        $this->user = $message->getUser();
-        $this->totalAmount = $message->getTotalAmount();
-        $this->status = OrderStatus::PENDING;
-        $this->shippingAddress = $message->getShippingAddress();
-
+        $this->status = OrderStatus::CART;
         $this->orderItems = new ArrayCollection();
         $this->payments = new ArrayCollection();
     }
@@ -213,5 +207,68 @@ class Order
         $this->shippingAddress = $shippingAddress;
 
         return $this;
+    }
+
+    public function increaseNumberOfProducts(Product $product): OrderItem
+    {
+        $orderItem = null;
+
+        foreach ($this->getOrderItems() as $item) {
+            if ($item->getProduct()->getId() === $product->getId()) {
+                $orderItem = $item;
+                break;
+            }
+        }
+
+        if ($orderItem) {
+            $orderItem->setQuantity($orderItem->getQuantity() + 1);
+        } else {
+            $orderItem = new OrderItem($this, $product);
+
+            $this->addOrderItem($orderItem);
+        }
+
+        return $orderItem;
+    }
+
+    public function decreaseNumberOfProducts(Product $product): OrderItem
+    {
+        $orderItem = null;
+
+        foreach ($this->getOrderItems() as $item) {
+            if ($item->getProduct()->getId() === $product->getId()) {
+                $orderItem = $item;
+                break;
+            }
+        }
+
+        if (!$orderItem) {
+            throw new \RuntimeException('Товар не в корзине');
+        }
+
+        $orderItem->setQuantity($orderItem->getQuantity() - 1);
+
+        if ($orderItem->getQuantity() === 0) {
+            $this->removeOrderItem($orderItem);
+        }
+
+        return $orderItem;
+    }
+
+    public function calculateTotalAmount(): int
+    {
+        $total = 0;
+
+        foreach ($this->orderItems as $item) {
+            $total += $item->getPrice() * $item->getQuantity();
+        }
+
+        return $total;
+    }
+
+    public function setStatusPending(): void
+    {
+        $this->totalAmount = $this->calculateTotalAmount();
+        $this->status = OrderStatus::PENDING;
     }
 }

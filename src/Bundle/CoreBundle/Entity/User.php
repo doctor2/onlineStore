@@ -2,7 +2,6 @@
 
 namespace App\Bundle\CoreBundle\Entity;
 
-use App\Bundle\CartBundle\Entity\ShoppingCart;
 use App\Bundle\OrderBundle\Entity\Order;
 use App\Bundle\OrderBundle\Entity\ShippingAddress;
 use App\Bundle\CoreBundle\Entity\Enum\UserRole;
@@ -57,9 +56,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     #[ORM\OneToMany(targetEntity: Order::class, mappedBy: 'user')]
     private Collection $orders;
-
-    #[ORM\OneToOne(mappedBy: 'user', cascade: ['persist', 'remove'])]
-    private ?ShoppingCart $shoppingCart = null;
 
     /**
      * @var Collection<int, ShippingAddress>
@@ -206,23 +202,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $order->setUser(null);
             }
         }
-
-        return $this;
-    }
-
-    public function getShoppingCart(): ?ShoppingCart
-    {
-        return $this->shoppingCart;
-    }
-
-    public function setShoppingCart(ShoppingCart $shoppingCart): static
-    {
-        // set the owning side of the relation if necessary
-        if ($shoppingCart->getUser() !== $this) {
-            $shoppingCart->setUser($this);
-        }
-
-        $this->shoppingCart = $shoppingCart;
 
         return $this;
     }
