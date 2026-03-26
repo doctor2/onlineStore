@@ -2,10 +2,10 @@
 
 namespace App\Bundle\OrderBundle\Message\Order\Handler;
 
-use App\Bundle\CartBundle\Entity\CartItem;
 use App\Bundle\OrderBundle\Entity\Order;
 use App\Bundle\OrderBundle\Entity\OrderItem;
 use App\Bundle\OrderBundle\Message\Order\CreateOrderMessage;
+use App\Bundle\ProductBundle\Entity\Product;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
@@ -18,24 +18,26 @@ class CreateOrderHandler
 
     public function __invoke(CreateOrderMessage $message): Order
     {
+        $orderCart = $message->getOrderCart();
+        $orderCart->setUser($message->getUser());
 
-        $order = new Order($message);
+        $this->persistOrderItems($orderCart);
 
-        $this->persistOrderItems($message, $order);
-
-        $this->entityManager->persist($order);
+        $this->entityManager->persist($orderCart);
         $this->entityManager->flush();
 
-        return $order;
+        return $orderCart;
     }
 
-    private function persistOrderItems(CreateOrderMessage $message, Order $order): void
+    private function persistOrderItems(Order $orderCart): void
     {
-        $cartItems = $message->getUser()->getShoppingCart()->getCartItems();
+        $productRepository = $this->entityManager->getRepository(Product::class);
 
-        /** @var CartItem $item */
-        foreach ($cartItems as $item) {
-            $this->entityManager->persist(new OrderItem($order, $item));
+        /** @var OrderItem $item */
+        foreach ($orderCart->getOrderItems() as $item) {
+            $item->setProduct($productRepository->find($item->getProduct()));
+
+            $this->entityManager->persist($item);
         }
     }
 }

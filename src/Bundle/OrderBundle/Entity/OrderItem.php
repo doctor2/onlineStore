@@ -5,6 +5,7 @@ namespace App\Bundle\OrderBundle\Entity;
 use App\Bundle\ProductBundle\Entity\Product;
 use App\Bundle\OrderBundle\Repository\OrderItemRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity(repositoryClass: OrderItemRepository::class)]
 #[ORM\Table(name: '`order_items`')]
@@ -18,7 +19,7 @@ class OrderItem
 
     #[ORM\ManyToOne(inversedBy: 'orderItems')]
     #[ORM\JoinColumn(nullable: false)]
-    private Order $order;
+    private ?Order $order;
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]

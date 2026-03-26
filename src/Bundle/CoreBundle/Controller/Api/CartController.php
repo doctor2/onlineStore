@@ -22,7 +22,7 @@ class CartController extends AbstractController
 
         return $this->json([
             'cartItems' => json_decode($orderCartItems),
-            'totalAmount' => $orderCart->calculateTotalAmount(),
+            'totalAmount' => $orderCart->getTotalAmount(),
         ]);
     }
 

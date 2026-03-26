@@ -2,24 +2,20 @@
 
 namespace App\Bundle\OrderBundle\Message\Order;
 
-use App\Bundle\CartBundle\Entity\ShoppingCart;
-use App\Bundle\OrderBundle\Entity\ShippingAddress;
+use App\Bundle\OrderBundle\Entity\Order;
 use App\Bundle\CoreBundle\Entity\User;
 use Symfony\Component\Messenger\Attribute\Message;
 
 #[Message]
 class CreateOrderMessage
 {
-    private int $totalAmount;
-
     private User $user;
 
-    private ShippingAddress $shippingAddress;
+    private Order $orderCart;
 
-    public function __construct(ShippingAddress $shippingAddress, ShoppingCart $cart) {
-        $this->user = $shippingAddress->getUser();
-        $this->totalAmount = $cart->getTotalAmount();
-        $this->shippingAddress = $shippingAddress;
+    public function __construct(User $user, Order $orderCart) {
+        $this->user = $user;
+        $this->orderCart = $orderCart;
     }
 
     public function getUser(): User
@@ -27,13 +23,8 @@ class CreateOrderMessage
         return $this->user;
     }
 
-    public function getShippingAddress(): ShippingAddress
+    public function getOrderCart(): Order
     {
-        return $this->shippingAddress;
-    }
-
-    public function getTotalAmount(): int
-    {
-        return $this->totalAmount;
+        return $this->orderCart;
     }
 }

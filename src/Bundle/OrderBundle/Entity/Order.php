@@ -6,6 +6,7 @@ use App\Bundle\OrderBundle\Entity\Enum\OrderStatus;
 use App\Bundle\OrderBundle\Entity\Enum\PaymentMethod;
 use App\Bundle\CoreBundle\Entity\User;
 use App\Bundle\OrderBundle\Repository\OrderRepository;
+use App\Bundle\ProductBundle\Entity\Product;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -24,7 +25,7 @@ class Order
     private ?User $user = null;
 
     #[ORM\Column(type: 'integer')]
-    private ?int $totalAmount = null;
+    private ?int $totalAmount = 0;
 
     #[ORM\Column(enumType: OrderStatus::class)]
     private ?OrderStatus $status = null;
@@ -51,7 +52,7 @@ class Order
     private Collection $payments;
 
     #[ORM\ManyToOne]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true)]
     private ?ShippingAddress $shippingAddress = null;
 
     public function __construct()
@@ -228,6 +229,8 @@ class Order
             $this->addOrderItem($orderItem);
         }
 
+        $this->totalAmount = $this->calculateTotalAmount();
+
         return $orderItem;
     }
 
@@ -252,6 +255,8 @@ class Order
             $this->removeOrderItem($orderItem);
         }
 
+        $this->totalAmount = $this->calculateTotalAmount();
+
         return $orderItem;
     }
 
@@ -264,11 +269,5 @@ class Order
         }
 
         return $total;
-    }
-
-    public function setStatusPending(): void
-    {
-        $this->totalAmount = $this->calculateTotalAmount();
-        $this->status = OrderStatus::PENDING;
     }
 }

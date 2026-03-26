@@ -31,8 +31,6 @@ class CreatePaymentHandler
             $this->stateMachine->apply($payment, PaymentStatusTransitions::GRAPH, PaymentStatusTransitions::TRANSITION_FAIL);
         }
 
-        $message->getOrder()->setStatusPending();
-
         $this->entityManager->flush();
 
         return $paymentResponse;

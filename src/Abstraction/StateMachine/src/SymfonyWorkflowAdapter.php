@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Abstraction\StateMachine;
 
-use App\StateMachine\Exception\StateMachineExecutionException;
+use App\Abstraction\StateMachine\Exception\StateMachineExecutionException;
 use Symfony\Component\Workflow\Exception\ExceptionInterface as WorkflowExceptionInterface;
 use Symfony\Component\Workflow\Registry;
 

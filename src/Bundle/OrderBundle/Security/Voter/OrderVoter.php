@@ -39,9 +39,9 @@ class OrderVoter extends Voter
 
     private function canCreateOrder(User $user): bool
     {
-        $cart = $this->getOrderCartService->getOrderCart($user);
+        $cart = $this->getOrderCartService->getOrCreateOrderCartByUser($user);
 
-        return $cart->calculateTotalAmount() > 0;
+        return $cart->getTotalAmount() > 0 && !$cart->getShippingAddress();
     }
 
     private function canEditOrder(User $user, ?Order $order): bool

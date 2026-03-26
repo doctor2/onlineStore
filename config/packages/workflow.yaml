@@ -10,14 +10,18 @@ framework:
             supports:
                 - App\Bundle\OrderBundle\Entity\Order
             initial_marking:
-                - pending
+                - cart
             places:
+                - cart
                 - pending
                 - paid
                 - shipped
                 - delivered
                 - canceled
             transitions:
+                !php/const App\Bundle\OrderBundle\Entity\Enum\OrderStatusTransitions::TRANSITION_PENDING:
+                    from: cart
+                    to: pending
                 !php/const App\Bundle\OrderBundle\Entity\Enum\OrderStatusTransitions::TRANSITION_PAY:
                     from: pending
                     to: paid
