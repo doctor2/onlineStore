@@ -11,7 +11,7 @@
         <div class="order-section">
             {% for order in pendingOrders %}
                 <a href="{{ path('order_edit_shipping_address', {'id': order.id}) }}" class="order-btn">Ожидает оплаты </a>
-                <h2>На сумму {{ order.totalAmount}} </h2>
+                <h2>На сумму {{ order.totalAmount | format_price }} </h2>
 
             {% endfor %}
         </div>

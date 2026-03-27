@@ -16,7 +16,7 @@
         {% for product in pagination.items %}
             <tr>
                 <td>{{ product.name }}</td>
-                <td>{{ product.price }}</td>
+                <td>{{ product.price | format_price }}</td>
                 <td>
                     <button class="add-to-cart-btn" data-product-id="{{ product.id }}">Добавить в корзину</button>
                 </td>

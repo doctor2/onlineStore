@@ -21,3 +21,6 @@ services:
     App\Bundle\CoreBundle\Service\JwtTokenProvider:
         arguments:
             - '%env(MERCURE_JWT_SECRET)%'
+
+    App\Bundle\CoreBundle\Twig\AppExtension:
+        tags: [ 'twig.extension' ]
