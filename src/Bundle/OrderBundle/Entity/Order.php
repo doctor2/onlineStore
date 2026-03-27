@@ -5,6 +5,7 @@ namespace App\Bundle\OrderBundle\Entity;
 use App\Bundle\OrderBundle\Entity\Enum\OrderStatus;
 use App\Bundle\OrderBundle\Entity\Enum\PaymentMethod;
 use App\Bundle\CoreBundle\Entity\User;
+use App\Bundle\OrderBundle\Exception\OrderItemNotFoundException;
 use App\Bundle\OrderBundle\Repository\OrderRepository;
 use App\Bundle\ProductBundle\Entity\Product;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -246,7 +247,7 @@ class Order
         }
 
         if (!$orderItem) {
-            throw new \RuntimeException('Товар не в корзине');
+            throw new OrderItemNotFoundException('Товар не в корзине');
         }
 
         $orderItem->setQuantity($orderItem->getQuantity() - 1);
