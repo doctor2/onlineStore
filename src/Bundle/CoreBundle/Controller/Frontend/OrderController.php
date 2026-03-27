@@ -32,7 +32,7 @@ class OrderController extends AbstractController
     #[Route('/order/new/shipping-address', name: 'order_shipping_address')]
     public function createShippingAddress(Request $request, GetOrderCartService $getOrderCartService, AuthorizationCheckerInterface $authChecker): Response
     {
-        if (!$authChecker->isGranted('NEW_ORDER')) {
+        if (!$authChecker->isGranted('NEW_SHIPPING_ADDRESS')) {
             return $this->redirectToRoute('cart');
         }
         $orderCart = $getOrderCartService->getOrderCart($this->getUser());
@@ -55,7 +55,7 @@ class OrderController extends AbstractController
     #[Route('/order/{id}/shipping-address/edit', name: 'order_edit_shipping_address')]
     public function editShippingAddress(?Order $orderCart, Request $request, AuthorizationCheckerInterface $authChecker): Response
     {
-        if (!$authChecker->isGranted('EDIT_ORDER', $orderCart)) {
+        if (!$authChecker->isGranted('EDIT_SHIPPING_ADDRESS', $orderCart)) {
             return $this->redirectToRoute('cart');
         }
 
@@ -79,7 +79,7 @@ class OrderController extends AbstractController
     #[Route('/order/{id}/payment', name: 'order_payment')]
     public function payment(?Order $orderCart, Request $request, AuthorizationCheckerInterface $authChecker): Response
     {
-        if (!$authChecker->isGranted('EDIT_ORDER', $orderCart)) {
+        if (!$authChecker->isGranted('EDIT_SHIPPING_ADDRESS', $orderCart)) {
             return $this->redirectToRoute('cart');
         }
 

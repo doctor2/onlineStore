@@ -18,7 +18,7 @@ class OrderVoter extends Voter
 
     protected function supports(string $attribute, mixed $subject): bool
     {
-        return in_array($attribute, ['NEW_ORDER', 'EDIT_ORDER'], true);
+        return in_array($attribute, ['NEW_SHIPPING_ADDRESS', 'EDIT_SHIPPING_ADDRESS'], true);
     }
 
     protected function voteOnAttribute(string $attribute, mixed $order, TokenInterface $token): bool
@@ -30,21 +30,21 @@ class OrderVoter extends Voter
         }
 
         return match ($attribute) {
-            'NEW_ORDER' => $this->canCreateOrder($user),
-            'EDIT_ORDER' => $this->canEditOrder($user, $order),
+            'NEW_SHIPPING_ADDRESS' => $this->canCreateShippingAddress($user),
+            'EDIT_SHIPPING_ADDRESS' => $this->canEditShippingAddress($user, $order),
             default => false,
         };
 
     }
 
-    private function canCreateOrder(User $user): bool
+    private function canCreateShippingAddress(User $user): bool
     {
         $cart = $this->getOrderCartService->getOrCreateOrderCartByUser($user);
 
         return $cart->getTotalAmount() > 0 && !$cart->getShippingAddress();
     }
 
-    private function canEditOrder(User $user, ?Order $order): bool
+    private function canEditShippingAddress(User $user, ?Order $order): bool
     {
         return $order && $order->getUser() === $user
             && $this->stateMachine->can($order, OrderStatusTransitions::GRAPH, OrderStatusTransitions::TRANSITION_PAY);
