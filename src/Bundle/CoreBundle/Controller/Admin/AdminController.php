@@ -31,7 +31,7 @@ class AdminController extends AbstractDashboardController
         yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
         yield MenuItem::section('Settings');
         yield MenuItem::linkToCrud('Products', 'fas fa-list', Product::class);
-        yield MenuItem::linkToRoute('Import Products', 'fas fa-list', 'product_import');
+        yield MenuItem::linkToRoute('Import Products', 'fas fa-list', 'admin_product_import');
         yield MenuItem::linkToCrud('Categories', 'fas fa-list', Category::class);
         yield MenuItem::linkToCrud('Orders', 'fas fa-list', Order::class);
     }

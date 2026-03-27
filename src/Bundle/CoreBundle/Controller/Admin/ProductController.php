@@ -11,7 +11,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class ProductController extends AbstractController
 {
-    #[Route('/admin/products/import', name:'product_import')]
+    #[Route('/admin/products/import', name:'admin_product_import')]
     public function import(Request $request, ImportProductService $importProductService): Response
     {
         $form = $this->createForm(ProductImportType::class);
