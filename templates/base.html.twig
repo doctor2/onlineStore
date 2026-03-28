@@ -22,6 +22,7 @@
         <div class="header-top">
             <div class="header-top-left">
                 <a href="{{ path('home') }}"  class="button-link">Главная</a>
+                <div id="location"></div>
                 {% if is_granted('ROLE_ADMIN') %}
                     <a href="{{ path('admin') }}"  class="button-link">admin</a>
                 {% endif %}

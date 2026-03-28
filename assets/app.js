@@ -11,13 +11,18 @@ import './scripts/mercure.js';
 import { custom } from './scripts/custom.js';
 
 import { createApp } from 'vue';
-
 import Cart from './components/Cart.vue';
+import Location from './components/Location.vue';
 
-if (document.querySelector('#app-cart')) {
-    const app = createApp(Cart);
-    app.mount('#app-cart');
-}
+const mounts = [
+    { selector: '#app-cart', component: Cart },
+    { selector: '#location', component: Location }
+]
+
+mounts.forEach(({ selector, component }) => {
+    const el = document.querySelector(selector)
+    if (el) createApp(component).mount(el)
+})
 
 // Автоматически скрывать через 3 секунды после появления
 window.addEventListener('DOMContentLoaded', () => {
