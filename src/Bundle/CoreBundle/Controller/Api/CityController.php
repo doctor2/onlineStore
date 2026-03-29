@@ -2,7 +2,7 @@
 
 namespace App\Bundle\CoreBundle\Controller\Api;
 
-use App\Bundle\CoreBundle\Repository\CityRepository;
+use App\Bundle\CoreBundle\Repository\LocalityRepository;
 use App\Bundle\CoreBundle\Service\IpLocationService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -32,11 +32,15 @@ final class CityController extends AbstractController
     }
 
     #[Route('/get-cities', name: 'get_cities')]
-    public function getCities(CityRepository $cityRepository): Response
+    public function getCities(LocalityRepository $localityRepository, Request $request): Response
     {
-        $cities = $cityRepository->findAll();
+        $page = (int) $request->query->get('page', 1);
+        $limit = (int) $request->query->get('limit', 10);
+        $search = $request->query->get('search');
 
-        return $this->json($cities);
+        $cities = $localityRepository->searchPaginated($search, $page, $limit);
+
+        return $this->json($cities, 200, [], ['groups' => ['city']]);
     }
 
     #[Route('/set-city', name: 'set_city', methods: ['POST'])]

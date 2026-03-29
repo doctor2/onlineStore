@@ -34,23 +34,27 @@
                         placeholder="Поиск города..."
                     />
 
-                    <ul class="city-list">
+                    <ul class="city-list" @scroll="onScroll">
                         <li
-                            v-for="c in filteredCities"
+                            v-for="c in cities"
                             :key="c.id"
                             @click="selectCity(c)"
                         >
                             {{ c.name }} ({{ c.region }})
                         </li>
+
+                        <li v-if="loading">Загрузка...</li>
+                        <li v-if="!loading && cities.length === 0">Ничего не найдено</li>
                     </ul>
                 </div>
+
             </div>
         </div>
     </div>
 </template>
 
 <script setup>
-import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
+import { ref, watch, onMounted, onBeforeUnmount } from 'vue'
 
 const show = ref(false)
 const editing = ref(false)
@@ -59,15 +63,7 @@ const city = ref(null)
 const region = ref(null)
 const cities = ref([])
 
-const search = ref('')
 const popup = ref(null)
-
-const filteredCities = computed(() => {
-    if (!search.value) return cities.value
-    return cities.value.filter(c =>
-        c.name.toLowerCase().includes(search.value.toLowerCase())
-    )
-})
 
 async function loadInitialCity() {
     const res = await fetch('/api/v1/get-city')
@@ -114,12 +110,55 @@ function openPopup() {
     show.value = true
 }
 
+const page = ref(1)
+const hasMore = ref(true)
+const loading = ref(false)
+const search = ref('')
+
+async function loadCities(reset = false) {
+    if (loading.value) return
+
+    if (reset) {
+        page.value = 1
+        cities.value = []
+        hasMore.value = true
+    }
+
+    if (!hasMore.value) return
+
+    loading.value = true
+
+    const res = await fetch(`/api/v1/get-cities?page=${page.value}&limit=30&search=${encodeURIComponent(search.value)}`)
+    const data = await res.json()
+
+    if (data.length < 30) {
+        hasMore.value = false
+    }
+
+    cities.value.push(...data)
+    page.value++
+    loading.value = false
+}
+
+function onScroll(event) {
+    const el = event.target
+
+    const nearBottom = el.scrollTop + el.clientHeight >= el.scrollHeight - 20
+
+    if (nearBottom) {
+        loadCities()
+    }
+}
+
+watch(search, () => {
+    loadCities(true)
+})
+
 async function toggleEdit() {
     editing.value = !editing.value
 
-    if (editing.value && cities.value.length === 0) {
-        const list = await fetch('/api/v1/get-cities')
-        cities.value = await list.json()
+    if (editing.value) {
+        await loadCities(true)
     }
 }
 
