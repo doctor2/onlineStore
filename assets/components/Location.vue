@@ -1,13 +1,15 @@
 <template>
     <div>
-        <!-- Выбранный город на странице -->
+        <!-- Текущий выбранный город -->
         <div class="current-city" @click.stop="openPopup">
-            {{ city ? city : '' }}
+            {{ city || '' }}
         </div>
 
         <!-- Попап -->
         <div v-if="show" class="city-popup">
             <div class="popup-content" ref="popup" @click.stop>
+
+                <!-- Блок подтверждения -->
                 <div v-if="!editing">
                     <p v-if="city && region">
                         Мы определили ваш город как:<br>
@@ -20,12 +22,16 @@
                     </p>
 
                     <div class="buttons">
-                        <button class="button-link" v-if="city" @click="confirm">Подтвердить</button>
-                        <button class="button-link" @click="toggleEdit">Изменить</button>
+                        <button class="button-link" v-if="city" @click="confirmCity">
+                            Подтвердить
+                        </button>
+                        <button class="button-link" @click="startEditing">
+                            Изменить
+                        </button>
                     </div>
                 </div>
 
-                <!-- Выбор города -->
+                <!-- Блок выбора города -->
                 <div v-if="editing" class="city-select">
                     <input
                         class="form-input"
@@ -56,31 +62,34 @@
 <script setup>
 import { ref, watch, onMounted, onBeforeUnmount } from 'vue'
 
+/* -----------------------------
+   Состояние
+------------------------------ */
 const show = ref(false)
 const editing = ref(false)
 
 const city = ref(null)
 const region = ref(null)
-const cities = ref([])
 
 const popup = ref(null)
 
+/* -----------------------------
+   Загрузка города при старте
+------------------------------ */
 async function loadInitialCity() {
-    const res = await fetch('/api/v1/get-city')
-    const data = await res.json()
+    const saved = await fetch('/api/v1/get-city').then(r => r.json())
 
-    if (data.city) {
-        city.value = data.city
-        region.value = data.region
+    if (saved.city) {
+        city.value = saved.city
+        region.value = saved.region
         return
     }
 
-    const ipRes = await fetch('/api/v1/search-city')
-    const ipData = await ipRes.json()
+    const detected = await fetch('/api/v1/search-city').then(r => r.json())
 
-    if (ipData.city) {
-        city.value = ipData.city
-        region.value = ipData.region
+    if (detected.city) {
+        city.value = detected.city
+        region.value = detected.region
     }
 
     show.value = true
@@ -88,11 +97,6 @@ async function loadInitialCity() {
 
 onMounted(async () => {
     await loadInitialCity()
-
-    if (!city.value) {
-        show.value = true
-    }
-
     document.addEventListener('click', handleClickOutside)
 })
 
@@ -100,16 +104,57 @@ onBeforeUnmount(() => {
     document.removeEventListener('click', handleClickOutside)
 })
 
+/* -----------------------------
+   Открытие / закрытие попапа
+------------------------------ */
+function openPopup() {
+    show.value = true
+}
+
 function handleClickOutside(event) {
     if (show.value && popup.value && !popup.value.contains(event.target)) {
         show.value = false
     }
 }
 
-function openPopup() {
-    show.value = true
+/* -----------------------------
+   Подтверждение / выбор города
+------------------------------ */
+async function confirmCity() {
+    await saveCity(city.value, region.value)
+    show.value = false
 }
 
+async function selectCity(c) {
+    city.value = c.name
+    region.value = c.region
+    editing.value = false
+    search.value = ''
+
+    await saveCity(c.name, c.region)
+    show.value = false
+}
+
+async function saveCity(cityName, regionName) {
+    await fetch('/api/v1/set-city', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ city: cityName, region: regionName })
+    })
+}
+
+/* -----------------------------
+   Режим редактирования
+------------------------------ */
+function startEditing() {
+    editing.value = true
+    loadCities(true)
+}
+
+/* -----------------------------
+   Загрузка списка городов
+------------------------------ */
+const cities = ref([])
 const page = ref(1)
 const hasMore = ref(true)
 const loading = ref(false)
@@ -128,64 +173,31 @@ async function loadCities(reset = false) {
 
     loading.value = true
 
-    const res = await fetch(`/api/v1/get-cities?page=${page.value}&limit=30&search=${encodeURIComponent(search.value)}`)
+    const res = await fetch(
+        `/api/v1/get-cities?page=${page.value}&limit=30&search=${encodeURIComponent(search.value)}`
+    )
     const data = await res.json()
 
-    if (data.length < 30) {
-        hasMore.value = false
-    }
+    if (data.length < 30) hasMore.value = false
 
     cities.value.push(...data)
     page.value++
     loading.value = false
 }
 
+/* -----------------------------
+   Скролл подгрузка
+------------------------------ */
 function onScroll(event) {
     const el = event.target
-
     const nearBottom = el.scrollTop + el.clientHeight >= el.scrollHeight - 20
-
-    if (nearBottom) {
-        loadCities()
-    }
+    if (nearBottom) loadCities()
 }
 
-watch(search, () => {
-    loadCities(true)
-})
-
-async function toggleEdit() {
-    editing.value = !editing.value
-
-    if (editing.value) {
-        await loadCities(true)
-    }
-}
-
-async function confirm() {
-    await saveCity(city.value, region.value)
-    show.value = false
-}
-
-async function selectCity(c) {
-    city.value = c.name
-    region.value = c.region
-    editing.value = false
-
-    await saveCity(c.name, c.region)
-    show.value = false
-}
-
-async function saveCity(cityName, regionName) {
-    await fetch('/api/v1/set-city', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-            city: cityName,
-            region: regionName
-        })
-    })
-}
+/* -----------------------------
+   Поиск
+------------------------------ */
+watch(search, () => loadCities(true))
 </script>
 
 <style scoped>
