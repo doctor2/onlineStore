@@ -31,7 +31,7 @@ class TinkoffClient
 
         } catch (ExceptionInterface $e) {
             $paymentResponse = new PaymentResponse();
-            $paymentResponse->Success = false;
+            $paymentResponse->success = false;
             $paymentResponse->errorMessage = 'Ошибка при отправке запроса: ' . $e->getMessage();
         }
 

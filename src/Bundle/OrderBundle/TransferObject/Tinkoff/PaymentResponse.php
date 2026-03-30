@@ -2,13 +2,19 @@
 
 namespace App\Bundle\OrderBundle\TransferObject\Tinkoff;
 
+use Symfony\Component\Serializer\Attribute\SerializedName;
+
 class PaymentResponse
 {
-    public ?bool $Success = null;
-    public ?int $ErrorCode = null;
-    public ?string $PaymentId = null;
+    #[SerializedName('Success')]
+    public ?bool $success = null;
+    #[SerializedName('ErrorCode')]
+    public ?int $errorCode = null;
+    #[SerializedName('PaymentId')]
+    public ?string $paymentId = null;
+    #[SerializedName('PaymentURL')]
+    public ?string $paymentURL = null;
     public ?string $errorMessage = null;
-    public ?string $PaymentURL = null;
 
     public function isSuccess(): ?bool
     {
@@ -17,7 +23,7 @@ class PaymentResponse
 
     public function getErrorMessage(): ?string
     {
-        if ($this->ErrorCode) {
+        if ($this->errorCode) {
             return 'Tinkoff error: ' . $this->errorCode;
         }
 
@@ -26,11 +32,11 @@ class PaymentResponse
 
     public function getPaymentUrl(): ?string
     {
-        return $this->PaymentURL;
+        return $this->paymentURL;
     }
 
     public function getPaymentId(): ?string
     {
-        return $this->PaymentId;
+        return $this->paymentId;
     }
 }
