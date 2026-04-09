@@ -4,14 +4,14 @@ namespace App\Bundle\CoreBundle\Controller\Frontend;
 
 use App\Bundle\CoreBundle\Entity\Enum\UserRole;
 use App\Bundle\CoreBundle\Entity\User;
+use App\Bundle\CoreBundle\Event\UserRegisteredEvent;
 use App\Bundle\CoreBundle\Form\RegistrationFormType;
 use App\Bundle\CoreBundle\Repository\UserRepository;
 use App\Bundle\CoreBundle\Security\EmailVerifier;
-use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Mime\Address;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -23,7 +23,7 @@ class RegistrationController extends AbstractController
     {}
 
     #[Route('/register', name: 'app_register')]
-    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher): Response
+    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EventDispatcherInterface $dispatcher): Response
     {
         $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user);
@@ -39,14 +39,7 @@ class RegistrationController extends AbstractController
 
             $this->userRepository->save($user);
 
-            // generate a signed url and email it to the user
-            $this->emailVerifier->sendEmailConfirmation('app_verify_email', $user,
-                (new TemplatedEmail())
-                    ->from(new Address('noreply@test.ru', 'Ivan'))
-                    ->to((string) $user->getEmail())
-                    ->subject('Пожалуйста, подтвердите свой адрес электронной почты!')
-                    ->htmlTemplate('registration/confirmation_email.html.twig')
-            );
+            $dispatcher->dispatch(new UserRegisteredEvent($user));
 
             return $this->redirectToRoute('app_login');
         }
