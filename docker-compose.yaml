@@ -35,6 +35,7 @@ services:
       - php
       - redis
     environment:
+      DATABASE_URL: "mysql://root:password@database:3306/main"
       MESSENGER_TRANSPORT_DSN: ${MESSENGER_TRANSPORT_DSN}
     command: php bin/console messenger:consume async -vv
     networks:

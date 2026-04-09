@@ -24,9 +24,8 @@ class EntityExistsValidator extends ConstraintValidator
             ));
         }
         $repository = $this->entityManager->getRepository($constraint->entityClass);
-        $entity = $value ? $repository->find($value) : null;
 
-        if ($entity === null) {
+        if ($value && !$repository->find($value)) {
             $this->context->addViolation($constraint->message);
         }
     }

@@ -8,11 +8,13 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Messenger\Exception\HandlerFailedException;
+use Symfony\Component\Messenger\Exception\ValidationFailedException;
 
 final class KernelExceptionListener
 {
     private const EXCEPTION_MAP = [
         OrderItemNotFoundException::class => JsonResponse::HTTP_NOT_FOUND,
+        ValidationFailedException::class => JsonResponse::HTTP_BAD_REQUEST
     ];
 
     #[AsEventListener(event: KernelEvents::EXCEPTION)]
@@ -30,8 +32,14 @@ final class KernelExceptionListener
             return;
         }
 
-        $event->setResponse(new JsonResponse([
-            'error' => $exception->getMessage(),
-        ], self::EXCEPTION_MAP[$class]));
+        if ($exception instanceof ValidationFailedException) {
+            $event->setResponse(new JsonResponse([
+                'error' => $exception->getViolations()->get(0)->getMessage(),
+            ], self::EXCEPTION_MAP[$class]));
+        } else {
+            $event->setResponse(new JsonResponse([
+                'error' => $exception->getMessage(),
+            ], self::EXCEPTION_MAP[$class]));
+        }
     }
 }

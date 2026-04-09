@@ -2,29 +2,30 @@
 
 namespace App\Bundle\OrderBundle\Message\Cart;
 
-use App\Bundle\ProductBundle\Entity\Product;
-use App\Bundle\CoreBundle\Entity\User;
+use App\Bundle\CoreBundle\Validator\Constraints\EntityExists\EntityExists;
 use Symfony\Component\Messenger\Attribute\Message;
 
 #[Message]
 class IncreaseCartProductMessage
 {
-    private ?User $user;
+    #[EntityExists(message: "Пользователь не найден!", entityClass: "\App\Bundle\CoreBundle\Entity\User")]
+    private int $userId;
 
-    private Product $product;
+    #[EntityExists(message: "Товар не найден!", entityClass: "\App\Bundle\ProductBundle\Entity\Product")]
+    private int $productId;
 
-    public function __construct(?User $user, Product $product) {
-        $this->user = $user;
-        $this->product = $product;
+    public function __construct(int $userId, int $productId) {
+        $this->userId = $userId;
+        $this->productId = $productId;
     }
 
-    public function getUser(): ?User
+    public function getUserId(): int
     {
-        return $this->user;
+        return $this->userId;
     }
 
-    public function getProduct(): Product
+    public function getProductId(): int
     {
-        return $this->product;
+        return $this->productId;
     }
 }
