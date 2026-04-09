@@ -50,6 +50,8 @@
    
    php bin/console doctrine:fixtures:load
    
+   php bin/console app:import:geoadm
+   
    npm install
    
    npm run dev
