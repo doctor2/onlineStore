@@ -38,11 +38,11 @@
    
    cd onlineStore
    
-   composer install
-   
    docker-compose up -d
    
    docker exec -it php bash
+   
+   composer install
    
    php bin/console doctrine:database:create
    
@@ -53,6 +53,7 @@
    npm install
    
    npm run dev
+   
    ```
 
 ## 🧪 Tests
