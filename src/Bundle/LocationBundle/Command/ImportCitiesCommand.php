@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Bundle\CoreBundle\Command;
+namespace App\Bundle\LocationBundle\Command;
 
-use App\Bundle\CoreBundle\Entity\City;
+use App\Bundle\LocationBundle\Entity\City;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;

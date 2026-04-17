@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Bundle\CoreBundle\Service;
+namespace App\Bundle\LocationBundle\Service;
 
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 

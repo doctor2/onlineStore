@@ -1,0 +1,3 @@
+location:
+    resource: '../../Controller/Api'
+    type: attribute

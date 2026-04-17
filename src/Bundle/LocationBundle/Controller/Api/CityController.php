@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Bundle\CoreBundle\Controller\Api;
+namespace App\Bundle\LocationBundle\Controller\Api;
 
-use App\Bundle\CoreBundle\Repository\LocalityRepository;
-use App\Bundle\CoreBundle\Service\IpLocationService;
+use App\Bundle\LocationBundle\Repository\LocalityRepository;
+use App\Bundle\LocationBundle\Service\IpLocationService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

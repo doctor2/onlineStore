@@ -3,3 +3,8 @@ api:
     type: attribute
     prefix: /api/v1
     name_prefix: 'api_'
+
+api_location:
+    resource: '@LocationBundle/Resources/config/routes.yaml'
+    prefix: /api/v1
+    name_prefix: 'api_'

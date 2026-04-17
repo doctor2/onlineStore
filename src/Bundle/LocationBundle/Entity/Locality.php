@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Bundle\CoreBundle\Entity;
+namespace App\Bundle\LocationBundle\Entity;
 
-use App\Bundle\CoreBundle\Repository\LocalityRepository;
+use App\Bundle\LocationBundle\Repository\LocalityRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Attribute\Groups;
 

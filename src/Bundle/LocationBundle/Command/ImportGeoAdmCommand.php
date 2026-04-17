@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Bundle\CoreBundle\Command;
+namespace App\Bundle\LocationBundle\Command;
 
-use App\Bundle\CoreBundle\Entity\Locality;
+use App\Bundle\LocationBundle\Entity\Locality;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -11,7 +11,10 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpClient\HttpClient;
 
-#[AsCommand(name: 'app:import:geoadm')]
+#[AsCommand(
+    name: 'app:import:geoadm',
+    description: 'Импорт населенных пунктов России'
+)]
 class ImportGeoAdmCommand extends Command
 {
     public function __construct(private EntityManagerInterface $em)
